@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI论坛 — 无线AI极客汇</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: { DEFAULT: '#0d55c9', foreground: '#ffffff' },
+            border: '#e2e8f0',
+            background: '#f8fafc',
+            foreground: '#0f172a',
+            muted: { DEFAULT: '#f1f5f9', foreground: '#64748b' },
+          },
+          borderRadius: { lg: '0.625rem', xl: '0.75rem' },
+        }
+      }
+    }
+  </script>
+  <style>
+    body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f8fafc; color: #0f172a; -webkit-font-smoothing: antialiased; }
+    @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+  </style>
+</head>
+<body class="min-h-screen">
+
+  <!-- Navbar -->
+  <nav class="fixed top-0 left-0 right-0 z-50 bg-white/85 backdrop-blur-md border-b border-border/50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <a href="index.html" class="flex items-center gap-2.5 font-bold text-lg text-foreground">
+          <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-sm">
+            <i data-lucide="zap" class="w-5 h-5 text-white"></i>
+          </div>
+          <span>无线AI极客汇</span>
+        </a>
+        <div class="hidden md:flex items-center gap-1">
+          <a href="index.html" class="px-2 py-2 text-sm font-medium text-muted-foreground hover:text-foreground rounded-md hover:bg-muted transition-colors">首页</a>
+          <a href="intelligence.html" class="px-2 py-2 text-sm font-medium text-muted-foreground hover:text-foreground rounded-md hover:bg-muted transition-colors">情报局</a>
+          <a href="courses.html" class="px-2 py-2 text-sm font-medium text-muted-foreground hover:text-foreground rounded-md hover:bg-muted transition-colors">课程</a>
+          <a href="forum.html" class="px-2 py-2 text-sm font-medium text-foreground bg-muted rounded-md">论坛</a>
+          <a href="market.html" class="px-2 py-2 text-sm font-medium text-muted-foreground hover:text-foreground rounded-md hover:bg-muted transition-colors">Agent市场</a>
+        </div>
+        <div class="flex items-center gap-2">
+          <button class="p-2 text-muted-foreground hover:text-foreground rounded-full hover:bg-muted transition-colors">
+            <i data-lucide="search" class="w-4 h-4"></i>
+          </button>
+          <button class="hidden sm:flex p-2 text-muted-foreground hover:text-foreground rounded-full hover:bg-muted transition-colors">
+            <i data-lucide="user" class="w-4 h-4"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="pt-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+      <!-- Page Header -->
+      <div class="flex items-end justify-between mb-8">
+        <div>
+          <h1 class="text-3xl font-bold text-foreground mb-2">AI论坛</h1>
+          <p class="text-muted-foreground">用户交流广场，任何问题讨论和话题交流都可以在这里发起</p>
+        </div>
+        <button class="inline-flex items-center gap-2 px-5 py-2.5 bg-primary text-white text-sm font-medium rounded-lg hover:bg-primary/90 transition-colors shadow-sm">
+          <i data-lucide="plus" class="w-4 h-4"></i>发起话题
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+        <!-- Main Content -->
+        <main class="lg:col-span-8">
+          <!-- Tab Navigation -->
+          <div class="flex items-center gap-1 mb-6 bg-white border border-border rounded-xl p-1 overflow-x-auto">
+            <button class="px-4 py-2 text-sm font-medium text-white bg-primary rounded-lg whitespace-nowrap">全部</button>
+            <button class="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground rounded-lg hover:bg-muted transition-colors whitespace-nowrap">热门</button>
+            <button class="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground rounded-lg hover:bg-muted transition-colors whitespace-nowrap">精华</button>
+            <button class="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground rounded-lg hover:bg-muted transition-colors whitespace-nowrap">求助</button>
+            <button class="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground rounded-lg hover:bg-muted transition-colors whitespace-nowrap">分享</button>
+            <button class="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground rounded-lg hover:bg-muted transition-colors whitespace-nowrap">实践</button>
+            <button class="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground rounded-lg hover:bg-muted transition-colors whitespace-nowrap">讨论</button>
+          </div>
+
+          <!-- Topic List -->
+          <div class="bg-white rounded-xl border border-border overflow-hidden">
+            <div class="flex items-center gap-4 px-5 py-4 hover:bg-gray-50 transition-colors cursor-pointer border-b border-border/50">
+              <div class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-indigo-500 flex items-center justify-center text-white text-sm font-bold flex-shrink-0">张</div>
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center gap-2 mb-1 flex-wrap">
+                  <span class="text-xs font-medium px-1.5 py-0.5 rounded bg-red-50 text-red-600">HOT</span>
+                  <span class="text-sm font-medium text-foreground truncate hover:text-primary transition-colors">GPT-4在协议分析中的应用心得</span>
+                </div>
+                <span class="text-xs text-muted-foreground">张明远 · 2小时前</span>
+              </div>
+              <div class="hidden sm:flex items-center gap-4 text-xs text-muted-foreground flex-shrink-0">
+                <span class="flex items-center gap-1"><i data-lucide="message-circle" class="w-3.5 h-3.5"></i>128</span>
+                <span class="flex items-center gap-1"><i data-lucide="eye" class="w-3.5 h-3.5"></i>1.2k</span>
+                <span class="flex items-center gap-1"><i data-lucide="thumbs-up" class="w-3.5 h-3.5"></i>89</span>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-4 px-5 py-4 hover:bg-gray-50 transition-colors cursor-pointer border-b border-border/50">
+              <div class="w-10 h-10 rounded-full bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center text-white text-sm font-bold flex-shrink-0">李</div>
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center gap-2 mb-1 flex-wrap">
+                  <span class="text-xs font-medium px-1.5 py-0.5 rounded bg-red-50 text-red-600">HOT</span>
+                  <span class="text-sm font-medium text-foreground truncate hover:text-primary transition-colors">Agent调试中遇到的常见问题和解决方案</span>
+                </div>
+                <span class="text-xs text-muted-foreground">李思涵 · 4小时前</span>
+              </div>
+              <div class="hidden sm:flex items-center gap-4 text-xs text-muted-foreground flex-shrink-0">
+                <span class="flex items-center gap-1"><i data-lucide="message-circle" class="w-3.5 h-3.5"></i>96</span>
+                <span class="flex items-center gap-1"><i data-lucide="eye" class="w-3.5 h-3.5"></i>876</span>
+                <span class="flex items-center gap-1"><i data-lucide="thumbs-up" class="w-3.5 h-3.5"></i>56</span>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-4 px-5 py-4 hover:bg-gray-50 transition-colors cursor-pointer border-b border-border/50">
+              <div class="w-10 h-10 rounded-full bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-white text-sm font-bold flex-shrink-0">陈</div>
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center gap-2 mb-1 flex-wrap">
+                  <span class="text-xs font-medium px-1.5 py-0.5 rounded bg-orange-50 text-orange-600">求助</span>
+                  <span class="text-sm font-medium text-foreground truncate hover:text-primary transition-colors">求助：Agent在5G协议测试中遇到的边界case处理</span>
+                </div>
+                <span class="text-xs text-muted-foreground">陈志强 · 5小时前</span>
+              </div>
+              <div class="hidden sm:flex items-center gap-4 text-xs text-muted-foreground flex-shrink-0">
+                <span class="flex items-center gap-1"><i data-lucide="message-circle" class="w-3.5 h-3.5"></i>72</span>
+                <span class="flex items-center gap-1"><i data-lucide="eye" class="w-3.5 h-3.5"></i>654</span>
+                <span class="flex items-center gap-1"><i data-lucide="thumbs-up" class="w-3.5 h-3.5"></i>23</span>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-4 px-5 py-4 hover:bg-gray-50 transition-colors cursor-pointer border-b border-border/50">
+              <div class="w-10 h-10 rounded-full bg-gradient-to-br from-violet-400 to-purple-500 flex items-center justify-center text-white text-sm font-bold flex-shrink-0">王</div>
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center gap-2 mb-1 flex-wrap">
+                  <span class="text-xs font-medium px-1.5 py-0.5 rounded bg-green-50 text-green-600">分享</span>
+                  <span class="text-sm font-medium text-foreground truncate hover:text-primary transition-colors">分享一个自制的代码审查Prompt模板</span>
+                </div>
+                <span class="text-xs text-muted-foreground">王雪晴 · 昨天</span>
+              </div>
+              <div class="hidden sm:flex items-center gap-4 text-xs text-muted-foreground flex-shrink-0">
+                <span class="flex items-center gap-1"><i data-lucide="message-circle" class="w-3.5 h-3.5"></i>84</span>
+                <span class="flex items-center gap-1"><i data-lucide="eye" class="w-3.5 h-3.5"></i>2.1k</span>
+                <span class="flex items-center gap-1"><i data-lucide="thumbs-up" class="w-3.5 h-3.5"></i>156</span>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-4 px-5 py-4 hover:bg-gray-50 transition-colors cursor-pointer border-b border-border/50">
+              <div class="w-10 h-10 rounded-full bg-gradient-to-br from-rose-400 to-pink-500 flex items-center justify-center text-white text-sm font-bold flex-shrink-0">刘</div>
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center gap-2 mb-1 flex-wrap">
+                  <span class="text-xs font-medium px-1.5 py-0.5 rounded bg-blue-50 text-blue-600">实践</span>
+                  <span class="text-sm font-medium text-foreground truncate hover:text-primary transition-colors">关于多Agent协作模式在基站部署项目中的实践总结</span>
+                </div>
+                <span class="text-xs text-muted-foreground">刘浩然 · 昨天</span>
+              </div>
+              <div class="hidden sm:flex items-center gap-4 text-xs text-muted-foreground flex-shrink-0">
+                <span class="flex items-center gap-1"><i data-lucide="message-circle" class="w-3.5 h-3.5"></i>65</span>
+                <span class="flex items-center gap-1"><i data-lucide="eye" class="w-3.5 h-3.5"></i>543</span>
+                <span class="flex items-center gap-1"><i data-lucide="thumbs-up" class="w-3.5 h-3.5"></i>45</span>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-4 px-5 py-4 hover:bg-gray-50 transition-colors cursor-pointer">
+              <div class="w-10 h-10 rounded-full bg-gradient-to-br from-cyan-400 to-sky-500 flex items-center justify-center text-white text-sm font-bold flex-shrink-0">赵</div>
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center gap-2 mb-1 flex-wrap">
+                  <span class="text-xs font-medium px-1.5 py-0.5 rounded bg-purple-50 text-purple-600">讨论</span>
+                  <span class="text-sm font-medium text-foreground truncate hover:text-primary transition-colors">AI生成代码的安全性审查流程与最佳实践</span>
+                </div>
+                <span class="text-xs text-muted-foreground">赵敏华 · 2天前</span>
+              </div>
+              <div class="hidden sm:flex items-center gap-4 text-xs text-muted-foreground flex-shrink-0">
+                <span class="flex items-center gap-1"><i data-lucide="message-circle" class="w-3.5 h-3.5"></i>58</span>
+                <span class="flex items-center gap-1"><i data-lucide="eye" class="w-3.5 h-3.5"></i>987</span>
+                <span class="flex items-center gap-1"><i data-lucide="thumbs-up" class="w-3.5 h-3.5"></i>72</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pagination -->
+          <div class="flex items-center justify-center gap-2 mt-6">
+            <button class="p-2 text-muted-foreground hover:text-foreground rounded-lg hover:bg-muted transition-colors"><i data-lucide="chevron-left" class="w-4 h-4"></i></button>
+            <button class="px-3 py-1.5 text-sm font-medium text-white bg-primary rounded-lg">1</button>
+            <button class="px-3 py-1.5 text-sm font-medium text-muted-foreground hover:text-foreground rounded-lg hover:bg-muted transition-colors">2</button>
+            <button class="px-3 py-1.5 text-sm font-medium text-muted-foreground hover:text-foreground rounded-lg hover:bg-muted transition-colors">3</button>
+            <span class="text-muted-foreground">...</span>
+            <button class="px-3 py-1.5 text-sm font-medium text-muted-foreground hover:text-foreground rounded-lg hover:bg-muted transition-colors">12</button>
+            <button class="p-2 text-muted-foreground hover:text-foreground rounded-lg hover:bg-muted transition-colors"><i data-lucide="chevron-right" class="w-4 h-4"></i></button>
+          </div>
+        </main>
+
+        <!-- Right Sidebar -->
+        <aside class="lg:col-span-4 space-y-6">
+          <div class="sticky top-24 space-y-6">
+            <!-- Active Users -->
+            <div class="bg-white rounded-xl border border-border p-5">
+              <h3 class="text-sm font-semibold text-foreground mb-4">活跃用户</h3>
+              <div class="space-y-3">
+                <div class="flex items-center gap-3">
+                  <div class="w-8 h-8 rounded-full bg-gradient-to-br from-yellow-400 to-amber-500 flex items-center justify-center text-white text-xs font-bold">张</div>
+                  <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium text-foreground truncate">张明远</p>
+                    <p class="text-xs text-muted-foreground">本周发帖 12</p>
+                  </div>
+                  <i data-lucide="medal" class="w-4 h-4 text-amber-500"></i>
+                </div>
+                <div class="flex items-center gap-3">
+                  <div class="w-8 h-8 rounded-full bg-gradient-to-br from-gray-300 to-gray-400 flex items-center justify-center text-white text-xs font-bold">李</div>
+                  <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium text-foreground truncate">李思涵</p>
+                    <p class="text-xs text-muted-foreground">本周发帖 9</p>
+                  </div>
+                  <i data-lucide="medal" class="w-4 h-4 text-gray-400"></i>
+                </div>
+                <div class="flex items-center gap-3">
+                  <div class="w-8 h-8 rounded-full bg-gradient-to-br from-orange-300 to-amber-400 flex items-center justify-center text-white text-xs font-bold">王</div>
+                  <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium text-foreground truncate">王雪晴</p>
+                    <p class="text-xs text-muted-foreground">本周发帖 7</p>
+                  </div>
+                  <i data-lucide="medal" class="w-4 h-4 text-orange-400"></i>
+                </div>
+                <div class="flex items-center gap-3">
+                  <div class="w-8 h-8 rounded-full bg-gradient-to-br from-blue-400 to-indigo-500 flex items-center justify-center text-white text-xs font-bold">陈</div>
+                  <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium text-foreground truncate">陈志强</p>
+                    <p class="text-xs text-muted-foreground">本周发帖 5</p>
+                  </div>
+                </div>
+                <div class="flex items-center gap-3">
+                  <div class="w-8 h-8 rounded-full bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center text-white text-xs font-bold">刘</div>
+                  <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium text-foreground truncate">刘浩然</p>
+                    <p class="text-xs text-muted-foreground">本周发帖 4</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Hot Tags -->
+            <div class="bg-white rounded-xl border border-border p-5">
+              <h3 class="text-sm font-semibold text-foreground mb-4">热门标签</h3>
+              <div class="flex flex-wrap gap-2">
+                <span class="px-2.5 py-1 text-xs font-medium bg-blue-50 text-blue-600 rounded-md cursor-pointer hover:bg-blue-100 transition-colors">GPT-4</span>
+                <span class="px-2.5 py-1 text-xs font-medium bg-emerald-50 text-emerald-600 rounded-md cursor-pointer hover:bg-emerald-100 transition-colors">Agent</span>
+                <span class="px-2.5 py-1 text-xs font-medium bg-purple-50 text-purple-600 rounded-md cursor-pointer hover:bg-purple-100 transition-colors">Prompt</span>
+                <span class="px-2.5 py-1 text-xs font-medium bg-amber-50 text-amber-600 rounded-md cursor-pointer hover:bg-amber-100 transition-colors">5G</span>
+                <span class="px-2.5 py-1 text-xs font-medium bg-rose-50 text-rose-600 rounded-md cursor-pointer hover:bg-rose-100 transition-colors">代码审查</span>
+                <span class="px-2.5 py-1 text-xs font-medium bg-cyan-50 text-cyan-600 rounded-md cursor-pointer hover:bg-cyan-100 transition-colors">RAG</span>
+                <span class="px-2.5 py-1 text-xs font-medium bg-gray-100 text-gray-600 rounded-md cursor-pointer hover:bg-gray-200 transition-colors">LangChain</span>
+                <span class="px-2.5 py-1 text-xs font-medium bg-orange-50 text-orange-600 rounded-md cursor-pointer hover:bg-orange-100 transition-colors">MCP</span>
+              </div>
+            </div>
+
+            <!-- Community Guidelines -->
+            <div class="bg-white rounded-xl border border-border p-5">
+              <h3 class="text-sm font-semibold text-foreground mb-3">社区规范</h3>
+              <div class="space-y-2.5">
+                <div class="flex items-start gap-2.5">
+                  <i data-lucide="check-circle" class="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0"></i>
+                  <p class="text-xs text-muted-foreground leading-relaxed">友善交流，尊重每一位社区成员的观点和贡献</p>
+                </div>
+                <div class="flex items-start gap-2.5">
+                  <i data-lucide="check-circle" class="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0"></i>
+                  <p class="text-xs text-muted-foreground leading-relaxed">发布内容前请确认信息准确性，避免传播不实消息</p>
+                </div>
+                <div class="flex items-start gap-2.5">
+                  <i data-lucide="check-circle" class="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0"></i>
+                  <p class="text-xs text-muted-foreground leading-relaxed">鼓励分享实践经验和可复用的技术方案</p>
+                </div>
+                <div class="flex items-start gap-2.5">
+                  <i data-lucide="check-circle" class="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0"></i>
+                  <p class="text-xs text-muted-foreground leading-relaxed">求助帖请尽量提供完整的上下文和复现步骤</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </aside>
+
+      </div>
+    </div>
+  </div>
+
+  <script>lucide.createIcons();</script>
+</body>
+</html>

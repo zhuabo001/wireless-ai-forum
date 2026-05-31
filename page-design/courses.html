@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>课程中心 — 无线AI极客汇</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: { DEFAULT: '#0d55c9', foreground: '#ffffff' },
+            border: '#e2e8f0',
+            background: '#f8fafc',
+            foreground: '#0f172a',
+            muted: { DEFAULT: '#f1f5f9', foreground: '#64748b' },
+          },
+          borderRadius: { lg: '0.625rem', xl: '0.75rem' },
+        }
+      }
+    }
+  </script>
+  <style>
+    body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f8fafc; color: #0f172a; -webkit-font-smoothing: antialiased; }
+    .line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+  </style>
+</head>
+<body class="min-h-screen">
+
+  <!-- Navbar -->
+  <nav class="fixed top-0 left-0 right-0 z-50 bg-white/85 backdrop-blur-md border-b border-border/50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <a href="index.html" class="flex items-center gap-2.5 font-bold text-lg text-foreground">
+          <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-sm">
+            <i data-lucide="zap" class="w-5 h-5 text-white"></i>
+          </div>
+          <span>无线AI极客汇</span>
+        </a>
+        <div class="hidden md:flex items-center gap-1">
+          <a href="index.html" class="px-2 py-2 text-sm font-medium text-muted-foreground hover:text-foreground rounded-md hover:bg-muted transition-colors">首页</a>
+          <a href="intelligence.html" class="px-2 py-2 text-sm font-medium text-muted-foreground hover:text-foreground rounded-md hover:bg-muted transition-colors">情报局</a>
+          <a href="courses.html" class="px-2 py-2 text-sm font-medium text-foreground bg-muted rounded-md">课程</a>
+          <a href="forum.html" class="px-2 py-2 text-sm font-medium text-muted-foreground hover:text-foreground rounded-md hover:bg-muted transition-colors">论坛</a>
+          <a href="market.html" class="px-2 py-2 text-sm font-medium text-muted-foreground hover:text-foreground rounded-md hover:bg-muted transition-colors">Agent市场</a>
+        </div>
+        <div class="flex items-center gap-2">
+          <button class="p-2 text-muted-foreground hover:text-foreground rounded-full hover:bg-muted transition-colors">
+            <i data-lucide="search" class="w-4 h-4"></i>
+          </button>
+          <button class="hidden sm:flex p-2 text-muted-foreground hover:text-foreground rounded-full hover:bg-muted transition-colors">
+            <i data-lucide="user" class="w-4 h-4"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="pt-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+      <!-- Page Header -->
+      <div class="flex items-end justify-between mb-8">
+        <div>
+          <h1 class="text-3xl font-bold text-foreground mb-2">课程中心</h1>
+          <p class="text-muted-foreground">把公司内外的优秀课程在社区分享</p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+        <!-- Main Content -->
+        <main class="lg:col-span-9">
+          <!-- Filter Bar -->
+          <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
+            <div class="flex flex-wrap gap-2">
+              <button class="px-4 py-2 text-sm font-medium bg-primary text-white rounded-lg transition-colors">全部</button>
+              <button class="px-4 py-2 text-sm font-medium bg-white border border-border text-muted-foreground rounded-lg hover:bg-muted transition-colors">内部课程</button>
+              <button class="px-4 py-2 text-sm font-medium bg-white border border-border text-muted-foreground rounded-lg hover:bg-muted transition-colors">外部推荐</button>
+              <button class="px-4 py-2 text-sm font-medium bg-white border border-border text-muted-foreground rounded-lg hover:bg-muted transition-colors">无线技术</button>
+              <button class="px-4 py-2 text-sm font-medium bg-white border border-border text-muted-foreground rounded-lg hover:bg-muted transition-colors">AI基础</button>
+              <button class="px-4 py-2 text-sm font-medium bg-white border border-border text-muted-foreground rounded-lg hover:bg-muted transition-colors">Agent开发</button>
+            </div>
+            <div class="flex items-center gap-2">
+              <button class="inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-primary bg-primary/10 rounded-lg hover:bg-primary/20 transition-colors">
+                <i data-lucide="route" class="w-4 h-4"></i>学习路径
+              </button>
+              <div class="flex items-center bg-white border border-border rounded-lg overflow-hidden">
+                <button class="p-2 text-primary bg-primary/10"><i data-lucide="layout-grid" class="w-4 h-4"></i></button>
+                <button class="p-2 text-muted-foreground hover:text-foreground"><i data-lucide="list" class="w-4 h-4"></i></button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Course Grid -->
+          <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            <!-- Course Card 1 -->
+            <div class="bg-white rounded-xl border border-border hover:shadow-md hover:-translate-y-0.5 transition-all overflow-hidden cursor-pointer group">
+              <div class="relative h-36 overflow-hidden bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center">
+                <span class="text-white text-2xl font-bold opacity-30">LLM</span>
+                <span class="absolute top-3 left-3 px-2 py-0.5 text-xs font-medium bg-white/90 backdrop-blur-sm text-foreground rounded-md">内部课程</span>
+              </div>
+              <div class="p-4">
+                <h3 class="text-sm font-semibold text-foreground mb-2 group-hover:text-primary transition-colors line-clamp-2">大模型驱动无线研发入门</h3>
+                <div class="flex items-center gap-2 mb-3">
+                  <div class="w-5 h-5 rounded-full bg-gradient-to-br from-slate-400 to-slate-600 flex-shrink-0"></div>
+                  <span class="text-xs text-muted-foreground">张明远 · 无线研究院</span>
+                </div>
+                <div class="flex items-center gap-3 text-xs text-muted-foreground mb-4">
+                  <span class="flex items-center gap-1"><i data-lucide="clock" class="w-3 h-3"></i>8课时</span>
+                  <span class="flex items-center gap-1"><i data-lucide="star" class="w-3 h-3 text-amber-500 fill-amber-500"></i>4.9</span>
+                  <span class="flex items-center gap-1"><i data-lucide="users" class="w-3 h-3"></i>1250</span>
+                </div>
+                <button class="w-full py-2 text-xs font-medium text-primary bg-primary/10 rounded-lg hover:bg-primary/20 transition-colors">开始学习</button>
+              </div>
+            </div>
+
+            <!-- Course Card 2 -->
+            <div class="bg-white rounded-xl border border-border hover:shadow-md hover:-translate-y-0.5 transition-all overflow-hidden cursor-pointer group">
+              <div class="relative h-36 overflow-hidden bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center">
+                <span class="text-white text-2xl font-bold opacity-30">LC</span>
+                <span class="absolute top-3 left-3 px-2 py-0.5 text-xs font-medium bg-white/90 backdrop-blur-sm text-foreground rounded-md">外部推荐</span>
+              </div>
+              <div class="p-4">
+                <h3 class="text-sm font-semibold text-foreground mb-2 group-hover:text-primary transition-colors line-clamp-2">LangChain应用开发实战</h3>
+                <div class="flex items-center gap-2 mb-3">
+                  <div class="w-5 h-5 rounded-full bg-gradient-to-br from-slate-400 to-slate-600 flex-shrink-0"></div>
+                  <span class="text-xs text-muted-foreground">李思涵 · AI实验室</span>
+                </div>
+                <div class="flex items-center gap-3 text-xs text-muted-foreground mb-4">
+                  <span class="flex items-center gap-1"><i data-lucide="clock" class="w-3 h-3"></i>12课时</span>
+                  <span class="flex items-center gap-1"><i data-lucide="star" class="w-3 h-3 text-amber-500 fill-amber-500"></i>4.8</span>
+                  <span class="flex items-center gap-1"><i data-lucide="users" class="w-3 h-3"></i>980</span>
+                </div>
+                <button class="w-full py-2 text-xs font-medium text-primary bg-primary/10 rounded-lg hover:bg-primary/20 transition-colors">开始学习</button>
+              </div>
+            </div>
+
+            <!-- Course Card 3 -->
+            <div class="bg-white rounded-xl border border-border hover:shadow-md hover:-translate-y-0.5 transition-all overflow-hidden cursor-pointer group">
+              <div class="relative h-36 overflow-hidden bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center">
+                <span class="text-white text-2xl font-bold opacity-30">CR</span>
+                <span class="absolute top-3 left-3 px-2 py-0.5 text-xs font-medium bg-white/90 backdrop-blur-sm text-foreground rounded-md">内部课程</span>
+              </div>
+              <div class="p-4">
+                <h3 class="text-sm font-semibold text-foreground mb-2 group-hover:text-primary transition-colors line-clamp-2">AI辅助代码审查实践</h3>
+                <div class="flex items-center gap-2 mb-3">
+                  <div class="w-5 h-5 rounded-full bg-gradient-to-br from-slate-400 to-slate-600 flex-shrink-0"></div>
+                  <span class="text-xs text-muted-foreground">王雪晴 · 工程技术部</span>
+                </div>
+                <div class="flex items-center gap-3 text-xs text-muted-foreground mb-4">
+                  <span class="flex items-center gap-1"><i data-lucide="clock" class="w-3 h-3"></i>6课时</span>
+                  <span class="flex items-center gap-1"><i data-lucide="star" class="w-3 h-3 text-amber-500 fill-amber-500"></i>4.7</span>
+                  <span class="flex items-center gap-1"><i data-lucide="users" class="w-3 h-3"></i>756</span>
+                </div>
+                <button class="w-full py-2 text-xs font-medium text-primary bg-primary/10 rounded-lg hover:bg-primary/20 transition-colors">开始学习</button>
+              </div>
+            </div>
+
+            <!-- Course Card 4 -->
+            <div class="bg-white rounded-xl border border-border hover:shadow-md hover:-translate-y-0.5 transition-all overflow-hidden cursor-pointer group">
+              <div class="relative h-36 overflow-hidden bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center">
+                <span class="text-white text-2xl font-bold opacity-30">5G</span>
+                <span class="absolute top-3 left-3 px-2 py-0.5 text-xs font-medium bg-white/90 backdrop-blur-sm text-foreground rounded-md">外部推荐</span>
+              </div>
+              <div class="p-4">
+                <h3 class="text-sm font-semibold text-foreground mb-2 group-hover:text-primary transition-colors line-clamp-2">无线信号AI处理技术</h3>
+                <div class="flex items-center gap-2 mb-3">
+                  <div class="w-5 h-5 rounded-full bg-gradient-to-br from-slate-400 to-slate-600 flex-shrink-0"></div>
+                  <span class="text-xs text-muted-foreground">陈志强 · 数据科学中心</span>
+                </div>
+                <div class="flex items-center gap-3 text-xs text-muted-foreground mb-4">
+                  <span class="flex items-center gap-1"><i data-lucide="clock" class="w-3 h-3"></i>10课时</span>
+                  <span class="flex items-center gap-1"><i data-lucide="star" class="w-3 h-3 text-amber-500 fill-amber-500"></i>4.9</span>
+                  <span class="flex items-center gap-1"><i data-lucide="users" class="w-3 h-3"></i>632</span>
+                </div>
+                <button class="w-full py-2 text-xs font-medium text-primary bg-primary/10 rounded-lg hover:bg-primary/20 transition-colors">开始学习</button>
+              </div>
+            </div>
+
+            <!-- Course Card 5 -->
+            <div class="bg-white rounded-xl border border-border hover:shadow-md hover:-translate-y-0.5 transition-all overflow-hidden cursor-pointer group">
+              <div class="relative h-36 overflow-hidden bg-gradient-to-br from-rose-500 to-pink-600 flex items-center justify-center">
+                <span class="text-white text-2xl font-bold opacity-30">AG</span>
+                <span class="absolute top-3 left-3 px-2 py-0.5 text-xs font-medium bg-white/90 backdrop-blur-sm text-foreground rounded-md">内部课程</span>
+              </div>
+              <div class="p-4">
+                <h3 class="text-sm font-semibold text-foreground mb-2 group-hover:text-primary transition-colors line-clamp-2">Agent开发与部署指南</h3>
+                <div class="flex items-center gap-2 mb-3">
+                  <div class="w-5 h-5 rounded-full bg-gradient-to-br from-slate-400 to-slate-600 flex-shrink-0"></div>
+                  <span class="text-xs text-muted-foreground">刘浩然 · 工程技术部</span>
+                </div>
+                <div class="flex items-center gap-3 text-xs text-muted-foreground mb-4">
+                  <span class="flex items-center gap-1"><i data-lucide="clock" class="w-3 h-3"></i>8课时</span>
+                  <span class="flex items-center gap-1"><i data-lucide="star" class="w-3 h-3 text-amber-500 fill-amber-500"></i>4.8</span>
+                  <span class="flex items-center gap-1"><i data-lucide="users" class="w-3 h-3"></i>890</span>
+                </div>
+                <button class="w-full py-2 text-xs font-medium text-primary bg-primary/10 rounded-lg hover:bg-primary/20 transition-colors">开始学习</button>
+              </div>
+            </div>
+
+            <!-- Course Card 6 -->
+            <div class="bg-white rounded-xl border border-border hover:shadow-md hover:-translate-y-0.5 transition-all overflow-hidden cursor-pointer group">
+              <div class="relative h-36 overflow-hidden bg-gradient-to-br from-cyan-500 to-sky-600 flex items-center justify-center">
+                <span class="text-white text-2xl font-bold opacity-30">MM</span>
+                <span class="absolute top-3 left-3 px-2 py-0.5 text-xs font-medium bg-white/90 backdrop-blur-sm text-foreground rounded-md">外部推荐</span>
+              </div>
+              <div class="p-4">
+                <h3 class="text-sm font-semibold text-foreground mb-2 group-hover:text-primary transition-colors line-clamp-2">多模态AI技术与应用</h3>
+                <div class="flex items-center gap-2 mb-3">
+                  <div class="w-5 h-5 rounded-full bg-gradient-to-br from-slate-400 to-slate-600 flex-shrink-0"></div>
+                  <span class="text-xs text-muted-foreground">赵敏华 · AI实验室</span>
+                </div>
+                <div class="flex items-center gap-3 text-xs text-muted-foreground mb-4">
+                  <span class="flex items-center gap-1"><i data-lucide="clock" class="w-3 h-3"></i>10课时</span>
+                  <span class="flex items-center gap-1"><i data-lucide="star" class="w-3 h-3 text-amber-500 fill-amber-500"></i>4.7</span>
+                  <span class="flex items-center gap-1"><i data-lucide="users" class="w-3 h-3"></i>543</span>
+                </div>
+                <button class="w-full py-2 text-xs font-medium text-primary bg-primary/10 rounded-lg hover:bg-primary/20 transition-colors">开始学习</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pagination -->
+          <div class="flex items-center justify-center gap-2 mt-8">
+            <button class="p-2 text-muted-foreground hover:text-foreground rounded-lg hover:bg-muted transition-colors"><i data-lucide="chevron-left" class="w-4 h-4"></i></button>
+            <button class="px-3 py-1.5 text-sm font-medium text-white bg-primary rounded-lg">1</button>
+            <button class="px-3 py-1.5 text-sm font-medium text-muted-foreground hover:text-foreground rounded-lg hover:bg-muted transition-colors">2</button>
+            <button class="px-3 py-1.5 text-sm font-medium text-muted-foreground hover:text-foreground rounded-lg hover:bg-muted transition-colors">3</button>
+            <span class="text-muted-foreground">...</span>
+            <button class="px-3 py-1.5 text-sm font-medium text-muted-foreground hover:text-foreground rounded-lg hover:bg-muted transition-colors">8</button>
+            <button class="p-2 text-muted-foreground hover:text-foreground rounded-lg hover:bg-muted transition-colors"><i data-lucide="chevron-right" class="w-4 h-4"></i></button>
+          </div>
+        </main>
+
+        <!-- Right Sidebar -->
+        <aside class="lg:col-span-3 space-y-6">
+          <div class="sticky top-24 space-y-6">
+            <!-- Recommended Instructors -->
+            <div class="bg-white rounded-xl border border-border p-5">
+              <h3 class="text-sm font-semibold text-foreground mb-4">推荐讲师</h3>
+              <div class="space-y-3">
+                <div class="flex items-center gap-3">
+                  <div class="w-9 h-9 rounded-full bg-gradient-to-br from-blue-400 to-indigo-500 flex items-center justify-center text-white text-xs font-bold">张</div>
+                  <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium text-foreground truncate">张明远</p>
+                    <p class="text-xs text-muted-foreground">无线研究院 · 6门课程</p>
+                  </div>
+                </div>
+                <div class="flex items-center gap-3">
+                  <div class="w-9 h-9 rounded-full bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center text-white text-xs font-bold">李</div>
+                  <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium text-foreground truncate">李思涵</p>
+                    <p class="text-xs text-muted-foreground">AI实验室 · 4门课程</p>
+                  </div>
+                </div>
+                <div class="flex items-center gap-3">
+                  <div class="w-9 h-9 rounded-full bg-gradient-to-br from-violet-400 to-purple-500 flex items-center justify-center text-white text-xs font-bold">王</div>
+                  <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium text-foreground truncate">王雪晴</p>
+                    <p class="text-xs text-muted-foreground">工程技术部 · 3门课程</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Popular Paths -->
+            <div class="bg-white rounded-xl border border-border p-5">
+              <h3 class="text-sm font-semibold text-foreground mb-4">热门路径</h3>
+              <div class="space-y-4">
+                <div>
+                  <div class="flex items-center justify-between mb-1.5">
+                    <span class="text-sm font-medium text-foreground">Agent开发工程师</span>
+                    <span class="text-xs text-muted-foreground">4/6</span>
+                  </div>
+                  <div class="w-full h-1.5 bg-muted rounded-full overflow-hidden">
+                    <div class="h-full bg-primary rounded-full" style="width: 66%"></div>
+                  </div>
+                </div>
+                <div>
+                  <div class="flex items-center justify-between mb-1.5">
+                    <span class="text-sm font-medium text-foreground">无线AI入门</span>
+                    <span class="text-xs text-muted-foreground">2/5</span>
+                  </div>
+                  <div class="w-full h-1.5 bg-muted rounded-full overflow-hidden">
+                    <div class="h-full bg-primary rounded-full" style="width: 40%"></div>
+                  </div>
+                </div>
+                <div>
+                  <div class="flex items-center justify-between mb-1.5">
+                    <span class="text-sm font-medium text-foreground">大模型应用实践</span>
+                    <span class="text-xs text-muted-foreground">1/4</span>
+                  </div>
+                  <div class="w-full h-1.5 bg-muted rounded-full overflow-hidden">
+                    <div class="h-full bg-primary rounded-full" style="width: 25%"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- This Week's New Courses -->
+            <div class="bg-white rounded-xl border border-border p-5">
+              <h3 class="text-sm font-semibold text-foreground mb-4">本周新课</h3>
+              <div class="space-y-3">
+                <div class="p-3 bg-muted rounded-lg cursor-pointer hover:bg-muted/80 transition-colors">
+                  <p class="text-xs font-medium text-foreground mb-1">Prompt工程进阶技巧</p>
+                  <p class="text-xs text-muted-foreground">赵敏华 · 4课时</p>
+                </div>
+                <div class="p-3 bg-muted rounded-lg cursor-pointer hover:bg-muted/80 transition-colors">
+                  <p class="text-xs font-medium text-foreground mb-1">RAG系统构建与优化</p>
+                  <p class="text-xs text-muted-foreground">刘浩然 · 6课时</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </aside>
+
+      </div>
+    </div>
+  </div>
+
+  <script>lucide.createIcons();</script>
+</body>
+</html>
