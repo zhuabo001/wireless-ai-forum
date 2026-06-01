@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI情报局 — 无线AI极客汇</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: { DEFAULT: '#0d55c9', foreground: '#ffffff' },
+            border: '#e2e8f0',
+            background: '#f8fafc',
+            foreground: '#0f172a',
+            muted: { DEFAULT: '#f1f5f9', foreground: '#64748b' },
+          },
+          borderRadius: { lg: '0.625rem', xl: '0.75rem' },
+        }
+      }
+    }
+  </script>
+  <style>
+    body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f8fafc; color: #0f172a; -webkit-font-smoothing: antialiased; }
+    .line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+  </style>
+</head>
+<body class="min-h-screen">
+
+  <!-- Navbar -->
+  <nav class="fixed top-0 left-0 right-0 z-50 bg-white/85 backdrop-blur-md border-b border-border/50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <a href="index.html" class="flex items-center gap-2.5 font-bold text-lg text-foreground">
+          <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-sm">
+            <i data-lucide="zap" class="w-5 h-5 text-white"></i>
+          </div>
+          <span>无线AI极客汇</span>
+        </a>
+        <div class="hidden md:flex items-center gap-1">
+          <a href="index.html" class="px-2 py-2 text-sm font-medium text-muted-foreground hover:text-foreground rounded-md hover:bg-muted transition-colors">首页</a>
+          <a href="intelligence.html" class="px-2 py-2 text-sm font-medium text-foreground bg-muted rounded-md">情报局</a>
+          <a href="courses.html" class="px-2 py-2 text-sm font-medium text-muted-foreground hover:text-foreground rounded-md hover:bg-muted transition-colors">课程</a>
+          <a href="forum.html" class="px-2 py-2 text-sm font-medium text-muted-foreground hover:text-foreground rounded-md hover:bg-muted transition-colors">论坛</a>
+          <a href="market.html" class="px-2 py-2 text-sm font-medium text-muted-foreground hover:text-foreground rounded-md hover:bg-muted transition-colors">Agent市场</a>
+        </div>
+        <div class="flex items-center gap-2">
+          <button class="p-2 text-muted-foreground hover:text-foreground rounded-full hover:bg-muted transition-colors">
+            <i data-lucide="search" class="w-4 h-4"></i>
+          </button>
+          <button class="hidden sm:flex p-2 text-muted-foreground hover:text-foreground rounded-full hover:bg-muted transition-colors">
+            <i data-lucide="user" class="w-4 h-4"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="pt-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+      <!-- Page Header -->
+      <div class="mb-8">
+        <h1 class="text-3xl font-bold text-foreground mb-2">AI情报局</h1>
+        <p class="text-muted-foreground">搜罗全球AI热点，聚焦无线研发前沿</p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+        <!-- Left Sidebar -->
+        <aside class="hidden lg:block lg:col-span-2">
+          <div class="sticky top-24 space-y-6">
+            <div>
+              <h3 class="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">内容分类</h3>
+              <div class="space-y-0.5">
+                <button class="w-full flex items-center justify-between px-3 py-2 text-sm font-medium text-white bg-primary rounded-lg transition-colors">
+                  <span>全部</span><span class="text-xs opacity-80">65</span>
+                </button>
+                <button class="w-full flex items-center justify-between px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg transition-colors">
+                  <span>大模型</span><span class="text-xs">12</span>
+                </button>
+                <button class="w-full flex items-center justify-between px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg transition-colors">
+                  <span>框架</span><span class="text-xs">8</span>
+                </button>
+                <button class="w-full flex items-center justify-between px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg transition-colors">
+                  <span>行业</span><span class="text-xs">15</span>
+                </button>
+                <button class="w-full flex items-center justify-between px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg transition-colors">
+                  <span>论文</span><span class="text-xs">6</span>
+                </button>
+                <button class="w-full flex items-center justify-between px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg transition-colors">
+                  <span>工具</span><span class="text-xs">20</span>
+                </button>
+                <button class="w-full flex items-center justify-between px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg transition-colors">
+                  <span>政策</span><span class="text-xs">4</span>
+                </button>
+              </div>
+            </div>
+            <div>
+              <h3 class="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">时间范围</h3>
+              <div class="space-y-0.5">
+                <button class="w-full text-left px-3 py-2 text-sm font-medium text-foreground bg-muted rounded-lg">今日</button>
+                <button class="w-full text-left px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg transition-colors">本周</button>
+                <button class="w-full text-left px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg transition-colors">本月</button>
+                <button class="w-full text-left px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg transition-colors">全部</button>
+              </div>
+            </div>
+          </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="lg:col-span-7 space-y-4">
+          <!-- Mobile filters (visible only on small screens) -->
+          <div class="lg:hidden flex gap-2 overflow-x-auto pb-2">
+            <span class="px-3 py-1.5 text-xs font-medium bg-primary text-white rounded-full whitespace-nowrap">全部</span>
+            <span class="px-3 py-1.5 text-xs font-medium bg-white border border-border text-muted-foreground rounded-full whitespace-nowrap">大模型</span>
+            <span class="px-3 py-1.5 text-xs font-medium bg-white border border-border text-muted-foreground rounded-full whitespace-nowrap">框架</span>
+            <span class="px-3 py-1.5 text-xs font-medium bg-white border border-border text-muted-foreground rounded-full whitespace-nowrap">行业</span>
+            <span class="px-3 py-1.5 text-xs font-medium bg-white border border-border text-muted-foreground rounded-full whitespace-nowrap">论文</span>
+            <span class="px-3 py-1.5 text-xs font-medium bg-white border border-border text-muted-foreground rounded-full whitespace-nowrap">工具</span>
+            <span class="px-3 py-1.5 text-xs font-medium bg-white border border-border text-muted-foreground rounded-full whitespace-nowrap">政策</span>
+          </div>
+
+          <!-- News Feed -->
+          <article class="bg-white rounded-xl border border-border p-5 hover:shadow-md transition-shadow cursor-pointer group">
+            <div class="flex items-start gap-4">
+              <div class="w-10 h-10 rounded-lg bg-purple-50 flex items-center justify-center flex-shrink-0">
+                <i data-lucide="brain" class="w-5 h-5 text-purple-600"></i>
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center gap-2 mb-1.5 flex-wrap">
+                  <span class="text-xs font-medium px-2 py-0.5 rounded bg-purple-50 text-purple-600">大模型</span>
+                  <span class="text-xs text-muted-foreground">2小时前</span>
+                </div>
+                <h3 class="text-base font-semibold text-foreground group-hover:text-primary transition-colors leading-snug mb-2">GPT-4 Turbo发布新版本，推理能力大幅提升</h3>
+                <p class="text-sm text-muted-foreground line-clamp-2 mb-3">OpenAI 正式发布 GPT-4 Turbo 的更新版本，在数学推理、代码生成和长上下文理解方面均有显著改进。新版本支持更长的上下文窗口，并在多项基准测试中超越了前代模型。</p>
+                <div class="flex items-center justify-between">
+                  <span class="text-xs text-muted-foreground flex items-center gap-1"><i data-lucide="external-link" class="w-3 h-3"></i>AI前线</span>
+                  <span class="text-xs font-medium text-primary">阅读全文</span>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="bg-white rounded-xl border border-border p-5 hover:shadow-md transition-shadow cursor-pointer group">
+            <div class="flex items-start gap-4">
+              <div class="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center flex-shrink-0">
+                <i data-lucide="layers" class="w-5 h-5 text-blue-600"></i>
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center gap-2 mb-1.5 flex-wrap">
+                  <span class="text-xs font-medium px-2 py-0.5 rounded bg-blue-50 text-blue-600">框架</span>
+                  <span class="text-xs text-muted-foreground">4小时前</span>
+                </div>
+                <h3 class="text-base font-semibold text-foreground group-hover:text-primary transition-colors leading-snug mb-2">LangChain v0.2正式发布，全新模块化架构</h3>
+                <p class="text-sm text-muted-foreground line-clamp-2 mb-3">LangChain 团队发布了备受期待的 v0.2 版本，引入了全新的模块化架构设计。新版本显著提升了可扩展性，并提供了更加清晰的组件接口，让开发者可以更灵活地构建 LLM 应用。</p>
+                <div class="flex items-center justify-between">
+                  <span class="text-xs text-muted-foreground flex items-center gap-1"><i data-lucide="external-link" class="w-3 h-3"></i>开源中国</span>
+                  <span class="text-xs font-medium text-primary">阅读全文</span>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="bg-white rounded-xl border border-border p-5 hover:shadow-md transition-shadow cursor-pointer group">
+            <div class="flex items-start gap-4">
+              <div class="w-10 h-10 rounded-lg bg-emerald-50 flex items-center justify-center flex-shrink-0">
+                <i data-lucide="globe" class="w-5 h-5 text-emerald-600"></i>
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center gap-2 mb-1.5 flex-wrap">
+                  <span class="text-xs font-medium px-2 py-0.5 rounded bg-emerald-50 text-emerald-600">行业</span>
+                  <span class="text-xs text-muted-foreground">6小时前</span>
+                </div>
+                <h3 class="text-base font-semibold text-foreground group-hover:text-primary transition-colors leading-snug mb-2">全球运营商加速AI部署，预计2025年AI驱动网络占比达60%</h3>
+                <p class="text-sm text-muted-foreground line-clamp-2 mb-3">据最新行业报告显示，全球主要电信运营商正在加速AI技术在核心网络中的部署。预计到2025年底，AI驱动的网络优化和运维功能将覆盖超过60%的运营商基础设施。</p>
+                <div class="flex items-center justify-between">
+                  <span class="text-xs text-muted-foreground flex items-center gap-1"><i data-lucide="external-link" class="w-3 h-3"></i>通信世界</span>
+                  <span class="text-xs font-medium text-primary">阅读全文</span>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="bg-white rounded-xl border border-border p-5 hover:shadow-md transition-shadow cursor-pointer group">
+            <div class="flex items-start gap-4">
+              <div class="w-10 h-10 rounded-lg bg-amber-50 flex items-center justify-center flex-shrink-0">
+                <i data-lucide="file-code" class="w-5 h-5 text-amber-600"></i>
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center gap-2 mb-1.5 flex-wrap">
+                  <span class="text-xs font-medium px-2 py-0.5 rounded bg-amber-50 text-amber-600">论文</span>
+                  <span class="text-xs text-muted-foreground">昨天</span>
+                </div>
+                <h3 class="text-base font-semibold text-foreground group-hover:text-primary transition-colors leading-snug mb-2">最新研究：自监督学习在无线信号处理中的突破性应用</h3>
+                <p class="text-sm text-muted-foreground line-clamp-2 mb-3">来自顶尖无线通信实验室的研究团队提出了一种基于自监督学习的信号处理新方法，在极低信噪比环境下实现了前所未有的调制识别准确率。</p>
+                <div class="flex items-center justify-between">
+                  <span class="text-xs text-muted-foreground flex items-center gap-1"><i data-lucide="external-link" class="w-3 h-3"></i>arXiv</span>
+                  <span class="text-xs font-medium text-primary">阅读全文</span>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="bg-white rounded-xl border border-border p-5 hover:shadow-md transition-shadow cursor-pointer group">
+            <div class="flex items-start gap-4">
+              <div class="w-10 h-10 rounded-lg bg-cyan-50 flex items-center justify-center flex-shrink-0">
+                <i data-lucide="cpu" class="w-5 h-5 text-cyan-600"></i>
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center gap-2 mb-1.5 flex-wrap">
+                  <span class="text-xs font-medium px-2 py-0.5 rounded bg-cyan-50 text-cyan-600">工具</span>
+                  <span class="text-xs text-muted-foreground">昨天</span>
+                </div>
+                <h3 class="text-base font-semibold text-foreground group-hover:text-primary transition-colors leading-snug mb-2">OpenAI开放Assistant API，支持自定义AI助手构建</h3>
+                <p class="text-sm text-muted-foreground line-clamp-2 mb-3">OpenAI 宣布全面开放 Assistant API，开发者现在可以构建具有记忆、代码解释、文件检索和函数调用能力的自定义 AI 助手。API 定价模式也同步更新。</p>
+                <div class="flex items-center justify-between">
+                  <span class="text-xs text-muted-foreground flex items-center gap-1"><i data-lucide="external-link" class="w-3 h-3"></i>机器之心</span>
+                  <span class="text-xs font-medium text-primary">阅读全文</span>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="bg-white rounded-xl border border-border p-5 hover:shadow-md transition-shadow cursor-pointer group">
+            <div class="flex items-start gap-4">
+              <div class="w-10 h-10 rounded-lg bg-rose-50 flex items-center justify-center flex-shrink-0">
+                <i data-lucide="shield-check" class="w-5 h-5 text-rose-600"></i>
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center gap-2 mb-1.5 flex-wrap">
+                  <span class="text-xs font-medium px-2 py-0.5 rounded bg-rose-50 text-rose-600">政策</span>
+                  <span class="text-xs text-muted-foreground">2天前</span>
+                </div>
+                <h3 class="text-base font-semibold text-foreground group-hover:text-primary transition-colors leading-snug mb-2">欧盟AI法案正式生效，对基础模型提出新的合规要求</h3>
+                <p class="text-sm text-muted-foreground line-clamp-2 mb-3">欧盟《人工智能法案》已正式生效实施。该法案对基础模型提供商提出了透明度、风险评估和版权合规等方面的严格要求，违规企业可能面临巨额罚款。</p>
+                <div class="flex items-center justify-between">
+                  <span class="text-xs text-muted-foreground flex items-center gap-1"><i data-lucide="external-link" class="w-3 h-3"></i>TechCrunch</span>
+                  <span class="text-xs font-medium text-primary">阅读全文</span>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="bg-white rounded-xl border border-border p-5 hover:shadow-md transition-shadow cursor-pointer group">
+            <div class="flex items-start gap-4">
+              <div class="w-10 h-10 rounded-lg bg-purple-50 flex items-center justify-center flex-shrink-0">
+                <i data-lucide="brain" class="w-5 h-5 text-purple-600"></i>
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center gap-2 mb-1.5 flex-wrap">
+                  <span class="text-xs font-medium px-2 py-0.5 rounded bg-purple-50 text-purple-600">大模型</span>
+                  <span class="text-xs text-muted-foreground">2天前</span>
+                </div>
+                <h3 class="text-base font-semibold text-foreground group-hover:text-primary transition-colors leading-snug mb-2">Claude 3.5 Sonnet 代码能力评测：在复杂重构任务中表现优异</h3>
+                <p class="text-sm text-muted-foreground line-clamp-2 mb-3">Anthropic 发布的 Claude 3.5 Sonnet 在多项代码能力基准测试中取得领先成绩，尤其在大型代码库重构、架构设计和跨文件依赖分析方面展现出接近资深工程师的水平。</p>
+                <div class="flex items-center justify-between">
+                  <span class="text-xs text-muted-foreground flex items-center gap-1"><i data-lucide="external-link" class="w-3 h-3"></i>AI前线</span>
+                  <span class="text-xs font-medium text-primary">阅读全文</span>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="bg-white rounded-xl border border-border p-5 hover:shadow-md transition-shadow cursor-pointer group">
+            <div class="flex items-start gap-4">
+              <div class="w-10 h-10 rounded-lg bg-cyan-50 flex items-center justify-center flex-shrink-0">
+                <i data-lucide="cpu" class="w-5 h-5 text-cyan-600"></i>
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center gap-2 mb-1.5 flex-wrap">
+                  <span class="text-xs font-medium px-2 py-0.5 rounded bg-cyan-50 text-cyan-600">工具</span>
+                  <span class="text-xs text-muted-foreground">3天前</span>
+                </div>
+                <h3 class="text-base font-semibold text-foreground group-hover:text-primary transition-colors leading-snug mb-2">Cursor 编辑器发布 0.40 版本，新增 Agent 模式自动执行终端命令</h3>
+                <p class="text-sm text-muted-foreground line-clamp-2 mb-3">Cursor 在其最新版本中引入了革命性的 Agent 模式，允许 AI 在获得用户授权后自动执行终端命令、读写文件和运行测试，大幅提升了开发效率。</p>
+                <div class="flex items-center justify-between">
+                  <span class="text-xs text-muted-foreground flex items-center gap-1"><i data-lucide="external-link" class="w-3 h-3"></i>机器之心</span>
+                  <span class="text-xs font-medium text-primary">阅读全文</span>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <button class="w-full py-3 text-sm font-medium text-muted-foreground hover:text-foreground bg-white border border-border rounded-xl hover:shadow-sm transition-all">加载更多</button>
+        </main>
+
+        <!-- Right Sidebar -->
+        <aside class="lg:col-span-3 space-y-6">
+          <div class="sticky top-24 space-y-6">
+            <!-- Hot Tags -->
+            <div class="bg-white rounded-xl border border-border p-5">
+              <h3 class="text-sm font-semibold text-foreground mb-4">热门标签</h3>
+              <div class="flex flex-wrap gap-2">
+                <span class="px-2.5 py-1 text-xs font-medium bg-purple-50 text-purple-600 rounded-md cursor-pointer hover:bg-purple-100 transition-colors">GPT-4</span>
+                <span class="px-2.5 py-1 text-xs font-medium bg-blue-50 text-blue-600 rounded-md cursor-pointer hover:bg-blue-100 transition-colors">LangChain</span>
+                <span class="px-2.5 py-1 text-xs font-medium bg-emerald-50 text-emerald-600 rounded-md cursor-pointer hover:bg-emerald-100 transition-colors">5G</span>
+                <span class="px-2.5 py-1 text-xs font-medium bg-amber-50 text-amber-600 rounded-md cursor-pointer hover:bg-amber-100 transition-colors">自监督学习</span>
+                <span class="px-2.5 py-1 text-xs font-medium bg-cyan-50 text-cyan-600 rounded-md cursor-pointer hover:bg-cyan-100 transition-colors">RAG</span>
+                <span class="px-2.5 py-1 text-xs font-medium bg-rose-50 text-rose-600 rounded-md cursor-pointer hover:bg-rose-100 transition-colors">AI合规</span>
+                <span class="px-2.5 py-1 text-xs font-medium bg-gray-100 text-gray-600 rounded-md cursor-pointer hover:bg-gray-200 transition-colors">MCP</span>
+                <span class="px-2.5 py-1 text-xs font-medium bg-purple-50 text-purple-600 rounded-md cursor-pointer hover:bg-purple-100 transition-colors">多模态</span>
+                <span class="px-2.5 py-1 text-xs font-medium bg-blue-50 text-blue-600 rounded-md cursor-pointer hover:bg-blue-100 transition-colors">Agent</span>
+                <span class="px-2.5 py-1 text-xs font-medium bg-emerald-50 text-emerald-600 rounded-md cursor-pointer hover:bg-emerald-100 transition-colors">无线信号</span>
+              </div>
+            </div>
+
+            <!-- Latest Announcements -->
+            <div class="bg-white rounded-xl border border-border p-5">
+              <h3 class="text-sm font-semibold text-foreground mb-4">最新公告</h3>
+              <div class="space-y-3">
+                <div class="p-3 bg-blue-50 rounded-lg">
+                  <p class="text-xs text-foreground leading-relaxed">无线AI极客汇全新升级，Agent市场正式上线，欢迎体验！</p>
+                </div>
+                <div class="p-3 bg-amber-50 rounded-lg">
+                  <p class="text-xs text-foreground leading-relaxed">本周五 15:00 AI辅助无线研发技术分享会，点击报名</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Subscribe -->
+            <div class="bg-white rounded-xl border border-border p-5">
+              <h3 class="text-sm font-semibold text-foreground mb-2">订阅情报</h3>
+              <p class="text-xs text-muted-foreground mb-4">每日精选AI热点，直达邮箱</p>
+              <div class="space-y-2">
+                <input type="email" placeholder="your@email.com" class="w-full px-3 py-2 text-sm border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors">
+                <button class="w-full py-2 text-sm font-medium text-white bg-primary rounded-lg hover:bg-primary/90 transition-colors">订阅</button>
+              </div>
+            </div>
+          </div>
+        </aside>
+
+      </div>
+    </div>
+  </div>
+
+  <script>lucide.createIcons();</script>
+</body>
+</html>
