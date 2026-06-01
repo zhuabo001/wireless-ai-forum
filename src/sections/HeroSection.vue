@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import GlitchText from '../components/GlitchText.vue'
+import ShinyText from '../components/ShinyText.vue'
 import MarqueeCarousel from '../components/MarqueeCarousel.vue'
 import ActivityCalendar from '../components/ActivityCalendar.vue'
 import { ArrowRight, Users, MessageSquare, Wrench, BookOpen, FileText, Activity, Megaphone } from 'lucide-vue-next'
@@ -30,7 +30,7 @@ const announcements = [
           AI-Powered Wireless R&D Community
         </span>
         <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground mb-4">
-          <GlitchText text="无线AI极客汇" :speed="0.6" :enable-shadows="true" />
+          <ShinyText text="无线AI极客汇" :speed="4" base-color="#0f172a" shine-color="#60a5fa" />
         </h1>
         <p class="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto mb-8">AI赋能无线研发，连接每一位创新者</p>
         <div class="flex flex-wrap items-center justify-center gap-4">
