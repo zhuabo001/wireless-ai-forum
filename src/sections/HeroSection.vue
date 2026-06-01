@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
-import gsap from 'gsap'
+import { ref } from 'vue'
+import GlitchText from '../components/GlitchText.vue'
 import MarqueeCarousel from '../components/MarqueeCarousel.vue'
 import ActivityCalendar from '../components/ActivityCalendar.vue'
 import { ArrowRight, Users, MessageSquare, Wrench, BookOpen, FileText, Activity, Megaphone } from 'lucide-vue-next'
@@ -20,37 +20,24 @@ const announcements = [
   { text: '无线AI极客汇全新升级，Agent市场正式上线，欢迎体验!', bg: 'bg-blue-50 border-l-4 border-blue-500', iconColor: 'text-blue-500' },
   { text: '本周五 15:00 AI辅助无线研发技术分享会，点击报名 →', bg: 'bg-amber-50 border-l-4 border-amber-500', iconColor: 'text-amber-500' },
 ]
-
-const titleChars = '无线AI极客汇'.split('')
-
-onMounted(() => {
-  const tl = gsap.timeline({ defaults: { ease: 'power3.out' } })
-
-  tl.from('.hero-badge', { opacity: 0, y: 16, duration: 0.6 })
-    .from('.hero-char', { opacity: 0, y: 36, duration: 0.7, stagger: 0.04 }, '-=0.3')
-    .from('.hero-line', { scaleX: 0, duration: 0.5 }, '-=0.4')
-    .from('.hero-subtitle', { opacity: 0, y: 20, duration: 0.6 }, '-=0.3')
-    .from('.hero-cta', { opacity: 0, y: 16, duration: 0.5, stagger: 0.08 }, '-=0.3')
-})
 </script>
 
 <template>
   <section id="hero" ref="sectionRef" class="relative"><div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" style="z-index:1;">
       <!-- Main Title -->
       <div class="text-center pt-20 pb-6">
-        <span class="hero-badge inline-block px-3 py-1 mb-5 text-xs font-medium tracking-wider text-primary bg-primary/10 rounded-full uppercase">
+        <span class="inline-block px-3 py-1 mb-4 text-xs font-medium tracking-wider text-primary bg-primary/10 rounded-full uppercase">
           AI-Powered Wireless R&D Community
         </span>
-        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground tracking-wide mb-4">
-          <span v-for="(char, i) in titleChars" :key="i" class="hero-char inline-block">{{ char }}</span>
+        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground mb-4">
+          <GlitchText text="无线AI极客汇" :speed="0.6" :enable-shadows="true" />
         </h1>
-        <div class="hero-line w-12 h-1 bg-gradient-to-r from-primary to-blue-400 rounded-full mx-auto mb-5 origin-left"></div>
-        <p class="hero-subtitle text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto mb-8">AI赋能无线研发，连接每一位创新者</p>
+        <p class="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto mb-8">AI赋能无线研发，连接每一位创新者</p>
         <div class="flex flex-wrap items-center justify-center gap-4">
-          <a href="#forum" class="hero-cta inline-flex items-center gap-2 px-6 py-3 bg-primary text-white font-medium rounded-lg hover:bg-primary/90 transition-colors shadow-sm">
+          <a href="#forum" class="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white font-medium rounded-lg hover:bg-primary/90 transition-colors shadow-sm">
             进入论坛 <ArrowRight class="w-4 h-4" />
           </a>
-          <a href="#market" class="hero-cta inline-flex items-center gap-2 px-6 py-3 bg-white text-foreground font-medium rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors">
+          <a href="#market" class="inline-flex items-center gap-2 px-6 py-3 bg-white text-foreground font-medium rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors">
             探索Agent市场
           </a>
         </div>
