@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>百宝箱 - 无线AI极客汇</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: { DEFAULT: '#0d55c9', foreground: '#ffffff' },
+            border: '#e2e8f0',
+            background: '#f8fafc',
+            foreground: '#0f172a',
+            muted: { DEFAULT: '#f1f5f9', foreground: '#64748b' },
+          },
+          borderRadius: { lg: '0.625rem', xl: '0.75rem' },
+        }
+      }
+    }
+  </script>
+  <style>
+    body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f8fafc; color: #0f172a; -webkit-font-smoothing: antialiased; }
+    .line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+  </style>
+</head>
+<body class="min-h-screen">
+
+  <nav class="fixed top-0 left-0 right-0 z-50 bg-white/85 backdrop-blur-md border-b border-border/50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <a href="index.html" class="flex items-center gap-2.5 font-bold text-lg text-foreground">
+          <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-sm">
+            <i data-lucide="zap" class="w-5 h-5 text-white"></i>
+          </div>
+          <span>无线AI极客汇</span>
+        </a>
+        <div class="hidden lg:flex items-center gap-1">
+          <a href="index.html" class="px-2 py-2 text-sm font-medium text-muted-foreground hover:text-foreground rounded-md hover:bg-muted transition-colors">首页</a>
+          <a href="intelligence.html" class="px-2 py-2 text-sm font-medium text-muted-foreground hover:text-foreground rounded-md hover:bg-muted transition-colors">情报局</a>
+          <a href="courses.html" class="px-2 py-2 text-sm font-medium text-muted-foreground hover:text-foreground rounded-md hover:bg-muted transition-colors">课程</a>
+          <a href="forum.html" class="px-2 py-2 text-sm font-medium text-muted-foreground hover:text-foreground rounded-md hover:bg-muted transition-colors">论坛</a>
+          <a href="market.html" class="px-2 py-2 text-sm font-medium text-muted-foreground hover:text-foreground rounded-md hover:bg-muted transition-colors">Agent市场</a>
+          <a href="practices.html" class="px-2 py-2 text-sm font-medium text-muted-foreground hover:text-foreground rounded-md hover:bg-muted transition-colors">优秀实践</a>
+          <a href="toolbox.html" class="px-2 py-2 text-sm font-medium text-foreground bg-muted rounded-md">百宝箱</a>
+          <a href="atmosphere.html" class="px-2 py-2 text-sm font-medium text-muted-foreground hover:text-foreground rounded-md hover:bg-muted transition-colors">氛围建设</a>
+        </div>
+        <div class="flex items-center gap-2">
+          <button class="p-2 text-muted-foreground hover:text-foreground rounded-full hover:bg-muted transition-colors">
+            <i data-lucide="search" class="w-4 h-4"></i>
+          </button>
+          <button class="hidden sm:flex p-2 text-muted-foreground hover:text-foreground rounded-full hover:bg-muted transition-colors">
+            <i data-lucide="user" class="w-4 h-4"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="pt-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-8">
+        <div>
+          <h1 class="text-3xl font-bold text-foreground mb-2">百宝箱</h1>
+          <p class="text-muted-foreground">面向智能体工具的使用手册、故障处理、配置示例和经验帖</p>
+        </div>
+        <button class="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-primary text-white text-sm font-medium rounded-lg hover:bg-primary/90 transition-colors shadow-sm">
+          <i data-lucide="file-plus-2" class="w-4 h-4"></i>提交手册
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <aside class="lg:col-span-3">
+          <div class="sticky top-24">
+            <div class="flex items-center justify-between mb-3">
+              <h2 class="text-sm font-semibold text-foreground">智能体工具</h2>
+              <span class="text-xs text-muted-foreground">42 个</span>
+            </div>
+            <div class="grid sm:grid-cols-2 lg:grid-cols-1 gap-3">
+              <button class="bg-primary text-white rounded-xl p-4 text-left shadow-sm">
+                <div class="flex items-center justify-between">
+                  <span class="text-sm font-semibold">调试助手</span>
+                  <i data-lucide="bug" class="w-4 h-4 opacity-90"></i>
+                </div>
+                <p class="text-xs text-white/75 mt-2">18 篇帖子</p>
+              </button>
+              <button class="bg-white rounded-xl border border-border p-4 text-left hover:shadow-md hover:-translate-y-0.5 transition-all">
+                <div class="flex items-center justify-between">
+                  <span class="text-sm font-semibold text-foreground">文档生成器</span>
+                  <i data-lucide="file-text" class="w-4 h-4 text-muted-foreground"></i>
+                </div>
+                <p class="text-xs text-muted-foreground mt-2">15 篇帖子</p>
+              </button>
+              <button class="bg-white rounded-xl border border-border p-4 text-left hover:shadow-md hover:-translate-y-0.5 transition-all">
+                <div class="flex items-center justify-between">
+                  <span class="text-sm font-semibold text-foreground">代码合并助手</span>
+                  <i data-lucide="git-merge" class="w-4 h-4 text-muted-foreground"></i>
+                </div>
+                <p class="text-xs text-muted-foreground mt-2">12 篇帖子</p>
+              </button>
+              <button class="bg-white rounded-xl border border-border p-4 text-left hover:shadow-md hover:-translate-y-0.5 transition-all">
+                <div class="flex items-center justify-between">
+                  <span class="text-sm font-semibold text-foreground">CLI工具集</span>
+                  <i data-lucide="terminal" class="w-4 h-4 text-muted-foreground"></i>
+                </div>
+                <p class="text-xs text-muted-foreground mt-2">22 篇帖子</p>
+              </button>
+              <button class="bg-white rounded-xl border border-border p-4 text-left hover:shadow-md hover:-translate-y-0.5 transition-all">
+                <div class="flex items-center justify-between">
+                  <span class="text-sm font-semibold text-foreground">智能检索</span>
+                  <i data-lucide="search" class="w-4 h-4 text-muted-foreground"></i>
+                </div>
+                <p class="text-xs text-muted-foreground mt-2">20 篇帖子</p>
+              </button>
+              <button class="bg-white rounded-xl border border-border p-4 text-left hover:shadow-md hover:-translate-y-0.5 transition-all">
+                <div class="flex items-center justify-between">
+                  <span class="text-sm font-semibold text-foreground">安全扫描</span>
+                  <i data-lucide="shield-check" class="w-4 h-4 text-muted-foreground"></i>
+                </div>
+                <p class="text-xs text-muted-foreground mt-2">9 篇帖子</p>
+              </button>
+            </div>
+          </div>
+        </aside>
+
+        <main class="lg:col-span-9">
+          <div class="bg-white rounded-xl border border-border p-4 mb-4">
+            <div class="flex flex-col sm:flex-row sm:items-center gap-3">
+              <div class="relative flex-1">
+                <i data-lucide="search" class="w-4 h-4 text-muted-foreground absolute left-3 top-1/2 -translate-y-1/2"></i>
+                <input type="text" placeholder="搜索标题、摘要或作者" class="w-full pl-9 pr-4 py-2.5 text-sm border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary">
+              </div>
+              <button class="inline-flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors">
+                <i data-lucide="search" class="w-4 h-4"></i>搜索
+              </button>
+              <button class="inline-flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium bg-white border border-border text-muted-foreground rounded-lg hover:bg-muted hover:text-foreground transition-colors">
+                <i data-lucide="arrow-down-up" class="w-4 h-4"></i>最新
+              </button>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-xl border border-border overflow-hidden">
+            <article class="p-5 border-b border-border/60 hover:bg-gray-50 transition-colors cursor-pointer group">
+              <h3 class="text-base font-semibold text-foreground group-hover:text-primary transition-colors mb-2">调试助手如何定位 Agent 工具调用失败</h3>
+              <p class="text-sm text-muted-foreground line-clamp-2 mb-4">从运行日志、工具入参、环境变量和模型输出四个位置快速定位失败原因，附带常见错误码处理清单。</p>
+              <div class="flex items-center gap-2">
+                <img src="/avatar-1.webp" alt="张明远" class="w-8 h-8 rounded-full object-cover">
+                <div class="flex-1 min-w-0">
+                  <p class="text-sm font-medium text-foreground">张明远</p>
+                  <p class="text-xs text-muted-foreground">发布日期：2026-05-28</p>
+                </div>
+              </div>
+            </article>
+            <article class="p-5 border-b border-border/60 hover:bg-gray-50 transition-colors cursor-pointer group">
+              <h3 class="text-base font-semibold text-foreground group-hover:text-primary transition-colors mb-2">调试助手日志采样策略：减少噪声但保留证据</h3>
+              <p class="text-sm text-muted-foreground line-clamp-2 mb-4">介绍如何设置采样等级、保留关键上下文，并在多人协作排查时导出可读的问题片段。</p>
+              <div class="flex items-center gap-2">
+                <img src="/avatar-2.webp" alt="李思涵" class="w-8 h-8 rounded-full object-cover">
+                <div class="flex-1 min-w-0">
+                  <p class="text-sm font-medium text-foreground">李思涵</p>
+                  <p class="text-xs text-muted-foreground">发布日期：2026-05-26</p>
+                </div>
+              </div>
+            </article>
+            <article class="p-5 border-b border-border/60 hover:bg-gray-50 transition-colors cursor-pointer group">
+              <h3 class="text-base font-semibold text-foreground group-hover:text-primary transition-colors mb-2">在本地沙箱复现智能体异常的步骤模板</h3>
+              <p class="text-sm text-muted-foreground line-clamp-2 mb-4">给出最小复现场景、依赖版本锁定、输入样本裁剪和结果对比方法，适合提交给工具维护团队。</p>
+              <div class="flex items-center gap-2">
+                <img src="/avatar-3.webp" alt="陈志强" class="w-8 h-8 rounded-full object-cover">
+                <div class="flex-1 min-w-0">
+                  <p class="text-sm font-medium text-foreground">陈志强</p>
+                  <p class="text-xs text-muted-foreground">发布日期：2026-05-23</p>
+                </div>
+              </div>
+            </article>
+            <article class="p-5 border-b border-border/60 hover:bg-gray-50 transition-colors cursor-pointer group">
+              <h3 class="text-base font-semibold text-foreground group-hover:text-primary transition-colors mb-2">调试助手和智能检索联动的配置方式</h3>
+              <p class="text-sm text-muted-foreground line-clamp-2 mb-4">通过共享索引、错误关键词映射和历史工单检索，让调试结论更快关联到已知解决方案。</p>
+              <div class="flex items-center gap-2">
+                <img src="/avatar-4.webp" alt="王雪晴" class="w-8 h-8 rounded-full object-cover">
+                <div class="flex-1 min-w-0">
+                  <p class="text-sm font-medium text-foreground">王雪晴</p>
+                  <p class="text-xs text-muted-foreground">发布日期：2026-05-20</p>
+                </div>
+              </div>
+            </article>
+            <article class="p-5 hover:bg-gray-50 transition-colors cursor-pointer group">
+              <h3 class="text-base font-semibold text-foreground group-hover:text-primary transition-colors mb-2">新同事调试助手上手路径</h3>
+              <p class="text-sm text-muted-foreground line-clamp-2 mb-4">按日常问题、进阶排障和团队共享三阶段组织材料，帮助新人一周内掌握常用操作。</p>
+              <div class="flex items-center gap-2">
+                <img src="/avatar-5.webp" alt="刘浩然" class="w-8 h-8 rounded-full object-cover">
+                <div class="flex-1 min-w-0">
+                  <p class="text-sm font-medium text-foreground">刘浩然</p>
+                  <p class="text-xs text-muted-foreground">发布日期：2026-05-18</p>
+                </div>
+              </div>
+            </article>
+          </div>
+
+          <div class="flex items-center justify-center gap-2 mt-6">
+            <button class="p-2 text-muted-foreground hover:text-foreground rounded-lg hover:bg-muted transition-colors"><i data-lucide="chevron-left" class="w-4 h-4"></i></button>
+            <button class="px-3 py-1.5 text-sm font-medium text-white bg-primary rounded-lg">1</button>
+            <button class="px-3 py-1.5 text-sm font-medium text-muted-foreground hover:text-foreground rounded-lg hover:bg-muted transition-colors">2</button>
+            <button class="px-3 py-1.5 text-sm font-medium text-muted-foreground hover:text-foreground rounded-lg hover:bg-muted transition-colors">3</button>
+            <span class="text-muted-foreground">...</span>
+            <button class="px-3 py-1.5 text-sm font-medium text-muted-foreground hover:text-foreground rounded-lg hover:bg-muted transition-colors">8</button>
+            <button class="p-2 text-muted-foreground hover:text-foreground rounded-lg hover:bg-muted transition-colors"><i data-lucide="chevron-right" class="w-4 h-4"></i></button>
+          </div>
+        </main>
+      </div>
+    </div>
+  </div>
+
+  <script>lucide.createIcons();</script>
+</body>
+</html>
