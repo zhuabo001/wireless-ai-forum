@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>氛围建设 - 无线AI极客汇</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: { DEFAULT: '#0d55c9', foreground: '#ffffff' },
+            border: '#e2e8f0',
+            background: '#f8fafc',
+            foreground: '#0f172a',
+            muted: { DEFAULT: '#f1f5f9', foreground: '#64748b' },
+          },
+          borderRadius: { lg: '0.625rem', xl: '0.75rem' },
+        }
+      }
+    }
+  </script>
+  <style>
+    body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f8fafc; color: #0f172a; -webkit-font-smoothing: antialiased; }
+    .line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+  </style>
+</head>
+<body class="min-h-screen">
+
+  <nav class="fixed top-0 left-0 right-0 z-50 bg-white/85 backdrop-blur-md border-b border-border/50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <a href="index.html" class="flex items-center gap-2.5 font-bold text-lg text-foreground">
+          <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-sm">
+            <i data-lucide="zap" class="w-5 h-5 text-white"></i>
+          </div>
+          <span>无线AI极客汇</span>
+        </a>
+        <div class="hidden lg:flex items-center gap-1">
+          <a href="index.html" class="px-2 py-2 text-sm font-medium text-muted-foreground hover:text-foreground rounded-md hover:bg-muted transition-colors">首页</a>
+          <a href="intelligence.html" class="px-2 py-2 text-sm font-medium text-muted-foreground hover:text-foreground rounded-md hover:bg-muted transition-colors">情报局</a>
+          <a href="courses.html" class="px-2 py-2 text-sm font-medium text-muted-foreground hover:text-foreground rounded-md hover:bg-muted transition-colors">课程</a>
+          <a href="forum.html" class="px-2 py-2 text-sm font-medium text-muted-foreground hover:text-foreground rounded-md hover:bg-muted transition-colors">论坛</a>
+          <a href="market.html" class="px-2 py-2 text-sm font-medium text-muted-foreground hover:text-foreground rounded-md hover:bg-muted transition-colors">Agent市场</a>
+          <a href="practices.html" class="px-2 py-2 text-sm font-medium text-muted-foreground hover:text-foreground rounded-md hover:bg-muted transition-colors">优秀实践</a>
+          <a href="toolbox.html" class="px-2 py-2 text-sm font-medium text-muted-foreground hover:text-foreground rounded-md hover:bg-muted transition-colors">百宝箱</a>
+          <a href="atmosphere.html" class="px-2 py-2 text-sm font-medium text-foreground bg-muted rounded-md">氛围建设</a>
+        </div>
+        <div class="flex items-center gap-2">
+          <button class="p-2 text-muted-foreground hover:text-foreground rounded-full hover:bg-muted transition-colors">
+            <i data-lucide="search" class="w-4 h-4"></i>
+          </button>
+          <button class="hidden sm:flex p-2 text-muted-foreground hover:text-foreground rounded-full hover:bg-muted transition-colors">
+            <i data-lucide="user" class="w-4 h-4"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="pt-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-8">
+        <div>
+          <h1 class="text-3xl font-bold text-foreground mb-2">氛围建设</h1>
+          <p class="text-muted-foreground">线下活动、颁奖仪式和会议研讨的统一入口，详情可跳转到活动站点查看</p>
+        </div>
+        <button class="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-primary text-white text-sm font-medium rounded-lg hover:bg-primary/90 transition-colors shadow-sm">
+          <i data-lucide="calendar-plus" class="w-4 h-4"></i>发布活动
+        </button>
+      </div>
+
+      <section class="grid grid-cols-1 lg:grid-cols-3 gap-5 mb-8">
+        <a href="#" class="lg:col-span-2 bg-white rounded-xl border border-border overflow-hidden hover:shadow-md transition-shadow group">
+          <div class="grid md:grid-cols-2">
+            <div class="h-56 md:h-full overflow-hidden">
+              <img src="/event-3.webp" alt="年度AI创新颁奖典礼" class="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-200">
+            </div>
+            <div class="p-6">
+              <div class="flex items-center gap-2 mb-3">
+                <span class="px-2 py-0.5 text-xs font-medium bg-amber-50 text-amber-600 rounded-md">颁奖仪式</span>
+                <span class="text-xs text-muted-foreground">2026-06-18</span>
+              </div>
+              <h2 class="text-xl font-semibold text-foreground group-hover:text-primary transition-colors leading-snug mb-3">年度AI创新颁奖典礼</h2>
+              <p class="text-sm text-muted-foreground line-clamp-2 mb-5">表彰在智能测试、协议分析、知识库建设和工具链共创中取得突出成果的团队与个人。</p>
+              <div class="grid grid-cols-3 gap-3 text-xs">
+                <div class="rounded-lg bg-muted p-3">
+                  <p class="font-semibold text-foreground">18</p>
+                  <p class="text-muted-foreground mt-1">获奖项目</p>
+                </div>
+                <div class="rounded-lg bg-muted p-3">
+                  <p class="font-semibold text-foreground">12</p>
+                  <p class="text-muted-foreground mt-1">参与团队</p>
+                </div>
+                <div class="rounded-lg bg-muted p-3">
+                  <p class="font-semibold text-foreground">200</p>
+                  <p class="text-muted-foreground mt-1">现场席位</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </a>
+
+        <div class="bg-white rounded-xl border border-border p-5">
+          <div class="flex items-center gap-2 mb-4">
+            <i data-lucide="calendar-days" class="w-4 h-4 text-primary"></i>
+            <h2 class="text-sm font-semibold text-foreground">近期安排</h2>
+          </div>
+          <div class="space-y-4">
+            <div class="flex gap-3">
+              <div class="w-12 h-12 rounded-lg bg-blue-50 text-blue-600 flex flex-col items-center justify-center flex-shrink-0">
+                <span class="text-xs">06月</span>
+                <span class="text-sm font-semibold">12</span>
+              </div>
+              <div class="min-w-0">
+                <p class="text-sm font-medium text-foreground line-clamp-2">大模型在无线研发中的落地研讨</p>
+                <p class="text-xs text-muted-foreground mt-1">总部会议中心 A201</p>
+              </div>
+            </div>
+            <div class="flex gap-3">
+              <div class="w-12 h-12 rounded-lg bg-emerald-50 text-emerald-600 flex flex-col items-center justify-center flex-shrink-0">
+                <span class="text-xs">06月</span>
+                <span class="text-sm font-semibold">21</span>
+              </div>
+              <div class="min-w-0">
+                <p class="text-sm font-medium text-foreground line-clamp-2">Agent Workshop 实操日</p>
+                <p class="text-xs text-muted-foreground mt-1">研发中心 B 栋</p>
+              </div>
+            </div>
+            <div class="flex gap-3">
+              <div class="w-12 h-12 rounded-lg bg-purple-50 text-purple-600 flex flex-col items-center justify-center flex-shrink-0">
+                <span class="text-xs">07月</span>
+                <span class="text-sm font-semibold">04</span>
+              </div>
+              <div class="min-w-0">
+                <p class="text-sm font-medium text-foreground line-clamp-2">知识库共建圆桌</p>
+                <p class="text-xs text-muted-foreground mt-1">线上线下同步</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
+        <div class="flex gap-2 overflow-x-auto pb-1">
+          <button class="px-4 py-2 text-sm font-medium bg-primary text-white rounded-lg whitespace-nowrap">全部活动</button>
+          <button class="px-4 py-2 text-sm font-medium bg-white border border-border text-muted-foreground rounded-lg hover:bg-muted hover:text-foreground transition-colors whitespace-nowrap">颁奖仪式</button>
+          <button class="px-4 py-2 text-sm font-medium bg-white border border-border text-muted-foreground rounded-lg hover:bg-muted hover:text-foreground transition-colors whitespace-nowrap">会议研讨</button>
+          <button class="px-4 py-2 text-sm font-medium bg-white border border-border text-muted-foreground rounded-lg hover:bg-muted hover:text-foreground transition-colors whitespace-nowrap">Workshop</button>
+          <button class="px-4 py-2 text-sm font-medium bg-white border border-border text-muted-foreground rounded-lg hover:bg-muted hover:text-foreground transition-colors whitespace-nowrap">圆桌讨论</button>
+        </div>
+        <button class="inline-flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium bg-white border border-border text-muted-foreground rounded-lg hover:bg-muted hover:text-foreground transition-colors">
+          <i data-lucide="external-link" class="w-4 h-4"></i>活动站点
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <main class="lg:col-span-8">
+          <div class="bg-white rounded-xl border border-border overflow-hidden">
+            <article class="p-5 border-b border-border/60 hover:bg-gray-50 transition-colors cursor-pointer group">
+              <div class="flex flex-col sm:flex-row gap-4">
+                <img src="/event-1.webp" alt="AI技术圆桌讨论" class="w-full sm:w-36 h-36 sm:h-24 object-cover rounded-lg flex-shrink-0">
+                <div class="flex-1 min-w-0">
+                  <div class="flex flex-wrap items-center gap-2 mb-2">
+                    <span class="px-2 py-0.5 text-xs font-medium bg-purple-50 text-purple-600 rounded-md">圆桌讨论</span>
+                    <span class="text-xs text-muted-foreground flex items-center gap-1"><i data-lucide="calendar" class="w-3.5 h-3.5"></i>2026-06-12</span>
+                    <span class="text-xs text-muted-foreground flex items-center gap-1"><i data-lucide="map-pin" class="w-3.5 h-3.5"></i>总部会议中心</span>
+                  </div>
+                  <h3 class="text-base font-semibold text-foreground group-hover:text-primary transition-colors mb-2">大模型在无线研发中的落地研讨</h3>
+                  <p class="text-sm text-muted-foreground line-clamp-2 mb-3">邀请协议、测试、运维和工具链团队分享落地边界、数据准备和评估口径。</p>
+                  <span class="inline-flex items-center gap-1 text-xs font-medium text-primary">查看详情<i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i></span>
+                </div>
+              </div>
+            </article>
+
+            <article class="p-5 border-b border-border/60 hover:bg-gray-50 transition-colors cursor-pointer group">
+              <div class="flex flex-col sm:flex-row gap-4">
+                <img src="/event-2.webp" alt="Agent Workshop 实操日" class="w-full sm:w-36 h-36 sm:h-24 object-cover rounded-lg flex-shrink-0">
+                <div class="flex-1 min-w-0">
+                  <div class="flex flex-wrap items-center gap-2 mb-2">
+                    <span class="px-2 py-0.5 text-xs font-medium bg-emerald-50 text-emerald-600 rounded-md">Workshop</span>
+                    <span class="text-xs text-muted-foreground flex items-center gap-1"><i data-lucide="calendar" class="w-3.5 h-3.5"></i>2026-06-21</span>
+                    <span class="text-xs text-muted-foreground flex items-center gap-1"><i data-lucide="map-pin" class="w-3.5 h-3.5"></i>研发中心 B 栋</span>
+                  </div>
+                  <h3 class="text-base font-semibold text-foreground group-hover:text-primary transition-colors mb-2">Agent Workshop 实操日</h3>
+                  <p class="text-sm text-muted-foreground line-clamp-2 mb-3">从提示词设计、工具调用到结果验收，现场完成一个可演示的工程助手。</p>
+                  <span class="inline-flex items-center gap-1 text-xs font-medium text-primary">查看详情<i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i></span>
+                </div>
+              </div>
+            </article>
+
+            <article class="p-5 border-b border-border/60 hover:bg-gray-50 transition-colors cursor-pointer group">
+              <div class="flex flex-col sm:flex-row gap-4">
+                <img src="/event-3.webp" alt="年度AI创新颁奖典礼" class="w-full sm:w-36 h-36 sm:h-24 object-cover rounded-lg flex-shrink-0">
+                <div class="flex-1 min-w-0">
+                  <div class="flex flex-wrap items-center gap-2 mb-2">
+                    <span class="px-2 py-0.5 text-xs font-medium bg-amber-50 text-amber-600 rounded-md">颁奖仪式</span>
+                    <span class="text-xs text-muted-foreground flex items-center gap-1"><i data-lucide="calendar" class="w-3.5 h-3.5"></i>2026-06-18</span>
+                    <span class="text-xs text-muted-foreground flex items-center gap-1"><i data-lucide="map-pin" class="w-3.5 h-3.5"></i>总部大礼堂</span>
+                  </div>
+                  <h3 class="text-base font-semibold text-foreground group-hover:text-primary transition-colors mb-2">年度AI创新颁奖典礼</h3>
+                  <p class="text-sm text-muted-foreground line-clamp-2 mb-3">集中展示年度优秀项目、个人贡献者和团队共创成果，沉淀活动影像与获奖案例。</p>
+                  <span class="inline-flex items-center gap-1 text-xs font-medium text-primary">查看详情<i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i></span>
+                </div>
+              </div>
+            </article>
+
+            <article class="p-5 hover:bg-gray-50 transition-colors cursor-pointer group">
+              <div class="flex flex-col sm:flex-row gap-4">
+                <img src="/panorama-detail.webp" alt="知识库共建圆桌" class="w-full sm:w-36 h-36 sm:h-24 object-cover rounded-lg flex-shrink-0">
+                <div class="flex-1 min-w-0">
+                  <div class="flex flex-wrap items-center gap-2 mb-2">
+                    <span class="px-2 py-0.5 text-xs font-medium bg-blue-50 text-blue-600 rounded-md">会议研讨</span>
+                    <span class="text-xs text-muted-foreground flex items-center gap-1"><i data-lucide="calendar" class="w-3.5 h-3.5"></i>2026-07-04</span>
+                    <span class="text-xs text-muted-foreground flex items-center gap-1"><i data-lucide="map-pin" class="w-3.5 h-3.5"></i>线上线下同步</span>
+                  </div>
+                  <h3 class="text-base font-semibold text-foreground group-hover:text-primary transition-colors mb-2">知识库共建圆桌</h3>
+                  <p class="text-sm text-muted-foreground line-clamp-2 mb-3">讨论资料准入、贡献审核、标签体系和问答质量评估，形成跨团队共建规范。</p>
+                  <span class="inline-flex items-center gap-1 text-xs font-medium text-primary">查看详情<i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i></span>
+                </div>
+              </div>
+            </article>
+          </div>
+        </main>
+
+        <aside class="lg:col-span-4">
+          <div class="sticky top-24 space-y-6">
+            <section class="bg-white rounded-xl border border-border p-5">
+              <div class="flex items-center gap-2 mb-4">
+                <i data-lucide="trophy" class="w-4 h-4 text-amber-500"></i>
+                <h2 class="text-sm font-semibold text-foreground">年度荣誉</h2>
+              </div>
+              <div class="space-y-3">
+                <div class="flex items-center justify-between gap-3">
+                  <div>
+                    <p class="text-sm font-medium text-foreground">AI应用标杆团队</p>
+                    <p class="text-xs text-muted-foreground mt-1">无线测试部</p>
+                  </div>
+                  <span class="px-2 py-0.5 text-xs font-medium bg-amber-50 text-amber-600 rounded-md">金奖</span>
+                </div>
+                <div class="flex items-center justify-between gap-3">
+                  <div>
+                    <p class="text-sm font-medium text-foreground">最佳工具共创</p>
+                    <p class="text-xs text-muted-foreground mt-1">工程效率小组</p>
+                  </div>
+                  <span class="px-2 py-0.5 text-xs font-medium bg-muted text-muted-foreground rounded-md">银奖</span>
+                </div>
+                <div class="flex items-center justify-between gap-3">
+                  <div>
+                    <p class="text-sm font-medium text-foreground">知识库贡献奖</p>
+                    <p class="text-xs text-muted-foreground mt-1">协议研发部</p>
+                  </div>
+                  <span class="px-2 py-0.5 text-xs font-medium bg-orange-50 text-orange-600 rounded-md">铜奖</span>
+                </div>
+              </div>
+            </section>
+
+            <section class="bg-white rounded-xl border border-border p-5">
+              <div class="flex items-center gap-2 mb-4">
+                <i data-lucide="message-square-text" class="w-4 h-4 text-primary"></i>
+                <h2 class="text-sm font-semibold text-foreground">会议纪要</h2>
+              </div>
+              <div class="space-y-3">
+                <a href="#" class="block group">
+                  <p class="text-sm font-medium text-foreground group-hover:text-primary line-clamp-2">Q2 AI 工具链共创推进会纪要</p>
+                  <p class="text-xs text-muted-foreground mt-1">2026-05-29 · 外部站点</p>
+                </a>
+                <a href="#" class="block group">
+                  <p class="text-sm font-medium text-foreground group-hover:text-primary line-clamp-2">智能测试专项复盘会议材料</p>
+                  <p class="text-xs text-muted-foreground mt-1">2026-05-17 · 外部站点</p>
+                </a>
+                <a href="#" class="block group">
+                  <p class="text-sm font-medium text-foreground group-hover:text-primary line-clamp-2">无线 AI 社区月度例会摘要</p>
+                  <p class="text-xs text-muted-foreground mt-1">2026-05-08 · 外部站点</p>
+                </a>
+              </div>
+            </section>
+
+            <section class="bg-white rounded-xl border border-border p-5">
+              <div class="flex items-center gap-2 mb-4">
+                <i data-lucide="users" class="w-4 h-4 text-emerald-600"></i>
+                <h2 class="text-sm font-semibold text-foreground">参与入口</h2>
+              </div>
+              <div class="space-y-2">
+                <button class="w-full inline-flex items-center justify-between px-3 py-2.5 text-sm font-medium bg-muted text-foreground rounded-lg hover:bg-slate-200 transition-colors">
+                  <span>报名近期活动</span><i data-lucide="arrow-right" class="w-4 h-4"></i>
+                </button>
+                <button class="w-full inline-flex items-center justify-between px-3 py-2.5 text-sm font-medium bg-muted text-foreground rounded-lg hover:bg-slate-200 transition-colors">
+                  <span>提交分享议题</span><i data-lucide="arrow-right" class="w-4 h-4"></i>
+                </button>
+                <button class="w-full inline-flex items-center justify-between px-3 py-2.5 text-sm font-medium bg-muted text-foreground rounded-lg hover:bg-slate-200 transition-colors">
+                  <span>推荐优秀团队</span><i data-lucide="arrow-right" class="w-4 h-4"></i>
+                </button>
+              </div>
+            </section>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </div>
+
+  <script>lucide.createIcons();</script>
+</body>
+</html>
