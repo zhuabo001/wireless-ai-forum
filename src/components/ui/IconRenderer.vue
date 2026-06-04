@@ -52,15 +52,6 @@ import {
   Wrench,
   X,
   Zap,
-  ChevronDown,
-  Plus,
-  RadioTower,
-  FlaskConical,
-  Code2,
-  SlidersHorizontal,
-  Flame,
-  Medal,
-  Building2,
 } from 'lucide-vue-next'
 import type { IconName } from '../../types/home'
 
@@ -123,15 +114,6 @@ const iconMap = {
   wrench: Wrench,
   x: X,
   zap: Zap,
-  'chevron-down': ChevronDown,
-  plus: Plus,
-  'radio-tower': RadioTower,
-  'flask-conical': FlaskConical,
-  'code-2': Code2,
-  'sliders-horizontal': SlidersHorizontal,
-  flame: Flame,
-  medal: Medal,
-  'building-2': Building2,
 }
 
 const iconComponent = computed(() => iconMap[props.name as keyof typeof iconMap] ?? Zap)
