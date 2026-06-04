@@ -12,6 +12,11 @@ const routes = [
     name: 'market',
     component: () => import('@/pages/market/Index.vue'),
   },
+  {
+    path: '/practices',
+    name: 'practices',
+    component: () => import('@/pages/practices/Index.vue'),
+  },
 ]
 
 const router = createRouter({
