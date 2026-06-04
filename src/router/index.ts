@@ -22,6 +22,11 @@ const routes = [
     name: 'intelligence',
     component: () => import('@/pages/intelligence/Index.vue'),
   },
+  {
+    path: '/toolbox',
+    name: 'toolbox',
+    component: () => import('@/pages/toolbox/Index.vue'),
+  },
 ]
 
 const router = createRouter({
