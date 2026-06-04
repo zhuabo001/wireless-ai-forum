@@ -1,11 +1,24 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import type { PracticeItem } from '@/types/pageDesign/practices'
 import IconRenderer from '@/components/ui/IconRenderer.vue'
-import { tagStyles } from '@/data/pageDesign/practices'
+import { practiceCategories, tagStyles, categoryColorStyles } from '@/data/pageDesign/practices'
 
-defineProps<{
+const props = defineProps<{
   practice: PracticeItem
 }>()
+
+const categoryName = computed(() => {
+  for (const cat of practiceCategories) {
+    const sub = cat.subCategories.find((s) => s.id === props.practice.subCategoryId)
+    if (sub) return sub.name
+  }
+  return ''
+})
+
+const categoryStyle = computed(() => {
+  return categoryColorStyles[props.practice.categoryId] || 'bg-blue-50 text-blue-600'
+})
 </script>
 
 <template>
@@ -13,8 +26,11 @@ defineProps<{
     class="bg-white rounded-xl border border-border p-5 hover:shadow-md transition-shadow cursor-pointer group"
   >
     <div class="flex items-center gap-2 mb-2">
-      <span class="px-2 py-0.5 text-xs font-medium bg-blue-50 text-blue-600 rounded-md">
-        协议分析
+      <span
+        class="px-2 py-0.5 text-xs font-medium rounded-md"
+        :class="categoryStyle"
+      >
+        {{ categoryName }}
       </span>
       <span
         v-for="tag in practice.tags"
