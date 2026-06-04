@@ -13,7 +13,7 @@ withDefaults(defineProps<{
 
 <template>
   <div :class="[align === 'center' ? 'text-center' : '', className || 'mb-10']">
-    <h2 class="text-3xl font-bold text-foreground mb-3">{{ title }}</h2>
+    <h2 :class="['text-3xl font-bold text-foreground', align === 'center' ? 'mb-3' : 'mb-1']">{{ title }}</h2>
     <p v-if="description" :class="['text-muted-foreground', align === 'center' ? 'max-w-xl mx-auto' : 'text-sm']">
       {{ description }}
     </p>

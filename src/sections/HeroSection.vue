@@ -3,22 +3,11 @@ import { ref } from 'vue'
 import ShinyText from '../components/ShinyText.vue'
 import MarqueeCarousel from '../components/MarqueeCarousel.vue'
 import ActivityCalendar from '../components/ActivityCalendar.vue'
-import { ArrowRight, Users, MessageSquare, Wrench, BookOpen, FileText, Activity, GitCommit } from 'lucide-vue-next'
+import IconRenderer from '../components/ui/IconRenderer.vue'
+import MetricCard from '../components/ui/MetricCard.vue'
 import { changelog, heroContent, heroStats } from '../data/home'
-import type { IconName } from '../types/home'
 
 const sectionRef = ref<HTMLElement | null>(null)
-
-const iconMap: Partial<Record<IconName, unknown>> = {
-  users: Users,
-  'message-square': MessageSquare,
-  wrench: Wrench,
-  'book-open': BookOpen,
-  'file-text': FileText,
-  activity: Activity,
-}
-
-const stats = heroStats.map((stat) => ({ ...stat, icon: iconMap[stat.icon] }))
 </script>
 
 <template>
@@ -45,7 +34,7 @@ const stats = heroStats.map((stat) => ({ ...stat, icon: iconMap[stat.icon] }))
             ]"
           >
             {{ action.label }}
-            <ArrowRight v-if="action.icon === 'arrow-right'" class="w-4 h-4" />
+            <IconRenderer v-if="action.icon" :name="action.icon" class-name="w-4 h-4" />
           </a>
         </div>
       </div>
@@ -55,11 +44,7 @@ const stats = heroStats.map((stat) => ({ ...stat, icon: iconMap[stat.icon] }))
 
       <!-- Stats -->
       <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 mb-5">
-        <div v-for="stat in stats" :key="stat.label" class="flex flex-col items-center p-4 bg-white/80 backdrop-blur-sm rounded-xl border border-gray-200 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all">
-          <component :is="stat.icon" class="w-5 h-5 text-primary mb-2" />
-          <span class="text-2xl font-bold text-foreground">{{ stat.value }}</span>
-          <span class="text-xs text-muted-foreground mt-0.5">{{ stat.label }}</span>
-        </div>
+        <MetricCard v-for="stat in heroStats" :key="stat.label" :icon="stat.icon" :value="stat.value" :label="stat.label" />
       </div>
 
       <!-- Activity Calendar + Announcements (same row) -->
@@ -86,7 +71,7 @@ const stats = heroStats.map((stat) => ({ ...stat, icon: iconMap[stat.icon] }))
               <h4 class="text-sm font-semibold text-foreground mb-2">{{ item.title }}</h4>
               <div class="space-y-1">
                 <div v-for="(change, j) in item.changes" :key="j" class="flex items-start gap-1.5 text-xs text-muted-foreground">
-                  <GitCommit class="w-3 h-3 text-blue-500 mt-0.5 flex-shrink-0" />
+                  <IconRenderer name="git-commit" class-name="w-3 h-3 text-blue-500 mt-0.5 flex-shrink-0" />
                   <span>{{ change }}</span>
                 </div>
               </div>
