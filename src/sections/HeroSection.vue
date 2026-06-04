@@ -22,7 +22,7 @@ const stats = heroStats.map((stat) => ({ ...stat, icon: iconMap[stat.icon] }))
 </script>
 
 <template>
-  <section id="hero" ref="sectionRef" class="relative"><div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" style="z-index:1;">
+  <div ref="sectionRef" class="relative"><div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" style="z-index:1;">
       <!-- Main Title -->
       <div class="text-center pt-20 pb-6">
         <span class="inline-block px-3 py-1 mb-4 text-xs font-medium tracking-wider text-primary bg-primary/10 rounded-full uppercase">
@@ -95,5 +95,5 @@ const stats = heroStats.map((stat) => ({ ...stat, icon: iconMap[stat.icon] }))
         </div>
       </div>
     </div>
-  </section>
+  </div>
 </template>

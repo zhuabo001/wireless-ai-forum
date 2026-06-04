@@ -18,7 +18,7 @@ const tools = toolData.map((tool) => ({ ...tool, icon: iconMap[tool.icon] }))
 
 </script>
 <template>
-  <section id="toolbox" class="section-toolbox py-16 relative flex-1 overflow-hidden">
+  <div class="section-toolbox py-16 relative flex-1 overflow-hidden">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center mb-10">
         <h2 class="text-3xl font-bold text-foreground mb-3">Agent百宝箱</h2>
@@ -32,5 +32,5 @@ const tools = toolData.map((tool) => ({ ...tool, icon: iconMap[tool.icon] }))
         </div>
       </div>
     </div>
-  </section>
+  </div>
 </template>

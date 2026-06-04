@@ -24,7 +24,7 @@ const capabilities = capabilityData.map((cap) => ({ ...cap, icon: iconMap[cap.ic
 
 </script>
 <template>
-  <section id="engineering" class="relative flex-1 overflow-hidden">
+  <div class="relative flex-1 overflow-hidden">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center mb-10">
         <h2 class="text-3xl font-bold text-foreground mb-3">工程能力全景</h2>
@@ -48,5 +48,5 @@ const capabilities = capabilityData.map((cap) => ({ ...cap, icon: iconMap[cap.ic
     </div>
 
     <ImageModal v-model:open="modalOpen" src="/panorama_engineering_en.webp" alt="工程能力全景大图" />
-  </section>
+  </div>
 </template>

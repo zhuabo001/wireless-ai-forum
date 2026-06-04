@@ -4,7 +4,7 @@ import { atmosphereEvents as events } from '../data/home'
 
 </script>
 <template>
-  <section id="atmosphere" class="section-atmosphere py-16 relative flex-1 overflow-hidden">
+  <div class="section-atmosphere py-16 relative flex-1 overflow-hidden">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center mb-10">
         <h2 class="text-3xl font-bold text-foreground mb-3">氛围建设</h2>
@@ -25,5 +25,5 @@ import { atmosphereEvents as events } from '../data/home'
         </div>
       </div>
     </div>
-  </section>
+  </div>
 </template>

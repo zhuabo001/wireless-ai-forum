@@ -13,7 +13,7 @@ const forumStats = forumStatData.map((stat) => ({ ...stat, icon: iconMap[stat.ic
 
 </script>
 <template>
-  <section id="forum" class="section-forum py-16 relative flex-1 overflow-hidden">
+  <div class="section-forum py-16 relative flex-1 overflow-hidden">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex items-center justify-between mb-8">
         <div>
@@ -51,5 +51,5 @@ const forumStats = forumStatData.map((stat) => ({ ...stat, icon: iconMap[stat.ic
         </div>
       </div>
     </div>
-  </section>
+  </div>
 </template>

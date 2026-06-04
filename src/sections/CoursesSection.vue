@@ -4,7 +4,7 @@ import { courses } from '../data/home'
 
 </script>
 <template>
-  <section id="courses" class="section-courses py-16 relative flex-1 overflow-hidden">
+  <div class="section-courses py-16 relative flex-1 overflow-hidden">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center mb-10">
         <h2 class="text-3xl font-bold text-foreground mb-3">热门课程</h2>
@@ -31,5 +31,5 @@ import { courses } from '../data/home'
         </div>
       </div>
     </div>
-  </section>
+  </div>
 </template>
