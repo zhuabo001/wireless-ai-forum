@@ -50,6 +50,15 @@ export type IconName =
   | 'wrench'
   | 'x'
   | 'zap'
+  | 'plus'
+  | 'chevron-down'
+  | 'radio-tower'
+  | 'flask-conical'
+  | 'code-2'
+  | 'sliders-horizontal'
+  | 'flame'
+  | 'medal'
+  | 'building-2'
 
 export interface NavLink {
   label: string
