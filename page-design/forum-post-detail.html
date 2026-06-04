@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>基于强化学习的5G调度算法优化实践 — AI论坛 — 无线AI极客汇</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: { DEFAULT: '#0d55c9', foreground: '#ffffff' },
+            border: '#e2e8f0',
+            background: '#f8fafc',
+            foreground: '#0f172a',
+            muted: { DEFAULT: '#f1f5f9', foreground: '#64748b' },
+          },
+          borderRadius: { lg: '0.625rem', xl: '0.75rem' },
+        }
+      }
+    }
+  </script>
+  <style>
+    body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f8fafc; color: #0f172a; -webkit-font-smoothing: antialiased; }
+
+    /* Article prose */
+    .article-body { line-height: 1.8; color: #334155; }
+    .article-body h2 { font-size: 1.375rem; font-weight: 700; color: #0f172a; margin-top: 2.5rem; margin-bottom: 1rem; line-height: 1.35; }
+    .article-body h3 { font-size: 1.125rem; font-weight: 600; color: #0f172a; margin-top: 2rem; margin-bottom: 0.75rem; }
+    .article-body p { margin-bottom: 1.25rem; }
+    .article-body ul { list-style: disc; padding-left: 1.75rem; margin-bottom: 1.25rem; }
+    .article-body ol { list-style: decimal; padding-left: 1.75rem; margin-bottom: 1.25rem; }
+    .article-body li { margin-bottom: 0.375rem; }
+    .article-body blockquote { border-left: 3px solid #cbd5e1; padding-left: 1.25rem; color: #475569; margin: 1.5rem 0; font-style: italic; }
+    .article-body pre { background: #f1f5f9; padding: 1rem 1.25rem; border-radius: 0.625rem; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 0.875rem; overflow-x: auto; line-height: 1.65; margin: 1.25rem 0; }
+    .article-body code { background: #f1f5f9; padding: 0.15rem 0.4rem; border-radius: 0.25rem; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 0.875em; color: #0f172a; }
+    .article-body pre code { background: none; padding: 0; }
+    .article-body img { max-width: 100%; border-radius: 0.625rem; margin: 1.5rem 0; }
+    .article-body a { color: #0d55c9; text-decoration: none; }
+    .article-body a:hover { text-decoration: underline; }
+    .article-body table { width: 100%; border-collapse: collapse; margin: 1.25rem 0; font-size: 0.9375rem; }
+    .article-body th, .article-body td { border: 1px solid #e2e8f0; padding: 0.625rem 1rem; text-align: left; }
+    .article-body th { background: #f8fafc; font-weight: 600; color: #0f172a; }
+
+    /* Comment editor */
+    .comment-editor:empty:before { content: attr(placeholder); color: #94a3b8; }
+    .comment-editor { min-height: 100px; outline: none; line-height: 1.7; }
+    .comment-editor p { margin-bottom: 0.5rem; }
+    .comment-editor pre { background: #f1f5f9; padding: 0.5rem 0.75rem; border-radius: 0.375rem; font-family: ui-monospace, monospace; font-size: 0.875rem; }
+    .comment-editor code { background: #f1f5f9; padding: 0.125rem 0.375rem; border-radius: 0.25rem; font-family: ui-monospace, monospace; font-size: 0.875em; }
+
+    /* Right action bar */
+    .action-bar-btn { transition: all 150ms ease-out; }
+    .action-bar-btn:hover { transform: translateY(-2px); }
+    .action-bar-btn.active { color: #0d55c9; background: #eff6ff; }
+
+    /* Animations */
+    @keyframes heart-burst {
+      0% { transform: scale(1); }
+      30% { transform: scale(1.3); }
+      60% { transform: scale(0.95); }
+      100% { transform: scale(1); }
+    }
+    .heart-anim { animation: heart-burst 300ms ease-out; }
+
+    @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+  </style>
+</head>
+<body class="min-h-screen">
+
+  <!-- Navbar -->
+  <nav class="fixed top-0 left-0 right-0 z-50 bg-white/85 backdrop-blur-md border-b border-border/50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <a href="index.html" class="flex items-center gap-2.5 font-bold text-lg text-foreground">
+          <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-sm">
+            <i data-lucide="zap" class="w-5 h-5 text-white"></i>
+          </div>
+          <span>无线AI极客汇</span>
+        </a>
+        <div class="hidden md:flex items-center gap-1">
+          <a href="index.html" class="px-2 py-2 text-sm font-medium text-muted-foreground hover:text-foreground rounded-md hover:bg-muted transition-colors">首页</a>
+          <a href="intelligence.html" class="px-2 py-2 text-sm font-medium text-muted-foreground hover:text-foreground rounded-md hover:bg-muted transition-colors">情报局</a>
+          <a href="courses.html" class="px-2 py-2 text-sm font-medium text-muted-foreground hover:text-foreground rounded-md hover:bg-muted transition-colors">课程</a>
+          <a href="forum.html" class="px-2 py-2 text-sm font-medium text-foreground bg-muted rounded-md">论坛</a>
+          <a href="market.html" class="px-2 py-2 text-sm font-medium text-muted-foreground hover:text-foreground rounded-md hover:bg-muted transition-colors">Agent市场</a>
+        </div>
+        <div class="flex items-center gap-2">
+          <button class="p-2 text-muted-foreground hover:text-foreground rounded-full hover:bg-muted transition-colors">
+            <i data-lucide="search" class="w-4 h-4"></i>
+          </button>
+          <button class="hidden sm:flex p-2 text-muted-foreground hover:text-foreground rounded-full hover:bg-muted transition-colors">
+            <i data-lucide="user" class="w-4 h-4"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Right Floating Action Bar (Desktop) -->
+  <div class="hidden lg:flex fixed right-6 top-1/2 -translate-y-1/2 z-40 flex-col items-center gap-3">
+    <div class="bg-white rounded-2xl shadow-lg border border-border/60 p-2 flex flex-col items-center gap-1">
+      <button id="btn-like" class="action-bar-btn w-12 h-12 rounded-xl flex flex-col items-center justify-center text-muted-foreground hover:text-rose-500 hover:bg-rose-50" onclick="toggleLike()">
+        <i data-lucide="thumbs-up" class="w-5 h-5"></i>
+        <span id="like-count" class="text-[10px] font-medium mt-0.5">128</span>
+      </button>
+      <div class="w-8 h-px bg-border/60"></div>
+      <button class="action-bar-btn w-12 h-12 rounded-xl flex flex-col items-center justify-center text-muted-foreground hover:text-primary hover:bg-primary/5" onclick="scrollToComments()">
+        <i data-lucide="message-square" class="w-5 h-5"></i>
+        <span class="text-[10px] font-medium mt-0.5">36</span>
+      </button>
+      <div class="w-8 h-px bg-border/60"></div>
+      <button id="btn-bookmark" class="action-bar-btn w-12 h-12 rounded-xl flex flex-col items-center justify-center text-muted-foreground hover:text-amber-500 hover:bg-amber-50" onclick="toggleBookmark()">
+        <i data-lucide="bookmark" class="w-5 h-5"></i>
+        <span class="text-[10px] font-medium mt-0.5">收藏</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile Bottom Action Bar -->
+  <div class="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-border/60 px-4 py-2 flex items-center justify-around">
+    <button id="btn-like-mobile" class="action-bar-btn flex items-center gap-2 px-4 py-2 rounded-xl text-muted-foreground hover:text-rose-500" onclick="toggleLike()">
+      <i data-lucide="thumbs-up" class="w-5 h-5"></i>
+      <span id="like-count-mobile" class="text-sm font-medium">128</span>
+    </button>
+    <button class="action-bar-btn flex items-center gap-2 px-4 py-2 rounded-xl text-muted-foreground hover:text-primary" onclick="scrollToComments()">
+      <i data-lucide="message-square" class="w-5 h-5"></i>
+      <span class="text-sm font-medium">36</span>
+    </button>
+    <button id="btn-bookmark-mobile" class="action-bar-btn flex items-center gap-2 px-4 py-2 rounded-xl text-muted-foreground hover:text-amber-500" onclick="toggleBookmark()">
+      <i data-lucide="bookmark" class="w-5 h-5"></i>
+      <span class="text-sm font-medium">收藏</span>
+    </button>
+  </div>
+
+  <!-- Main Content -->
+  <div class="pt-16 lg:pt-20 pb-20 lg:pb-12">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+
+      <!-- Back Navigation -->
+      <div class="mb-6">
+        <a href="forum.html" class="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors">
+          <i data-lucide="arrow-left" class="w-4 h-4"></i>
+          <span>返回论坛</span>
+        </a>
+      </div>
+
+      <!-- Article Header -->
+      <header class="mb-10">
+        <div class="flex flex-wrap items-center gap-2 mb-4">
+          <span class="px-2.5 py-1 text-xs font-medium bg-primary/10 text-primary rounded-md">实践分享</span>
+          <span class="px-2.5 py-1 text-xs font-medium bg-emerald-50 text-emerald-600 rounded-md">5G</span>
+          <span class="px-2.5 py-1 text-xs font-medium bg-violet-50 text-violet-600 rounded-md">强化学习</span>
+        </div>
+
+        <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground leading-tight mb-6">
+          基于强化学习的5G调度算法优化实践：从仿真到现网部署的完整路径
+        </h1>
+
+        <div class="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
+          <div class="flex items-center gap-2.5">
+            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=chenwei" alt="陈威" class="w-9 h-9 rounded-full bg-muted border border-border">
+            <div>
+              <div class="font-medium text-foreground text-sm">陈威</div>
+              <div class="text-xs">无线算法工程师 · 华为</div>
+            </div>
+          </div>
+          <div class="hidden sm:block w-px h-6 bg-border"></div>
+          <div class="flex items-center gap-1.5">
+            <i data-lucide="calendar-clock" class="w-3.5 h-3.5"></i>
+            <span>2024年12月15日</span>
+          </div>
+          <div class="flex items-center gap-1.5">
+            <i data-lucide="eye" class="w-3.5 h-3.5"></i>
+            <span>3,842 浏览</span>
+          </div>
+          <div class="flex items-center gap-1.5">
+            <i data-lucide="message-square" class="w-3.5 h-3.5"></i>
+            <span>36 评论</span>
+          </div>
+        </div>
+      </header>
+
+      <!-- Article Body -->
+      <article class="article-body text-base sm:text-[0.9375rem] mb-16">
+        <p>
+          在5G NR的MAC层调度中，传统的比例公平（PF）算法虽然能够保证基本的吞吐量与公平性平衡，但在面对高动态负载、多样化业务类型（eMBB/URLLC/mMTC）共存时，其固定的启发式规则往往难以达到最优。本文分享我们团队在过去一年中，将深度强化学习（DRL）引入5G调度决策的完整实践路径，包括仿真环境搭建、算法选型、训练策略，以及最终在某城市热点区域的现网试点结果。
+        </p>
+
+        <h2>一、问题背景与动机</h2>
+        <p>
+          5G网络需要同时支撑增强移动宽带（eMBB）、超可靠低时延通信（URLLC）和海量机器类通信（mMTC）三大类业务。不同业务对吞吐量、时延、可靠性的需求差异巨大：
+        </p>
+        <ul>
+          <li>eMBB 业务追求峰值速率，对时延不敏感</li>
+          <li>URLLC 业务要求端到端时延低于 1ms，可靠性 99.999%</li>
+          <li>mMTC 业务连接密度高，但单次传输数据量极小</li>
+        </ul>
+        <p>
+          传统 PF 算法以 <code>R_i(t) / \bar{R}_i(t)</code> 作为优先级度量，无法根据业务类型动态调整调度策略。我们在现网观测到，在 URLLC 与 eMBB 并发场景下，PF 算法的 URLLC 丢包率比理论最优高出约 18%。
+        </p>
+
+        <h2>二、强化学习方案设计</h2>
+        <h3>2.1 状态空间（State Space）</h3>
+        <p>我们将每个 TTI（Transmission Time Interval）的调度决策建模为一个 MDP 过程。状态向量包含以下维度：</p>
+        <pre><code>state = [
+  buffer_occupancy,      # 各UE逻辑信道缓存占用
+  head_of_line_delay,    # 队首包等待时延
+  channel_quality,       # CQI/PMI/RI 上报值
+  traffic_type_onehot,   # [eMBB, URLLC, mMTC] 独热编码
+  historical_throughput, # 滑动窗口平均吞吐量
+  slot_index            # 时隙索引（用于学习周期 pattern）
+]</code></pre>
+
+        <h3>2.2 动作空间（Action Space）</h3>
+        <p>
+          动作定义为每个资源块组（RBG）分配给哪个 UE，以及对应的 MCS 等级选择。为降低动作空间维度，我们采用分层的动作结构：先选择 UE，再在该 UE 支持的 MCS 集合中选择最优等级。
+        </p>
+
+        <h3>2.3 奖励函数（Reward）</h3>
+        <p>奖励设计是本项目最关键的部分。我们采用多目标加权的方式：</p>
+        <pre><code>reward = w1 * normalized_throughput
+       - w2 * normalized_delay_violation
+       - w3 * normalized_packet_loss
+       + w4 * fairness_index(Jain)</code></pre>
+        <p>
+          其中权重 <code>w1-w4</code> 通过网格搜索在验证集上调优。值得注意的是，我们没有使用固定的权重，而是训练了一个辅助的元网络（Meta-Network）根据网络负载动态调整权重，这使得算法在轻载和重载场景下都能保持较好的适应性。
+        </p>
+
+        <h2>三、仿真环境与训练</h2>
+        <p>仿真环境基于 3GPP TR 38.901 信道模型搭建，关键配置如下：</p>
+        <table>
+          <tr><th>参数</th><th>配置</th></tr>
+          <tr><td>载波频率</td><td>3.5 GHz (n78)</td></tr>
+          <tr><td>系统带宽</td><td>100 MHz (273 RBs)</td></tr>
+          <tr><td>子载波间隔</td><td>30 kHz</td></tr>
+          <tr><td>UE数量</td><td>50-200（动态接入）</td></tr>
+          <tr><td>业务模型</td><td>Full-buffer + Poisson arrival</td></tr>
+          <tr><td>移动性</td><td>3 km/h pedestrian, 30 km/h vehicular</td></tr>
+        </table>
+
+        <p>
+          我们对比了 PPO、SAC 和 A3C 三种算法。在相同的训练步数（10M steps）下，SAC 在收敛稳定性和最终性能上均优于其他两种算法。推测原因与 SAC 的最大熵框架有关——它鼓励策略探索，避免过早陷入局部最优。
+        </p>
+
+        <blockquote>
+          "强化学习在无线通信中的应用，最大的挑战不是算法本身，而是如何设计一个既贴近现网、又足够高效的仿真环境。过度简化的信道模型会导致 sim-to-real 差距过大。"
+        </blockquote>
+
+        <h2>四、现网试点结果</h2>
+        <p>
+          在某一线城市的商业热点区域，我们将训练好的策略网络部署到 gNB 的 MAC 层调度模块中（通过 ONNX 格式导出，推理时延约 0.3ms，满足 TTI 级调度要求）。
+        </p>
+        <p>与基线 PF 算法相比，关键指标提升如下：</p>
+        <ul>
+          <li><strong>小区平均吞吐量</strong>：+12.3%</li>
+          <li><strong>URLLC 丢包率</strong>：-23.7%（从 0.095% 降至 0.072%）</li>
+          <li><strong>边缘用户吞吐量（5th percentile）</strong>：+18.6%</li>
+          <li><strong>Jain 公平性指数</strong>：从 0.82 提升至 0.89</li>
+        </ul>
+
+        <h2>五、踩过的坑与经验</h2>
+        <ol>
+          <li><strong>Sim-to-real gap</strong>：仿真中的 CQI 上报是完美的，现网存在测量误差和上报延迟。我们在训练阶段加入了高斯噪声和随机延迟来增强鲁棒性。</li>
+          <li><strong>训练稳定性</strong>：早期训练经常出现策略崩溃（policy collapse），所有资源都分配给某一个 UE。通过加入熵正则和 reward shaping 缓解。</li>
+          <li><strong>计算资源</strong>：在 200 UE 场景下，单次推理需要评估的动作空间过大。我们采用 action masking 技术，只评估缓存非空且信道条件允许的 UE-MCS 组合，将计算量降低了约 70%。</li>
+          <li><strong>在线更新</strong>：无线环境随时间变化（用户行为、干扰源），离线训练的策略会退化。我们正在探索轻量级的在线微调方案，每周用现网收集的数据进行几轮 PPO 更新。</li>
+        </ol>
+
+        <p>
+          完整的仿真代码和训练脚本已开源在 GitHub（链接见文末）。欢迎社区同学一起探讨，尤其是在多智能体协作调度方向的思路。
+        </p>
+
+        <div class="flex flex-wrap gap-2 mt-8 pt-6 border-t border-border">
+          <span class="text-sm text-muted-foreground mr-2">相关链接：</span>
+          <a href="#" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm bg-muted rounded-lg hover:bg-primary/10 hover:text-primary transition-colors">
+            <i data-lucide="github" class="w-3.5 h-3.5"></i>
+            开源代码
+          </a>
+          <a href="#" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm bg-muted rounded-lg hover:bg-primary/10 hover:text-primary transition-colors">
+            <i data-lucide="file-text" class="w-3.5 h-3.5"></i>
+            技术白皮书
+          </a>
+        </div>
+      </article>
+
+      <!-- Comments Section -->
+      <section id="comments" class="border-t border-border pt-10">
+        <div class="flex items-center justify-between mb-8">
+          <h2 class="text-xl font-bold text-foreground">评论 <span class="text-muted-foreground font-normal text-base">(36)</span></h2>
+          <div class="flex items-center gap-1 text-sm text-muted-foreground">
+            <span>排序：</span>
+            <select class="bg-transparent text-foreground font-medium outline-none cursor-pointer">
+              <option>最热</option>
+              <option>最新</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Main Comment Form -->
+        <div class="bg-white rounded-xl border border-border p-4 mb-10">
+          <div class="flex items-start gap-3 mb-3">
+            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=currentuser" alt="我" class="w-9 h-9 rounded-full bg-muted border border-border flex-shrink-0">
+            <div class="flex-1 min-w-0">
+              <div class="text-sm font-medium text-foreground mb-2">发表评论</div>
+              <!-- Toolbar -->
+              <div class="flex items-center gap-1 px-2 py-1.5 border border-border rounded-lg bg-muted/30 mb-2">
+                <button type="button" class="p-1.5 rounded hover:bg-muted transition-colors text-muted-foreground hover:text-foreground" onclick="execCmd('bold', 'main-editor')">
+                  <i data-lucide="bold" class="w-3.5 h-3.5"></i>
+                </button>
+                <button type="button" class="p-1.5 rounded hover:bg-muted transition-colors text-muted-foreground hover:text-foreground" onclick="execCmd('italic', 'main-editor')">
+                  <i data-lucide="italic" class="w-3.5 h-3.5"></i>
+                </button>
+                <button type="button" class="p-1.5 rounded hover:bg-muted transition-colors text-muted-foreground hover:text-foreground" onclick="execCmd('underline', 'main-editor')">
+                  <i data-lucide="underline" class="w-3.5 h-3.5"></i>
+                </button>
+                <div class="w-px h-3.5 bg-border mx-0.5"></div>
+                <button type="button" class="p-1.5 rounded hover:bg-muted transition-colors text-muted-foreground hover:text-foreground" onclick="execCmd('insertUnorderedList', 'main-editor')">
+                  <i data-lucide="list" class="w-3.5 h-3.5"></i>
+                </button>
+                <button type="button" class="p-1.5 rounded hover:bg-muted transition-colors text-muted-foreground hover:text-foreground" onclick="execCmd('formatBlock', 'main-editor', 'BLOCKQUOTE')">
+                  <i data-lucide="quote" class="w-3.5 h-3.5"></i>
+                </button>
+                <button type="button" class="p-1.5 rounded hover:bg-muted transition-colors text-muted-foreground hover:text-foreground" onclick="insertCode('main-editor')">
+                  <i data-lucide="code-2" class="w-3.5 h-3.5"></i>
+                </button>
+                <button type="button" class="p-1.5 rounded hover:bg-muted transition-colors text-muted-foreground hover:text-foreground" onclick="execCmd('createLink', 'main-editor')">
+                  <i data-lucide="link" class="w-3.5 h-3.5"></i>
+                </button>
+              </div>
+              <!-- Editor -->
+              <div id="main-editor" contenteditable="true" placeholder="分享你的观点、经验或疑问..." class="comment-editor w-full px-3 py-2.5 text-sm border border-border rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-primary/15 focus:border-primary transition-colors"></div>
+            </div>
+          </div>
+          <div class="flex justify-end">
+            <button class="px-5 py-2 text-sm font-medium text-white bg-primary rounded-lg hover:bg-primary/90 transition-colors shadow-sm" onclick="submitMainComment()">
+              发表评论
+            </button>
+          </div>
+        </div>
+
+        <!-- Comments List -->
+        <div id="comments-list" class="space-y-6">
+
+          <!-- Comment 1 -->
+          <div class="comment-item" data-comment-id="1">
+            <div class="flex items-start gap-3">
+              <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=liuming" alt="刘明" class="w-9 h-9 rounded-full bg-muted border border-border flex-shrink-0">
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center gap-2 mb-1">
+                  <span class="text-sm font-semibold text-foreground">刘明</span>
+                  <span class="text-xs text-muted-foreground">中兴通讯 · 算法工程师</span>
+                  <span class="text-xs text-muted-foreground">· 2小时前</span>
+                </div>
+                <div class="text-sm text-foreground leading-relaxed mb-2">
+                  非常有价值的实践分享！我们在做类似的 DRL 调度项目，但在状态空间设计上走了一些弯路。想请教一下，你们的 <code>historical_throughput</code> 滑动窗口长度是怎么确定的？我们在 10/50/100 TTI 之间反复试验，发现对收敛速度影响挺大的。
+                </div>
+                <div class="flex items-center gap-4">
+                  <button class="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-rose-500 transition-colors" onclick="toggleCommentLike(this)">
+                    <i data-lucide="thumbs-up" class="w-3.5 h-3.5"></i>
+                    <span>24</span>
+                  </button>
+                  <button class="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-primary transition-colors" onclick="toggleReply('1')">
+                    <i data-lucide="message-circle" class="w-3.5 h-3.5"></i>
+                    <span>回复</span>
+                  </button>
+                </div>
+
+                <!-- Inline Reply Editor -->
+                <div id="reply-editor-1" class="hidden mt-3">
+                  <div class="bg-muted/40 rounded-xl p-3">
+                    <div class="flex items-start gap-2.5">
+                      <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=currentuser" alt="我" class="w-7 h-7 rounded-full bg-muted border border-border flex-shrink-0">
+                      <div class="flex-1">
+                        <div class="text-xs text-muted-foreground mb-1.5">回复 <span class="text-primary font-medium">刘明</span></div>
+                        <div contenteditable="true" placeholder="写下你的回复..." class="comment-editor w-full px-3 py-2 text-sm border border-border rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-primary/15 focus:border-primary transition-colors" style="min-height: 80px;"></div>
+                        <div class="flex justify-end gap-2 mt-2">
+                          <button class="px-3 py-1.5 text-xs text-muted-foreground hover:text-foreground rounded-lg hover:bg-muted transition-colors" onclick="toggleReply('1')">取消</button>
+                          <button class="px-4 py-1.5 text-xs font-medium text-white bg-primary rounded-lg hover:bg-primary/90 transition-colors" onclick="submitReply('1')">回复</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Replies -->
+                <div class="mt-4 space-y-4 pl-4 border-l-2 border-border/60">
+                  <div class="reply-item">
+                    <div class="flex items-start gap-2.5">
+                      <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=chenwei" alt="陈威" class="w-7 h-7 rounded-full bg-muted border border-border flex-shrink-0">
+                      <div class="flex-1 min-w-0">
+                        <div class="flex items-center gap-2 mb-1">
+                          <span class="text-sm font-semibold text-foreground">陈威</span>
+                          <span class="text-xs text-muted-foreground">作者</span>
+                          <span class="text-xs text-muted-foreground">· 1小时前</span>
+                        </div>
+                        <div class="text-sm text-foreground leading-relaxed mb-1.5">
+                          好问题！我们最终用的是 <strong>50 TTI</strong>（约 25ms @ 30kHz SCS）。太短的窗口（10 TTI）对信道变化过于敏感，策略容易震荡；太长的窗口（100+ TTI）则导致状态滞后，尤其在高速移动场景下。建议你们在验证集上画一条 "窗口长度 vs. 收敛步数" 的曲线，我们观察到 40-60 TTI 是一个相对平坦的区间。
+                        </div>
+                        <div class="flex items-center gap-4">
+                          <button class="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-rose-500 transition-colors" onclick="toggleCommentLike(this)">
+                            <i data-lucide="thumbs-up" class="w-3.5 h-3.5"></i>
+                            <span>12</span>
+                          </button>
+                          <button class="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-primary transition-colors" onclick="toggleReply('1')">
+                            <i data-lucide="message-circle" class="w-3.5 h-3.5"></i>
+                            <span>回复</span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Comment 2 -->
+          <div class="comment-item" data-comment-id="2">
+            <div class="flex items-start gap-3">
+              <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=zhangfan" alt="张帆" class="w-9 h-9 rounded-full bg-muted border border-border flex-shrink-0">
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center gap-2 mb-1">
+                  <span class="text-sm font-semibold text-foreground">张帆</span>
+                  <span class="text-xs text-muted-foreground">爱立信 · 系统工程师</span>
+                  <span class="text-xs text-muted-foreground">· 5小时前</span>
+                </div>
+                <div class="text-sm text-foreground leading-relaxed mb-2">
+                  关于 reward shaping 的部分很有启发。我们之前直接用了原始 KPI 作为 reward，训练非常不稳定。请问你们的 reward 缩放（reward scaling）是怎么做的？有没有遇到过 reward 爆炸的问题？
+                </div>
+                <div class="flex items-center gap-4">
+                  <button class="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-rose-500 transition-colors" onclick="toggleCommentLike(this)">
+                    <i data-lucide="thumbs-up" class="w-3.5 h-3.5"></i>
+                    <span>18</span>
+                  </button>
+                  <button class="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-primary transition-colors" onclick="toggleReply('2')">
+                    <i data-lucide="message-circle" class="w-3.5 h-3.5"></i>
+                    <span>回复</span>
+                  </button>
+                </div>
+
+                <div id="reply-editor-2" class="hidden mt-3">
+                  <div class="bg-muted/40 rounded-xl p-3">
+                    <div class="flex items-start gap-2.5">
+                      <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=currentuser" alt="我" class="w-7 h-7 rounded-full bg-muted border border-border flex-shrink-0">
+                      <div class="flex-1">
+                        <div class="text-xs text-muted-foreground mb-1.5">回复 <span class="text-primary font-medium">张帆</span></div>
+                        <div contenteditable="true" placeholder="写下你的回复..." class="comment-editor w-full px-3 py-2 text-sm border border-border rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-primary/15 focus:border-primary transition-colors" style="min-height: 80px;"></div>
+                        <div class="flex justify-end gap-2 mt-2">
+                          <button class="px-3 py-1.5 text-xs text-muted-foreground hover:text-foreground rounded-lg hover:bg-muted transition-colors" onclick="toggleReply('2')">取消</button>
+                          <button class="px-4 py-1.5 text-xs font-medium text-white bg-primary rounded-lg hover:bg-primary/90 transition-colors" onclick="submitReply('2')">回复</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Comment 3 -->
+          <div class="comment-item" data-comment-id="3">
+            <div class="flex items-start gap-3">
+              <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=wanghao" alt="王浩" class="w-9 h-9 rounded-full bg-muted border border-border flex-shrink-0">
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center gap-2 mb-1">
+                  <span class="text-sm font-semibold text-foreground">王浩</span>
+                  <span class="text-xs text-muted-foreground">清华大学 · 博士后</span>
+                  <span class="text-xs text-muted-foreground">· 昨天</span>
+                </div>
+                <div class="text-sm text-foreground leading-relaxed mb-2">
+                  从学术角度补充一点：最近有一篇来自 KTH Royal Institute 的论文 <em>"DeepRL for Radio Resource Management: A Comprehensive Survey"</em> 对这一类工作做了很好的归纳。文中提到一个关键趋势——从单小区独立优化向多小区协作优化转变，这恰好是你们未来可以探索的方向。多智能体强化学习（MARL）在抑制小区间干扰方面已经有一些 promising 的结果了。
+                </div>
+                <div class="flex items-center gap-4">
+                  <button class="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-rose-500 transition-colors" onclick="toggleCommentLike(this)">
+                    <i data-lucide="thumbs-up" class="w-3.5 h-3.5"></i>
+                    <span>31</span>
+                  </button>
+                  <button class="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-primary transition-colors" onclick="toggleReply('3')">
+                    <i data-lucide="message-circle" class="w-3.5 h-3.5"></i>
+                    <span>回复</span>
+                  </button>
+                </div>
+
+                <div id="reply-editor-3" class="hidden mt-3">
+                  <div class="bg-muted/40 rounded-xl p-3">
+                    <div class="flex items-start gap-2.5">
+                      <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=currentuser" alt="我" class="w-7 h-7 rounded-full bg-muted border border-border flex-shrink-0">
+                      <div class="flex-1">
+                        <div class="text-xs text-muted-foreground mb-1.5">回复 <span class="text-primary font-medium">王浩</span></div>
+                        <div contenteditable="true" placeholder="写下你的回复..." class="comment-editor w-full px-3 py-2 text-sm border border-border rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-primary/15 focus:border-primary transition-colors" style="min-height: 80px;"></div>
+                        <div class="flex justify-end gap-2 mt-2">
+                          <button class="px-3 py-1.5 text-xs text-muted-foreground hover:text-foreground rounded-lg hover:bg-muted transition-colors" onclick="toggleReply('3')">取消</button>
+                          <button class="px-4 py-1.5 text-xs font-medium text-white bg-primary rounded-lg hover:bg-primary/90 transition-colors" onclick="submitReply('3')">回复</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Comment 4 -->
+          <div class="comment-item" data-comment-id="4">
+            <div class="flex items-start gap-3">
+              <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=zhaoyue" alt="赵悦" class="w-9 h-9 rounded-full bg-muted border border-border flex-shrink-0">
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center gap-2 mb-1">
+                  <span class="text-sm font-semibold text-foreground">赵悦</span>
+                  <span class="text-xs text-muted-foreground">大唐移动 · 测试工程师</span>
+                  <span class="text-xs text-muted-foreground">· 2天前</span>
+                </div>
+                <div class="text-sm text-foreground leading-relaxed mb-2">
+                  现网部署的推理时延 0.3ms 是怎么测的？是端到端从 MAC 层收到 CQI 到发出调度决策吗？我们测的 SAC 推理时延在 GPU 上都要 2-3ms，想了解一下你们的硬件加速方案。
+                </div>
+                <div class="flex items-center gap-4">
+                  <button class="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-rose-500 transition-colors" onclick="toggleCommentLike(this)">
+                    <i data-lucide="thumbs-up" class="w-3.5 h-3.5"></i>
+                    <span>9</span>
+                  </button>
+                  <button class="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-primary transition-colors" onclick="toggleReply('4')">
+                    <i data-lucide="message-circle" class="w-3.5 h-3.5"></i>
+                    <span>回复</span>
+                  </button>
+                </div>
+
+                <div id="reply-editor-4" class="hidden mt-3">
+                  <div class="bg-muted/40 rounded-xl p-3">
+                    <div class="flex items-start gap-2.5">
+                      <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=currentuser" alt="我" class="w-7 h-7 rounded-full bg-muted border border-border flex-shrink-0">
+                      <div class="flex-1">
+                        <div class="text-xs text-muted-foreground mb-1.5">回复 <span class="text-primary font-medium">赵悦</span></div>
+                        <div contenteditable="true" placeholder="写下你的回复..." class="comment-editor w-full px-3 py-2 text-sm border border-border rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-primary/15 focus:border-primary transition-colors" style="min-height: 80px;"></div>
+                        <div class="flex justify-end gap-2 mt-2">
+                          <button class="px-3 py-1.5 text-xs text-muted-foreground hover:text-foreground rounded-lg hover:bg-muted transition-colors" onclick="toggleReply('4')">取消</button>
+                          <button class="px-4 py-1.5 text-xs font-medium text-white bg-primary rounded-lg hover:bg-primary/90 transition-colors" onclick="submitReply('4')">回复</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Load More -->
+        <div class="text-center mt-8">
+          <button class="px-5 py-2.5 text-sm text-muted-foreground hover:text-foreground bg-white border border-border rounded-xl hover:bg-muted transition-colors">
+            加载更多评论
+          </button>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <script>
+    // Initialize icons
+    lucide.createIcons();
+
+    // Like toggle
+    let liked = false;
+    let likeCount = 128;
+    function toggleLike() {
+      liked = !liked;
+      likeCount += liked ? 1 : -1;
+
+      const desktopBtn = document.getElementById('btn-like');
+      const mobileBtn = document.getElementById('btn-like-mobile');
+      const desktopCount = document.getElementById('like-count');
+      const mobileCount = document.getElementById('like-count-mobile');
+
+      if (liked) {
+        desktopBtn.classList.add('active', 'text-rose-500', 'bg-rose-50');
+        desktopBtn.classList.remove('text-muted-foreground');
+        mobileBtn.classList.add('text-rose-500');
+        mobileBtn.classList.remove('text-muted-foreground');
+        desktopBtn.querySelector('[data-lucide]').classList.add('heart-anim');
+        setTimeout(() => desktopBtn.querySelector('[data-lucide]').classList.remove('heart-anim'), 300);
+      } else {
+        desktopBtn.classList.remove('active', 'text-rose-500', 'bg-rose-50');
+        desktopBtn.classList.add('text-muted-foreground');
+        mobileBtn.classList.remove('text-rose-500');
+        mobileBtn.classList.add('text-muted-foreground');
+      }
+
+      desktopCount.textContent = likeCount;
+      mobileCount.textContent = likeCount;
+    }
+
+    // Bookmark toggle
+    let bookmarked = false;
+    function toggleBookmark() {
+      bookmarked = !bookmarked;
+      const desktopBtn = document.getElementById('btn-bookmark');
+      const mobileBtn = document.getElementById('btn-bookmark-mobile');
+
+      if (bookmarked) {
+        desktopBtn.classList.add('active', 'text-amber-500', 'bg-amber-50');
+        desktopBtn.classList.remove('text-muted-foreground');
+        mobileBtn.classList.add('text-amber-500');
+        mobileBtn.classList.remove('text-muted-foreground');
+      } else {
+        desktopBtn.classList.remove('active', 'text-amber-500', 'bg-amber-50');
+        desktopBtn.classList.add('text-muted-foreground');
+        mobileBtn.classList.remove('text-amber-500');
+        mobileBtn.classList.add('text-muted-foreground');
+      }
+    }
+
+    // Scroll to comments
+    function scrollToComments() {
+      document.getElementById('comments').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    // Comment like toggle
+    function toggleCommentLike(btn) {
+      const icon = btn.querySelector('i');
+      const countSpan = btn.querySelector('span');
+      const isLiked = btn.classList.contains('text-rose-500');
+      let count = parseInt(countSpan.textContent);
+
+      if (isLiked) {
+        btn.classList.remove('text-rose-500');
+        btn.classList.add('text-muted-foreground');
+        countSpan.textContent = count - 1;
+      } else {
+        btn.classList.remove('text-muted-foreground');
+        btn.classList.add('text-rose-500');
+        icon.classList.add('heart-anim');
+        setTimeout(() => icon.classList.remove('heart-anim'), 300);
+        countSpan.textContent = count + 1;
+      }
+    }
+
+    // Toggle reply editor
+    function toggleReply(commentId) {
+      const editor = document.getElementById('reply-editor-' + commentId);
+      editor.classList.toggle('hidden');
+      if (!editor.classList.contains('hidden')) {
+        editor.querySelector('[contenteditable]').focus();
+      }
+    }
+
+    // Rich text execCommand
+    function execCmd(command, editorId, value = null) {
+      const editor = document.getElementById(editorId);
+      editor.focus();
+      document.execCommand(command, false, value);
+    }
+
+    function insertCode(editorId) {
+      const editor = document.getElementById(editorId);
+      editor.focus();
+      const sel = window.getSelection();
+      const range = sel.getRangeAt(0);
+      const code = document.createElement('code');
+      code.textContent = 'code';
+      range.deleteContents();
+      range.insertNode(code);
+      range.selectNodeContents(code);
+      sel.removeAllRanges();
+      sel.addRange(range);
+    }
+
+    // Submit main comment (demo)
+    function submitMainComment() {
+      const editor = document.getElementById('main-editor');
+      if (!editor.textContent.trim()) {
+        editor.focus();
+        return;
+      }
+      alert('评论已发表（演示）');
+      editor.innerHTML = '';
+    }
+
+    // Submit reply (demo)
+    function submitReply(commentId) {
+      const editor = document.getElementById('reply-editor-' + commentId);
+      const contentEditable = editor.querySelector('[contenteditable]');
+      if (!contentEditable.textContent.trim()) {
+        contentEditable.focus();
+        return;
+      }
+      alert('回复已发表（演示）');
+      contentEditable.innerHTML = '';
+      toggleReply(commentId);
+    }
+  </script>
+</body>
+</html>
