@@ -8,6 +8,6 @@
 | Step 4: 创建 AgentCard.vue | 完成 | feat: add AgentCard component with featured/regular variants |
 | Step 5: 创建 FeaturedAgents.vue | 完成 | feat: add FeaturedAgents section component |
 | Step 6: 创建 MarketToolbar.vue | 完成 | feat: add MarketToolbar with search, filter, and sort |
-| Step 7: 创建 MarketSidebar.vue | 未完成 | |
+| Step 7: 创建 MarketSidebar.vue | 完成 | feat: add MarketSidebar with rankings, developers, and guide |
 | Step 8: 创建 Index.vue（页面入口） | 未完成 | |
 | Step 9: 添加 /market 路由 | 未完成 | |
