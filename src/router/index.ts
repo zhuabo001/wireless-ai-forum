@@ -17,6 +17,11 @@ const routes = [
     name: 'practices',
     component: () => import('@/pages/practices/Index.vue'),
   },
+  {
+    path: '/intelligence',
+    name: 'intelligence',
+    component: () => import('@/pages/intelligence/Index.vue'),
+  },
 ]
 
 const router = createRouter({
