@@ -2,7 +2,7 @@
 import type { SortOption } from '@/types/pageDesign/toolbox'
 import IconRenderer from '@/components/ui/IconRenderer.vue'
 
-defineProps<{
+const props = defineProps<{
   keyword: string
   placeholder: string
   sortKey: string
@@ -22,6 +22,12 @@ function onInput(e: Event) {
 
 function currentSortLabel(options: SortOption[], key: string): string {
   return options.find((o) => o.key === key)?.label ?? '最新'
+}
+
+function cycleSortKey() {
+  const index = props.sortOptions.findIndex((o) => o.key === props.sortKey)
+  const nextIndex = (index + 1) % props.sortOptions.length
+  emit('update:sortKey', props.sortOptions[nextIndex].key)
 }
 </script>
 
@@ -46,7 +52,7 @@ function currentSortLabel(options: SortOption[], key: string): string {
       </button>
       <button
         class="inline-flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium bg-white border border-border text-muted-foreground rounded-lg hover:bg-muted hover:text-foreground transition-colors"
-        @click="emit('update:sortKey', sortOptions[0].key === sortKey ? sortOptions[1]?.key ?? sortKey : sortOptions[0].key)"
+        @click="cycleSortKey"
       >
         <IconRenderer name="arrow-down-up" class="w-4 h-4" />{{ currentSortLabel(sortOptions, sortKey) }}
       </button>

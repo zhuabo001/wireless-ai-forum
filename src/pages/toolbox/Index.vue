@@ -35,6 +35,20 @@ const filteredArticles = computed<ToolArticle[]>(() => {
     )
   }
 
+  const sorter = (a: ToolArticle, b: ToolArticle) => {
+    switch (sortKey.value) {
+      case 'latest':
+        return b.date.localeCompare(a.date)
+      case 'popular':
+        return b.title.localeCompare(a.title)
+      case 'recommended':
+        return a.title.localeCompare(b.title)
+      default:
+        return 0
+    }
+  }
+  list.sort(sorter)
+
   return list
 })
 

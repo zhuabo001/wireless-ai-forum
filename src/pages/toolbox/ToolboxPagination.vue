@@ -47,7 +47,7 @@ const pages = computed<PageItem[]>(() => {
 <template>
   <div class="flex items-center justify-center gap-2 mt-6">
     <button
-      class="p-2 text-muted-foreground rounded-lg hover:bg-muted transition-colors"
+      class="p-2 text-muted-foreground hover:text-foreground rounded-lg hover:bg-muted transition-colors"
       :class="{ 'opacity-50 pointer-events-none': currentPage === 1 }"
       :disabled="currentPage === 1"
       @click="emit('update:currentPage', currentPage - 1)"
@@ -72,7 +72,7 @@ const pages = computed<PageItem[]>(() => {
     </template>
 
     <button
-      class="p-2 text-muted-foreground rounded-lg hover:bg-muted transition-colors"
+      class="p-2 text-muted-foreground hover:text-foreground rounded-lg hover:bg-muted transition-colors"
       :class="{ 'opacity-50 pointer-events-none': currentPage === totalPages }"
       :disabled="currentPage === totalPages"
       @click="emit('update:currentPage', currentPage + 1)"
