@@ -7,6 +7,11 @@ const routes = [
     name: 'home',
     component: HomePage,
   },
+  {
+    path: '/market',
+    name: 'market',
+    component: () => import('@/pages/market/Index.vue'),
+  },
 ]
 
 const router = createRouter({
