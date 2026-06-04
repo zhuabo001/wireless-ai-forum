@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import BeamsBackground from '../BeamsBackground.vue'
-import Navbar from '../Navbar.vue'
 import QuickNavDock from '../QuickNavDock.vue'
 import Footer from '../../sections/Footer.vue'
 </script>
@@ -11,7 +10,6 @@ import Footer from '../../sections/Footer.vue'
       <BeamsBackground />
     </div>
 
-    <Navbar />
     <QuickNavDock />
 
     <main class="relative z-10">

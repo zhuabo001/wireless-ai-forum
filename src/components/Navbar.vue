@@ -1,19 +1,17 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
-import type { NavLink } from '../types/home'
+import { useRoute } from 'vue-router'
 import IconRenderer from './ui/IconRenderer.vue'
-import { brand, navLinks as defaultNavLinks } from '../data/navigation'
+import { brand, navLinks } from '../data/navigation'
 
-const props = withDefaults(defineProps<{
-  links?: NavLink[]
-  activeLabel?: string
-}>(), {
-  links: () => defaultNavLinks,
-  activeLabel: '',
-})
-
+const route = useRoute()
 const scrolled = ref(false)
 const mobileOpen = ref(false)
+
+function isActive(href: string): boolean {
+  if (href === '/') return route.path === '/'
+  return route.path.startsWith(href)
+}
 
 const handleScroll = () => { scrolled.value = window.scrollY > 20 }
 onMounted(() => window.addEventListener('scroll', handleScroll, { passive: true }))
@@ -25,19 +23,19 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex items-center justify-between h-16">
         <!-- Logo -->
-        <a href="#hero" class="flex items-center gap-2.5 font-bold text-lg text-foreground">
+        <router-link to="/" class="flex items-center gap-2.5 font-bold text-lg text-foreground">
           <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-sm">
             <IconRenderer name="zap" class-name="w-5 h-5 text-white" />
           </div>
           <span>{{ brand.name }}</span>
-        </a>
+        </router-link>
 
         <!-- Desktop Nav -->
         <div class="hidden md:flex items-center gap-1">
-          <a v-for="link in props.links" :key="link.label" :href="link.href"
-            :class="['px-2 py-2 text-sm font-medium rounded-md transition-colors whitespace-nowrap', link.label === props.activeLabel ? 'text-foreground bg-muted' : 'text-muted-foreground hover:text-foreground hover:bg-accent']">
+          <router-link v-for="link in navLinks" :key="link.label" :to="link.href"
+            :class="['px-2 py-2 text-sm font-medium rounded-md transition-colors whitespace-nowrap', isActive(link.href) ? 'text-foreground bg-muted' : 'text-muted-foreground hover:text-foreground hover:bg-accent']">
             {{ link.label }}
-          </a>
+          </router-link>
         </div>
 
         <!-- Right Actions -->
@@ -58,9 +56,9 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
     <!-- Mobile Menu -->
     <div v-if="mobileOpen" class="md:hidden bg-white/95 backdrop-blur-md border-t border-[#e2e8f0]/50">
       <div class="px-4 py-3 space-y-1">
-        <a v-for="link in props.links" :key="link.label" :href="link.href"
-          :class="['block px-3 py-2 text-sm font-medium rounded-md transition-colors', link.label === props.activeLabel ? 'text-foreground bg-muted' : 'text-muted-foreground hover:text-foreground hover:bg-accent']"
-          @click="mobileOpen = false">{{ link.label }}</a>
+        <router-link v-for="link in navLinks" :key="link.label" :to="link.href"
+          :class="['block px-3 py-2 text-sm font-medium rounded-md transition-colors', isActive(link.href) ? 'text-foreground bg-muted' : 'text-muted-foreground hover:text-foreground hover:bg-accent']"
+          @click="mobileOpen = false">{{ link.label }}</router-link>
       </div>
     </div>
   </nav>

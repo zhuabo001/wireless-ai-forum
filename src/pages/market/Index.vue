@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { ElButton } from 'element-plus'
-import type { NavLink } from '@/types/home'
 import type { AgentItem } from '@/types/pageDesign/market'
-import Navbar from '@/components/Navbar.vue'
 import FeaturedAgents from './FeaturedAgents.vue'
 import MarketToolbar from './MarketToolbar.vue'
 import AgentCard from './AgentCard.vue'
@@ -18,14 +16,6 @@ import {
   newDevelopers,
   usageGuide,
 } from '@/data/pageDesign/market'
-
-const marketNavLinks: NavLink[] = [
-  { label: '首页', href: '/' },
-  { label: '情报局', href: '/intelligence' },
-  { label: '课程', href: '/courses' },
-  { label: '论坛', href: '/forum' },
-  { label: 'Agent市场', href: '/market' },
-]
 
 const INITIAL_COUNT = 6
 
@@ -82,8 +72,6 @@ function loadMore() {
 </script>
 
 <template>
-  <Navbar :links="marketNavLinks" active-label="Agent市场" />
-
   <div class="pt-16">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <!-- Page Header -->
