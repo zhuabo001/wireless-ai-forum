@@ -69,7 +69,7 @@
   </nav>
 
   <div class="pt-16">
-    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="w-full lg:w-2/3 xl:w-3/5 mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
       <!-- Page Header -->
       <div class="mb-8">
@@ -136,10 +136,18 @@
             <label class="block text-sm font-medium text-foreground mb-2">
               标签
             </label>
+            <select id="tag-select" onchange="addPredefinedTag(this)"
+              class="w-full px-4 py-2.5 text-sm border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors bg-white appearance-none cursor-pointer mb-2">
+              <option value="" disabled selected>选择预设标签</option>
+              <option value="工具FAQ">工具FAQ</option>
+              <option value="技术探讨">技术探讨</option>
+              <option value="业界趋势">业界趋势</option>
+              <option value="工程能力全景">工程能力全景</option>
+            </select>
             <div class="w-full px-3 py-2 text-sm border border-border rounded-xl focus-within:ring-2 focus-within:ring-primary/20 focus-within:border-primary transition-colors bg-white">
               <div id="tag-container" class="flex flex-wrap items-center gap-2">
                 <!-- Tags will be inserted here -->
-                <input type="text" id="tag-input" placeholder="输入标签后回车添加"
+                <input type="text" id="tag-input" placeholder="或手动输入标签后回车添加"
                   class="flex-1 min-w-[120px] py-1 outline-none bg-transparent text-sm"
                   onkeydown="handleTagInput(event)">
               </div>
@@ -370,13 +378,22 @@
         container.appendChild(pill);
       });
       container.appendChild(input);
-      input.placeholder = tags.length >= 5 ? '' : '输入标签后回车添加';
+      input.placeholder = tags.length >= 5 ? '' : '或手动输入标签后回车添加';
       lucide.createIcons();
     }
 
     function removeTag(index) {
       tags.splice(index, 1);
       renderTags();
+    }
+
+    function addPredefinedTag(select) {
+      const value = select.value;
+      if (value && tags.length < 5 && !tags.includes(value)) {
+        tags.push(value);
+        renderTags();
+      }
+      select.selectedIndex = 0;
     }
 
     // Cover upload
