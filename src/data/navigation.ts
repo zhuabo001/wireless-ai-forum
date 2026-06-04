@@ -7,14 +7,13 @@ export const brand = {
 }
 
 export const navLinks: NavLink[] = [
-  { label: '首页', href: '#hero' },
-  { label: 'AI优秀实践', href: '#practices' },
-  { label: 'AI百宝箱', href: '#toolbox' },
-  { label: '情报局', href: '#intelligence' },
-  { label: '课程', href: '#courses' },
-  { label: '论坛', href: '#forum' },
-  { label: '氛围建设', href: '#atmosphere' },
-  { label: 'Agent市场', href: '#market' },
+  { label: '首页', href: '/' },
+  { label: 'AI优秀实践', href: '/practices' },
+  { label: 'AI百宝箱', href: '/toolbox' },
+  { label: '情报局', href: '/intelligence' },
+  { label: '课程', href: '/courses' },
+  { label: '论坛', href: '/forum' },
+  { label: 'Agent市场', href: '/market' },
 ]
 
 export const quickLinks: QuickLink[] = [
