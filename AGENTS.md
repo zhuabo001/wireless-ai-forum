@@ -1,21 +1,15 @@
 <claude-mem-context>
 # Memory Context
 
-# [wireless-ai-forum-github] recent context, 2026-06-04 3:02pm GMT+8
+# [wireless-ai-forum-github] recent context, 2026-06-04 8:24pm GMT+8
 
 Legend: 🎯session 🔴bugfix 🟣feature 🔄refactor ✅change 🔵discovery ⚖️decision
 Format: ID TIME TYPE TITLE
 Fetch details: get_observations([IDs]) | Search: mem-search skill
 
-Stats: 50 obs (11,611t read) | 60,726t work | 81% savings
+Stats: 50 obs (12,876t read) | 64,388t work | 80% savings
 
 ### Jun 4, 2026
-473 2:08p ✅ Step 4 (section refactoring) now in progress after 3 completed phases
-474 " 🟣 ImagePreview component created as reusable image view button
-475 2:09p 🟣 MediaCard component created for image-based content cards
-476 " 🟣 TopicList component created with IconRenderer integration
-477 " 🔄 HeroSection refactored to use IconRenderer and MetricCard components
-478 " 🔄 EngineeringSection refactored with SectionHeader, BaseCard, ImagePreview, IconRenderer
 479 2:10p 🔄 PracticesSection refactored with SectionHeader, BaseCard, IconRenderer, TagBadge
 480 " 🔄 ToolboxSection refactored — 8 lucide imports and iconMap removed
 481 " 🔄 IntelligenceSection refactored — 7 lucide imports and iconMap removed
@@ -55,26 +49,32 @@ Stats: 50 obs (11,611t read) | 60,726t work | 81% savings
 515 2:50p 🔵 Icon dependency isolation confirmed — lucide imports scoped to single file
 516 " ✅ Build confirms icon isolation — zero bundle size impact
 517 2:51p 🔄 Step 7 icon isolation committed — lucide dependency now single-file facade
-**518** " ✅ **All 7 refactoring steps complete — entering final Step 8**
-The project has completed all 7 refactoring steps and entered the final verification phase (Step 8). The remaining work involves ensuring the production build succeeds, verifying the app works correctly in a browser, and reviewing the git history for clean commit structure. This marks the end of the systematic refactoring effort that restructured the project's data layer, components, UI framework, CSS architecture, and icon management.
-~239t 🛠️ 940
+518 " ✅ All 7 refactoring steps complete — entering final Step 8
+520 " 🔵 Step 8 verification complete — all final checks pass
+521 2:52p 🔵 Vite dev server fails to bind on IPv6 localhost ::1:5173
+522 " 🔴 Vite dev server started on IPv4 127.0.0.1 to bypass IPv6 EPERM
+523 " 🔵 Playwright API in in-app browser does not support 'networkidle' state
+525 3:03p ⚖️ AI agent marketplace section validated as non-critical iframe embed
+**526** " ✅ **ImageModal replaces default ElDialog close button with custom IconRenderer close button**
+ImageModal.vue was updated to replace the default element-plus dialog close button with a custom one. This gives more control over the close button's styling — the new button has a semi-transparent dark background (black/30), rounded full shape, and a hover effect that increases opacity. The IconRenderer component renders the "x" icon. This change was necessary to achieve a consistent visual style matching the overall design system.
+~257t 🛠️ 1,616
 
-**520** " 🔵 **Step 8 verification complete — all final checks pass**
-Step 8 final verification is complete. All file integrity checks pass, the lucide-vue-next dependency is fully isolated to a single file, and the git history shows a clean, methodical 8-commit refactoring sequence on the `init-other-pages` branch. Each commit corresponds to one step in the plan, making the evolution easy to review and revert if needed. The homepage refactoring project is complete.
-~296t 🔍 1,471
+**527** " ✅ **ActivityCalendar date cells get data-date and data-has-activity attributes**
+The calendar date cells in ActivityCalendar.vue were augmented with `data-date` and `data-has-activity` attributes. This allows external tools (tests, automation, or developer tooling) to identify specific dates and their activity status without relying on visual content or CSS class names. This is a non-visual change that improves testability.
+~183t 🛠️ 1,616
 
-**521** 2:52p 🔵 **Vite dev server fails to bind on IPv6 localhost ::1:5173**
-During Step 8 browser verification, the Vite dev server failed to start due to an EPERM error binding to IPv6 loopback (::1:5173). This is a runtime environment restriction — likely a macOS sandbox policy or a network permission constraint on IPv6. The production build is already available in dist/, so verification could proceed by serving the static build directory instead, or by configuring Vite to bind to IPv4 (127.0.0.1) instead.
-~261t 🔍 5,051
+**528** " 🔄 **Homepage undergoes 7-commit refactoring series for component extraction**
+The homepage was substantially refactored across 7 commits to improve code organization and maintainability. Key architectural changes include: centralizing data into a single source, rendering sections declaratively from config, extracting shared base UI components, introducing Element Plus for standardized controls, separating style tokens, and isolating icon rendering. These changes make the homepage more configurable and easier to maintain, and follow a layered architecture pattern: data → config → base components → style tokens → section composition.
+~329t 🛠️ 1,616
 
-**522** " 🔴 **Vite dev server started on IPv4 127.0.0.1 to bypass IPv6 EPERM**
-The Vite dev server EPERM issue was resolved by explicitly binding to IPv4 with `--host 127.0.0.1`. The error was specific to IPv6 loopback (::1) — the macOS environment or sandbox appears to restrict IPv6 socket creation. The server is now ready at http://127.0.0.1:5173/ for browser verification of the refactored homepage.
-~226t 🛠️ 464
+**529** " 🔴 **Commit "fix: preserve modal close and calendar targeting" on init-other-pages branch**
+The two previously-staged changes were committed as cd8692b on the `init-other-pages` branch. The commit bundles two fixes: adding data attributes (`data-date`, `data-has-activity`) to ActivityCalendar date cells for programmatic targeting, and replacing ImageModal's native ElDialog close button with a custom-styled IconRenderer-based close button. The commit author warning indicates the machine's git global identity was not configured.
+~227t 🛠️ 639
 
-**523** " 🔵 **Playwright API in in-app browser does not support 'networkidle' state**
-During Step 8 browser verification, the initial Playwright call failed because the in-app browser's Playwright implementation doesn't support the 'networkidle' waitForLoadState option. The environment supports only basic load states ('load' and 'domcontentloaded'). The evaluation function was designed to verify all homepage sections are rendering, Element Plus components mount (ElCalendar, ElDialog), and market filter buttons work. The primary session will need to retry with state: 'load' instead.
-~335t 🔍 833
+**530** 3:05p ✅ **All 8-step homepage refactoring plan marked complete**
+The full homepage refactoring plan has been completed across 8 sequential steps. The project evolved from centralizing homepage data into a configuration-driven architecture, extracting shared UI components, introducing Element Plus for standardized controls, engineering style tokens, isolating icon rendering, and finally building and verifying the result. The plan serves as a roadmap of the architecture migration pattern applied to this Vue.js project.
+~247t 🛠️ 478
 
 
-Access 61k tokens of past work via get_observations([IDs]) or mem-search skill.
+Access 64k tokens of past work via get_observations([IDs]) or mem-search skill.
 </claude-mem-context>
