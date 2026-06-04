@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue'
 import { ElButton, ElCalendar, ElTag } from 'element-plus'
-import { ChevronLeft, ChevronRight, Calendar as CalendarIcon, MapPin, Clock, Users, Zap } from 'lucide-vue-next'
+import IconRenderer from './ui/IconRenderer.vue'
 import { activities } from '../data/home'
 import type { ActivityItem } from '../types/home'
 
@@ -53,7 +53,7 @@ watch([currentYear, currentMonth], () => {
     <!-- Left: Activity Card (2/5 width) -->
     <div class="lg:w-2/5 flex flex-col">
       <div class="flex items-center gap-2 mb-3">
-        <CalendarIcon class="w-5 h-5 text-primary" />
+        <IconRenderer name="calendar" class-name="w-5 h-5 text-primary" />
         <h3 class="text-base font-semibold text-foreground">活动详情</h3>
         <ElTag v-if="selectedActivity" :type="selectedActivityTagType" size="small" class="ml-auto">
           {{ selectedActivity.type }}
@@ -72,15 +72,15 @@ watch([currentYear, currentMonth], () => {
         <p class="text-sm text-muted-foreground mb-4 leading-relaxed">{{ selectedActivity.desc }}</p>
         <div class="space-y-2 text-xs text-muted-foreground">
           <div class="flex items-center gap-2">
-            <Clock class="w-3.5 h-3.5 text-primary" />
+            <IconRenderer name="clock" class-name="w-3.5 h-3.5 text-primary" />
             <span>{{ selectedActivity.time }}</span>
           </div>
           <div class="flex items-center gap-2">
-            <MapPin class="w-3.5 h-3.5 text-primary" />
+            <IconRenderer name="map-pin" class-name="w-3.5 h-3.5 text-primary" />
             <span>{{ selectedActivity.location }}</span>
           </div>
           <div class="flex items-center gap-2">
-            <Users class="w-3.5 h-3.5 text-primary" />
+            <IconRenderer name="users" class-name="w-3.5 h-3.5 text-primary" />
             <span>{{ selectedActivity.participants }}人已报名</span>
           </div>
         </div>
@@ -90,7 +90,7 @@ watch([currentYear, currentMonth], () => {
       </div>
       <!-- No activity -->
       <div v-else class="bg-white/80 backdrop-blur-sm rounded-xl border border-gray-200 p-5 flex-1 flex flex-col items-center justify-center text-center">
-        <Zap class="w-10 h-10 text-gray-300 mb-3" />
+        <IconRenderer name="zap" class-name="w-10 h-10 text-gray-300 mb-3" />
         <p class="text-sm text-muted-foreground">当日暂无活动安排</p>
         <p class="text-xs text-gray-400 mt-1">请选择有红色标记的日期查看活动</p>
       </div>
@@ -102,13 +102,13 @@ watch([currentYear, currentMonth], () => {
       <div class="flex items-center justify-between mb-4">
         <div class="flex items-center gap-1">
           <button @click="prevMonth" class="p-1.5 rounded-lg hover:bg-gray-100 transition-colors">
-            <ChevronLeft class="w-4 h-4 text-muted-foreground" />
+            <IconRenderer name="chevron-left" class-name="w-4 h-4 text-muted-foreground" />
           </button>
           <span class="text-base font-semibold text-foreground min-w-[100px] text-center">
             {{ currentYear }}年{{ monthNames[currentMonth] }}
           </span>
           <button @click="nextMonth" class="p-1.5 rounded-lg hover:bg-gray-100 transition-colors">
-            <ChevronRight class="w-4 h-4 text-muted-foreground" />
+            <IconRenderer name="chevron-right" class-name="w-4 h-4 text-muted-foreground" />
           </button>
         </div>
       </div>

@@ -9,6 +9,7 @@ import {
   Brain,
   Briefcase,
   Calendar,
+  ChevronLeft,
   ChevronRight,
   Clock,
   Command,
@@ -28,6 +29,7 @@ import {
   Link2,
   Mail,
   MapPin,
+  Menu,
   MessageCircle,
   MessageSquare,
   MessagesSquare,
@@ -48,6 +50,7 @@ import {
   User,
   Users,
   Wrench,
+  X,
   Zap,
 } from 'lucide-vue-next'
 import type { IconName } from '../../types/home'
@@ -68,6 +71,7 @@ const iconMap = {
   brain: Brain,
   briefcase: Briefcase,
   calendar: Calendar,
+  'chevron-left': ChevronLeft,
   'chevron-right': ChevronRight,
   clock: Clock,
   command: Command,
@@ -87,6 +91,7 @@ const iconMap = {
   link: Link2,
   mail: Mail,
   'map-pin': MapPin,
+  menu: Menu,
   'message-circle': MessageCircle,
   'message-square': MessageSquare,
   'messages-square': MessagesSquare,
@@ -107,6 +112,7 @@ const iconMap = {
   user: User,
   users: Users,
   wrench: Wrench,
+  x: X,
   zap: Zap,
 }
 

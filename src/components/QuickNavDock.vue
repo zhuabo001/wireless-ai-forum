@@ -1,19 +1,7 @@
 <script setup lang="ts">
-import { Cpu, Award, Briefcase, Newspaper, BookOpen, MessageSquare, Layers } from 'lucide-vue-next'
-import { quickLinks as quickLinkData } from '../data/navigation'
-import type { IconName } from '../types/home'
+import IconRenderer from './ui/IconRenderer.vue'
+import { quickLinks } from '../data/navigation'
 
-const iconMap: Partial<Record<IconName, unknown>> = {
-  cpu: Cpu,
-  award: Award,
-  briefcase: Briefcase,
-  newspaper: Newspaper,
-  'book-open': BookOpen,
-  'message-square': MessageSquare,
-  layers: Layers,
-}
-
-const quickLinks = quickLinkData.map((link) => ({ ...link, icon: iconMap[link.icon] }))
 </script>
 
 <template>
@@ -28,7 +16,7 @@ const quickLinks = quickLinkData.map((link) => ({ ...link, icon: iconMap[link.ic
       <div
         class="w-10 h-10 rounded-full bg-white/90 backdrop-blur shadow-md border border-gray-100 flex items-center justify-center text-gray-500 hover:text-gray-900 hover:shadow-lg hover:scale-110 transition-all duration-200"
       >
-        <component :is="link.icon" class="w-5 h-5" />
+        <IconRenderer :name="link.icon" class-name="w-5 h-5" />
       </div>
 
       <!-- 左侧悬浮卡片 -->
@@ -37,7 +25,7 @@ const quickLinks = quickLinkData.map((link) => ({ ...link, icon: iconMap[link.ic
       >
         <div class="flex items-center gap-2.5">
           <div :class="['w-8 h-8 rounded-lg flex items-center justify-center shrink-0', link.color]">
-            <component :is="link.icon" class="w-4 h-4" />
+            <IconRenderer :name="link.icon" class-name="w-4 h-4" />
           </div>
           <div class="min-w-0">
             <div class="text-sm font-semibold text-gray-900 truncate">{{ link.label }}</div>

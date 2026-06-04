@@ -1,14 +1,6 @@
 <script setup lang="ts">
-import { Github, Mail, Zap } from 'lucide-vue-next'
+import IconRenderer from '../components/ui/IconRenderer.vue'
 import { brand, footerColumns, footerContacts, footerLegalLinks } from '../data/navigation'
-import type { IconName } from '../types/home'
-
-const iconMap: Partial<Record<IconName, unknown>> = {
-  github: Github,
-  mail: Mail,
-}
-
-const contacts = footerContacts.map((contact) => ({ ...contact, icon: iconMap[contact.icon] }))
 </script>
 <template>
   <footer class="bg-foreground text-background/80 py-12">
@@ -17,7 +9,7 @@ const contacts = footerContacts.map((contact) => ({ ...contact, icon: iconMap[co
         <div>
           <div class="flex items-center gap-2.5 font-bold text-lg text-background mb-3">
             <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-sm">
-              <Zap class="w-5 h-5 text-white" />
+              <IconRenderer name="zap" class-name="w-5 h-5 text-white" />
             </div>
             <span>{{ brand.name }}</span>
           </div>
@@ -30,7 +22,7 @@ const contacts = footerContacts.map((contact) => ({ ...contact, icon: iconMap[co
         <div>
           <h4 class="font-semibold text-background text-sm mb-3">联系我们</h4>
           <div class="space-y-2">
-            <a v-for="contact in contacts" :key="contact.label" :href="contact.href" class="flex items-center gap-2 text-sm text-background/60 hover:text-background transition-colors"><component :is="contact.icon" class="w-4 h-4" /> {{ contact.label }}</a>
+            <a v-for="contact in footerContacts" :key="contact.label" :href="contact.href" class="flex items-center gap-2 text-sm text-background/60 hover:text-background transition-colors"><IconRenderer :name="contact.icon" class-name="w-4 h-4" /> {{ contact.label }}</a>
           </div>
         </div>
       </div>

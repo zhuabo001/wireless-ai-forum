@@ -7,6 +7,7 @@ export type IconName =
   | 'brain'
   | 'briefcase'
   | 'calendar'
+  | 'chevron-left'
   | 'chevron-right'
   | 'clock'
   | 'command'
@@ -26,6 +27,7 @@ export type IconName =
   | 'link'
   | 'mail'
   | 'map-pin'
+  | 'menu'
   | 'message-circle'
   | 'message-square'
   | 'messages-square'
@@ -46,6 +48,7 @@ export type IconName =
   | 'user'
   | 'users'
   | 'wrench'
+  | 'x'
   | 'zap'
 
 export interface NavLink {
