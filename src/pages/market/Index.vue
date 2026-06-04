@@ -39,7 +39,7 @@ function parseDownloads(d: string): number {
   return parseFloat(d)
 }
 
-const filteredAgents = computed<AgentItem[]>(() => {
+const baseFiltered = computed<AgentItem[]>(() => {
   let list = [...agentItems]
 
   if (selectedCategory.value !== '全部') {
@@ -53,6 +53,12 @@ const filteredAgents = computed<AgentItem[]>(() => {
         item.name.toLowerCase().includes(kw) || item.desc.toLowerCase().includes(kw),
     )
   }
+
+  return list
+})
+
+const filteredAgents = computed<AgentItem[]>(() => {
+  const list = [...baseFiltered.value]
 
   switch (sortKey.value) {
     case 'downloads':
@@ -68,10 +74,7 @@ const filteredAgents = computed<AgentItem[]>(() => {
   return list.slice(0, visibleCount.value)
 })
 
-const hasMore = computed(() => visibleCount.value < agentItems.filter((item) => {
-  if (selectedCategory.value !== '全部') return item.type === selectedCategory.value
-  return true
-}).length)
+const hasMore = computed(() => visibleCount.value < baseFiltered.value.length)
 
 function loadMore() {
   visibleCount.value += 3
