@@ -29,7 +29,7 @@ const announcements = [
         <span class="inline-block px-3 py-1 mb-4 text-xs font-medium tracking-wider text-primary bg-primary/10 rounded-full uppercase">
           AI-Powered Wireless R&D Community
         </span>
-        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground mb-4">
+        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground mb-4 leading-normal">
           <ShinyText text="无线AI极客汇" :speed="4" base-color="#0f172a" shine-color="#60a5fa" />
         </h1>
         <p class="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto mb-8">AI赋能无线研发，连接每一位创新者</p>
@@ -37,8 +37,8 @@ const announcements = [
           <a href="#forum" class="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white font-medium rounded-lg hover:bg-primary/90 transition-colors shadow-sm">
             进入论坛 <ArrowRight class="w-4 h-4" />
           </a>
-          <a href="#market" class="inline-flex items-center gap-2 px-6 py-3 bg-white text-foreground font-medium rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors">
-            探索Agent市场
+          <a href="#practices" class="inline-flex items-center gap-2 px-6 py-3 bg-white text-foreground font-medium rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors">
+            进入优秀实践
           </a>
         </div>
       </div>

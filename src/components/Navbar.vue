@@ -6,9 +6,12 @@ const mobileOpen = ref(false)
 
 const navLinks = [
   { label: '首页', href: '#hero' },
+  { label: 'AI优秀实践', href: '#practices' },
+  { label: 'AI百宝箱', href: '#toolbox' },
   { label: '情报局', href: '#intelligence' },
   { label: '课程', href: '#courses' },
   { label: '论坛', href: '#forum' },
+  { label: '氛围建设', href: '#atmosphere' },
   { label: 'Agent市场', href: '#market' },
 ]
 

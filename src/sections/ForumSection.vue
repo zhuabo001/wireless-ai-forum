@@ -1,5 +1,11 @@
 <script setup lang="ts">
-import { MessageCircle, ThumbsUp, Eye, ChevronRight } from 'lucide-vue-next'
+import { MessageCircle, ThumbsUp, Eye, ChevronRight, MessagesSquare, Reply, Users } from 'lucide-vue-next'
+
+const forumStats = [
+  { icon: MessagesSquare, label: '话题', value: '3,600+' },
+  { icon: Reply, label: '回复', value: '12,800+' },
+  { icon: Users, label: '今日活跃', value: '128' },
+]
 
 const topics = [
   { title: 'GPT-4在协议分析中的应用心得', author: '张明远', avatar: '/avatar-1.webp', tag: 'HOT', tagColor: 'bg-red-50 text-red-600', replies: 128, views: '1.2k', likes: 89 },
@@ -20,6 +26,17 @@ const topics = [
           <p class="text-muted-foreground text-sm">用户交流广场，任何问题讨论和话题交流都可以在这里发起</p>
         </div>
         <button class="hidden sm:inline-flex items-center gap-1 px-4 py-2 bg-primary text-white text-sm font-medium rounded-lg hover:bg-primary/90 transition-colors">发起话题 <ChevronRight class="w-4 h-4" /></button>
+      </div>
+      <div class="grid grid-cols-3 gap-4 mb-6">
+        <div v-for="stat in forumStats" :key="stat.label" class="flex items-center gap-3 p-4 bg-white rounded-xl border border-gray-200">
+          <div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+            <component :is="stat.icon" class="w-5 h-5 text-primary" />
+          </div>
+          <div>
+            <span class="block text-xl font-bold text-foreground">{{ stat.value }}</span>
+            <span class="text-xs text-muted-foreground">{{ stat.label }}</span>
+          </div>
+        </div>
       </div>
       <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
         <div v-for="(t,i) in topics" :key="i" :class="['flex items-center gap-4 px-5 py-4 hover:bg-gray-50 transition-colors cursor-pointer', i < topics.length - 1 ? 'border-b border-gray-100' : '']">
