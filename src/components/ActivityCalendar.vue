@@ -120,6 +120,8 @@ watch([currentYear, currentMonth], () => {
         </template>
         <template #date-cell="{ data }">
           <div
+            :data-date="data.day"
+            :data-has-activity="!!activityMap[data.day]"
             @click="selectDate(data.day, !!activityMap[data.day])"
             :class="[
               'activity-calendar-day relative flex flex-col items-center justify-center rounded-lg text-sm transition-all',
