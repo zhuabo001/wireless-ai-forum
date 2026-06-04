@@ -1,0 +1,66 @@
+.el-button {
+  --el-button-border-radius: var(--home-radius-md);
+  font-weight: 500;
+}
+
+.el-button--primary {
+  --el-button-bg-color: var(--home-primary);
+  --el-button-border-color: var(--home-primary);
+  --el-button-hover-bg-color: var(--home-primary-hover);
+  --el-button-hover-border-color: var(--home-primary-hover);
+  --el-button-active-bg-color: var(--home-primary-active);
+  --el-button-active-border-color: var(--home-primary-active);
+}
+
+.el-tag {
+  border-radius: var(--home-radius-sm);
+  font-weight: 500;
+}
+
+.market-filter-button {
+  min-width: auto;
+  padding-inline: 1rem;
+}
+
+.image-preview-dialog {
+  --el-dialog-border-radius: var(--home-radius-lg);
+  overflow: hidden;
+}
+
+.image-preview-dialog .el-dialog__body {
+  padding: 0;
+}
+
+.activity-el-calendar {
+  --el-calendar-border: none;
+  background: transparent;
+}
+
+.activity-el-calendar .el-calendar__header {
+  display: none;
+}
+
+.activity-el-calendar .el-calendar__body {
+  padding: 0;
+}
+
+.activity-el-calendar .el-calendar-table thead th {
+  padding: 0.25rem 0;
+  color: var(--home-muted-foreground);
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.activity-el-calendar .el-calendar-table td {
+  border: 0;
+}
+
+.activity-el-calendar .el-calendar-table .el-calendar-day {
+  min-height: 2.25rem;
+  height: 100%;
+  padding: 0.125rem;
+}
+
+.activity-calendar-day {
+  min-height: 2rem;
+}

@@ -1,19 +1,9 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
-import { Search, User, Menu, X, Zap } from 'lucide-vue-next'
+import IconRenderer from './ui/IconRenderer.vue'
+import { brand, navLinks } from '../data/navigation'
 const scrolled = ref(false)
 const mobileOpen = ref(false)
-
-const navLinks = [
-  { label: '首页', href: '#hero' },
-  { label: 'AI优秀实践', href: '#practices' },
-  { label: 'AI百宝箱', href: '#toolbox' },
-  { label: '情报局', href: '#intelligence' },
-  { label: '课程', href: '#courses' },
-  { label: '论坛', href: '#forum' },
-  { label: '氛围建设', href: '#atmosphere' },
-  { label: 'Agent市场', href: '#market' },
-]
 
 const handleScroll = () => { scrolled.value = window.scrollY > 20 }
 onMounted(() => window.addEventListener('scroll', handleScroll, { passive: true }))
@@ -27,9 +17,9 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
         <!-- Logo -->
         <a href="#hero" class="flex items-center gap-2.5 font-bold text-lg text-foreground">
           <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-sm">
-            <Zap class="w-5 h-5 text-white" />
+            <IconRenderer name="zap" class-name="w-5 h-5 text-white" />
           </div>
-          <span>无线AI极客汇</span>
+          <span>{{ brand.name }}</span>
         </a>
 
         <!-- Desktop Nav -->
@@ -43,13 +33,13 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
         <!-- Right Actions -->
         <div class="flex items-center gap-2">
           <button class="p-2 text-muted-foreground hover:text-foreground rounded-full hover:bg-accent transition-colors">
-            <Search class="w-4 h-4" />
+            <IconRenderer name="search" class-name="w-4 h-4" />
           </button>
           <button class="hidden sm:flex p-2 text-muted-foreground hover:text-foreground rounded-full hover:bg-accent transition-colors">
-            <User class="w-4 h-4" />
+            <IconRenderer name="user" class-name="w-4 h-4" />
           </button>
           <button class="md:hidden p-2 text-muted-foreground hover:text-foreground rounded-full hover:bg-accent transition-colors" @click="mobileOpen = !mobileOpen">
-            <X v-if="mobileOpen" class="w-5 h-5" /><Menu v-else class="w-5 h-5" />
+            <IconRenderer v-if="mobileOpen" name="x" class-name="w-5 h-5" /><IconRenderer v-else name="menu" class-name="w-5 h-5" />
           </button>
         </div>
       </div>
