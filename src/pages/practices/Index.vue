@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
+import { ElButton, ElPagination } from 'element-plus'
 import { practicesMeta, practiceCategories, practiceItems, hotPosts, contributors, teams } from '@/data/pageDesign/practices'
 import IconRenderer from '@/components/ui/IconRenderer.vue'
 import PracticeCategorySidebar from './PracticeCategorySidebar.vue'
@@ -22,7 +23,7 @@ const filteredItems = computed(() => {
   return practiceItems.filter(item => item.categoryId === selectedCategoryId.value)
 })
 
-const totalPages = computed(() => Math.max(1, Math.ceil(filteredItems.value.length / pageSize)))
+const totalItems = computed(() => filteredItems.value.length)
 
 const pagedItems = computed(() => {
   const start = (currentPage.value - 1) * pageSize
@@ -46,10 +47,9 @@ function onToggleExpanded(ids: Set<string>): void {
   expandedCategoryIds.value = ids
 }
 
-const paginationModel = computed({
-  get: () => currentPage.value,
-  set: (val: number) => { currentPage.value = val },
-})
+function onPageChange(page: number): void {
+  currentPage.value = page
+}
 </script>
 
 <template>
@@ -59,10 +59,10 @@ const paginationModel = computed({
         <h1 class="text-3xl font-bold text-foreground mb-2">{{ practicesMeta.title }}</h1>
         <p class="text-muted-foreground">{{ practicesMeta.description }}</p>
       </div>
-      <button class="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-primary text-white text-sm font-medium rounded-lg hover:bg-primary/90 transition-colors shadow-sm">
+      <ElButton type="primary" size="default" class="!inline-flex !items-center gap-2">
         <IconRenderer name="plus" class="w-4 h-4" />
         发布实践
-      </button>
+      </ElButton>
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
@@ -78,6 +78,7 @@ const paginationModel = computed({
         <PracticeToolbar
           :category-name="activeCategoryInfo.name"
           :category-count="activeCategoryInfo.count"
+          :active-category-id="selectedCategoryId ?? ''"
         />
 
         <div class="space-y-4">
@@ -88,38 +89,17 @@ const paginationModel = computed({
           />
         </div>
 
-        <div v-if="totalPages > 1" class="flex items-center justify-center gap-2 mt-6">
-          <button
-            class="p-2 text-muted-foreground hover:text-foreground rounded-lg hover:bg-muted transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
-            :disabled="currentPage <= 1"
-            @click="currentPage--"
-          >
-            <IconRenderer name="chevron-left" class="w-4 h-4" />
-          </button>
-
-          <template v-for="page in totalPages" :key="page">
-            <button
-              v-if="totalPages <= 6 || page === 1 || page === totalPages || Math.abs(page - currentPage) <= 1"
-              class="px-3 py-1.5 text-sm font-medium rounded-lg transition-colors"
-              :class="page === currentPage
-                ? 'text-white bg-primary'
-                : 'text-muted-foreground hover:text-foreground hover:bg-muted'"
-              @click="currentPage = page"
-            >{{ page }}</button>
-            <span
-              v-else-if="page === 2 || page === totalPages - 1"
-              :key="'ellipsis-' + page"
-              class="text-muted-foreground px-1"
-            >...</span>
-          </template>
-
-          <button
-            class="p-2 text-muted-foreground hover:text-foreground rounded-lg hover:bg-muted transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
-            :disabled="currentPage >= totalPages"
-            @click="currentPage++"
-          >
-            <IconRenderer name="chevron-right" class="w-4 h-4" />
-          </button>
+        <div v-if="totalItems > pageSize" class="flex justify-center mt-6">
+          <ElPagination
+            :current-page="currentPage"
+            :page-size="pageSize"
+            :total="totalItems"
+            :pager-count="5"
+            layout="prev, pager, next"
+            size="small"
+            @current-change="onPageChange"
+            class="practices-pagination"
+          />
         </div>
       </main>
 
@@ -131,3 +111,23 @@ const paginationModel = computed({
     </div>
   </div>
 </template>
+
+<style scoped>
+.practices-pagination :deep(.el-pager li) {
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-radius: 0.5rem;
+  min-width: 2rem;
+  height: 2rem;
+  margin: 0 0.125rem;
+}
+.practices-pagination :deep(.el-pager li.is-active) {
+  color: #fff;
+  background-color: #0d55c9;
+}
+.practices-pagination :deep(.el-pagination button) {
+  border-radius: 0.5rem;
+  height: 2rem;
+  min-width: 2rem;
+}
+</style>
