@@ -77,14 +77,31 @@
         <!-- Main Content -->
         <main class="lg:col-span-8">
           <!-- Tab Navigation -->
-          <div class="flex items-center gap-1 mb-6 bg-white border border-border rounded-xl p-1 overflow-x-auto">
+          <div class="flex items-center gap-1 mb-3 bg-white border border-border rounded-xl p-1 overflow-x-auto">
             <button class="px-4 py-2 text-sm font-medium text-white bg-primary rounded-lg whitespace-nowrap">全部</button>
             <button class="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground rounded-lg hover:bg-muted transition-colors whitespace-nowrap">热门</button>
-            <button class="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground rounded-lg hover:bg-muted transition-colors whitespace-nowrap">精华</button>
-            <button class="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground rounded-lg hover:bg-muted transition-colors whitespace-nowrap">求助</button>
-            <button class="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground rounded-lg hover:bg-muted transition-colors whitespace-nowrap">分享</button>
-            <button class="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground rounded-lg hover:bg-muted transition-colors whitespace-nowrap">实践</button>
-            <button class="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground rounded-lg hover:bg-muted transition-colors whitespace-nowrap">讨论</button>
+            <button class="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground rounded-lg hover:bg-muted transition-colors whitespace-nowrap">工具FAQ</button>
+            <button class="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground rounded-lg hover:bg-muted transition-colors whitespace-nowrap">技术探讨</button>
+            <button class="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground rounded-lg hover:bg-muted transition-colors whitespace-nowrap">业界趋势</button>
+            <button class="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground rounded-lg hover:bg-muted transition-colors whitespace-nowrap">工程能力全景</button>
+          </div>
+
+          <!-- Filter Row -->
+          <div class="flex items-center gap-3 mb-6">
+            <select class="px-3 py-2 text-sm border border-border rounded-lg bg-white text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors cursor-pointer appearance-none">
+              <option>全部帖子</option>
+              <option>我的回复</option>
+              <option>我的发帖</option>
+            </select>
+            <select class="px-3 py-2 text-sm border border-border rounded-lg bg-white text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors cursor-pointer appearance-none">
+              <option>最新发布</option>
+              <option>最高热度</option>
+              <option>最新回复</option>
+            </select>
+            <div class="relative flex-1">
+              <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground"></i>
+              <input type="text" placeholder="搜索话题..." class="w-full pl-10 pr-4 py-2 text-sm border border-border rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors">
+            </div>
           </div>
 
           <!-- Topic List -->
@@ -93,7 +110,8 @@
               <div class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-indigo-500 flex items-center justify-center text-white text-sm font-bold flex-shrink-0">张</div>
               <div class="flex-1 min-w-0">
                 <div class="flex items-center gap-2 mb-1 flex-wrap">
-                  <span class="text-xs font-medium px-1.5 py-0.5 rounded bg-red-50 text-red-600">HOT</span>
+                  <span class="text-xs font-medium px-1.5 py-0.5 rounded bg-blue-50 text-blue-600">技术探讨</span>
+                  <span class="text-xs font-medium px-1.5 py-0.5 rounded bg-gray-100 text-gray-600">GPT-4</span>
                   <span class="text-sm font-medium text-foreground truncate hover:text-primary transition-colors">GPT-4在协议分析中的应用心得</span>
                 </div>
                 <span class="text-xs text-muted-foreground">张明远 · 2小时前</span>
@@ -109,7 +127,8 @@
               <div class="w-10 h-10 rounded-full bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center text-white text-sm font-bold flex-shrink-0">李</div>
               <div class="flex-1 min-w-0">
                 <div class="flex items-center gap-2 mb-1 flex-wrap">
-                  <span class="text-xs font-medium px-1.5 py-0.5 rounded bg-red-50 text-red-600">HOT</span>
+                  <span class="text-xs font-medium px-1.5 py-0.5 rounded bg-blue-50 text-blue-600">工具FAQ</span>
+                  <span class="text-xs font-medium px-1.5 py-0.5 rounded bg-gray-100 text-gray-600">Agent调优</span>
                   <span class="text-sm font-medium text-foreground truncate hover:text-primary transition-colors">Agent调试中遇到的常见问题和解决方案</span>
                 </div>
                 <span class="text-xs text-muted-foreground">李思涵 · 4小时前</span>
@@ -125,7 +144,8 @@
               <div class="w-10 h-10 rounded-full bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-white text-sm font-bold flex-shrink-0">陈</div>
               <div class="flex-1 min-w-0">
                 <div class="flex items-center gap-2 mb-1 flex-wrap">
-                  <span class="text-xs font-medium px-1.5 py-0.5 rounded bg-orange-50 text-orange-600">求助</span>
+                  <span class="text-xs font-medium px-1.5 py-0.5 rounded bg-blue-50 text-blue-600">工具FAQ</span>
+                  <span class="text-xs font-medium px-1.5 py-0.5 rounded bg-gray-100 text-gray-600">5G协议</span>
                   <span class="text-sm font-medium text-foreground truncate hover:text-primary transition-colors">求助：Agent在5G协议测试中遇到的边界case处理</span>
                 </div>
                 <span class="text-xs text-muted-foreground">陈志强 · 5小时前</span>
@@ -141,7 +161,8 @@
               <div class="w-10 h-10 rounded-full bg-gradient-to-br from-violet-400 to-purple-500 flex items-center justify-center text-white text-sm font-bold flex-shrink-0">王</div>
               <div class="flex-1 min-w-0">
                 <div class="flex items-center gap-2 mb-1 flex-wrap">
-                  <span class="text-xs font-medium px-1.5 py-0.5 rounded bg-green-50 text-green-600">分享</span>
+                  <span class="text-xs font-medium px-1.5 py-0.5 rounded bg-blue-50 text-blue-600">技术探讨</span>
+                  <span class="text-xs font-medium px-1.5 py-0.5 rounded bg-gray-100 text-gray-600">Prompt模板</span>
                   <span class="text-sm font-medium text-foreground truncate hover:text-primary transition-colors">分享一个自制的代码审查Prompt模板</span>
                 </div>
                 <span class="text-xs text-muted-foreground">王雪晴 · 昨天</span>
@@ -157,7 +178,8 @@
               <div class="w-10 h-10 rounded-full bg-gradient-to-br from-rose-400 to-pink-500 flex items-center justify-center text-white text-sm font-bold flex-shrink-0">刘</div>
               <div class="flex-1 min-w-0">
                 <div class="flex items-center gap-2 mb-1 flex-wrap">
-                  <span class="text-xs font-medium px-1.5 py-0.5 rounded bg-blue-50 text-blue-600">实践</span>
+                  <span class="text-xs font-medium px-1.5 py-0.5 rounded bg-blue-50 text-blue-600">业界趋势</span>
+                  <span class="text-xs font-medium px-1.5 py-0.5 rounded bg-gray-100 text-gray-600">Multi-Agent</span>
                   <span class="text-sm font-medium text-foreground truncate hover:text-primary transition-colors">关于多Agent协作模式在基站部署项目中的实践总结</span>
                 </div>
                 <span class="text-xs text-muted-foreground">刘浩然 · 昨天</span>
@@ -173,7 +195,8 @@
               <div class="w-10 h-10 rounded-full bg-gradient-to-br from-cyan-400 to-sky-500 flex items-center justify-center text-white text-sm font-bold flex-shrink-0">赵</div>
               <div class="flex-1 min-w-0">
                 <div class="flex items-center gap-2 mb-1 flex-wrap">
-                  <span class="text-xs font-medium px-1.5 py-0.5 rounded bg-purple-50 text-purple-600">讨论</span>
+                  <span class="text-xs font-medium px-1.5 py-0.5 rounded bg-blue-50 text-blue-600">工程能力全景</span>
+                  <span class="text-xs font-medium px-1.5 py-0.5 rounded bg-gray-100 text-gray-600">安全审查</span>
                   <span class="text-sm font-medium text-foreground truncate hover:text-primary transition-colors">AI生成代码的安全性审查流程与最佳实践</span>
                 </div>
                 <span class="text-xs text-muted-foreground">赵敏华 · 2天前</span>
@@ -201,6 +224,40 @@
         <!-- Right Sidebar -->
         <aside class="lg:col-span-4 space-y-6">
           <div class="sticky top-24 space-y-6">
+            <!-- Hot Posts Ranking -->
+            <div class="bg-white rounded-xl border border-border p-5">
+              <h3 class="text-sm font-semibold text-foreground mb-4 flex items-center gap-2">
+                <i data-lucide="flame" class="w-4 h-4 text-red-500"></i>热帖排行
+              </h3>
+              <div class="space-y-3">
+                <a href="#" class="flex items-start gap-2.5 group">
+                  <span class="text-xs font-bold text-red-500 w-4 flex-shrink-0">1</span>
+                  <i data-lucide="flame" class="w-3.5 h-3.5 text-red-500 mt-0.5 flex-shrink-0"></i>
+                  <span class="text-xs text-foreground group-hover:text-primary transition-colors line-clamp-2 leading-relaxed">GPT-4在协议分析中的应用心得</span>
+                </a>
+                <a href="#" class="flex items-start gap-2.5 group">
+                  <span class="text-xs font-bold text-orange-500 w-4 flex-shrink-0">2</span>
+                  <i data-lucide="flame" class="w-3.5 h-3.5 text-orange-500 mt-0.5 flex-shrink-0"></i>
+                  <span class="text-xs text-foreground group-hover:text-primary transition-colors line-clamp-2 leading-relaxed">Agent调试中遇到的常见问题和解决方案</span>
+                </a>
+                <a href="#" class="flex items-start gap-2.5 group">
+                  <span class="text-xs font-bold text-amber-500 w-4 flex-shrink-0">3</span>
+                  <i data-lucide="flame" class="w-3.5 h-3.5 text-amber-500 mt-0.5 flex-shrink-0"></i>
+                  <span class="text-xs text-foreground group-hover:text-primary transition-colors line-clamp-2 leading-relaxed">分享一个自制的代码审查Prompt模板</span>
+                </a>
+                <a href="#" class="flex items-start gap-2.5 group">
+                  <span class="text-xs font-bold text-yellow-500 w-4 flex-shrink-0">4</span>
+                  <i data-lucide="flame" class="w-3.5 h-3.5 text-yellow-500 mt-0.5 flex-shrink-0"></i>
+                  <span class="text-xs text-foreground group-hover:text-primary transition-colors line-clamp-2 leading-relaxed">关于多Agent协作模式在基站部署项目中的实践总结</span>
+                </a>
+                <a href="#" class="flex items-start gap-2.5 group">
+                  <span class="text-xs font-bold text-gray-400 w-4 flex-shrink-0">5</span>
+                  <i data-lucide="flame" class="w-3.5 h-3.5 text-gray-400 mt-0.5 flex-shrink-0"></i>
+                  <span class="text-xs text-foreground group-hover:text-primary transition-colors line-clamp-2 leading-relaxed">AI生成代码的安全性审查流程与最佳实践</span>
+                </a>
+              </div>
+            </div>
+
             <!-- Active Users -->
             <div class="bg-white rounded-xl border border-border p-5">
               <h3 class="text-sm font-semibold text-foreground mb-4">活跃用户</h3>
