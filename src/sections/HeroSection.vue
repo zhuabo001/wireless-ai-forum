@@ -3,7 +3,7 @@ import { ref } from 'vue'
 import ShinyText from '../components/ShinyText.vue'
 import MarqueeCarousel from '../components/MarqueeCarousel.vue'
 import ActivityCalendar from '../components/ActivityCalendar.vue'
-import { ArrowRight, Users, MessageSquare, Wrench, BookOpen, FileText, Activity, Megaphone } from 'lucide-vue-next'
+import { ArrowRight, Users, MessageSquare, Wrench, BookOpen, FileText, Activity, GitCommit } from 'lucide-vue-next'
 
 const sectionRef = ref<HTMLElement | null>(null)
 
@@ -16,9 +16,9 @@ const stats = [
   { icon: Activity, label: '今日活跃', value: '128' },
 ]
 
-const announcements = [
-  { text: '无线AI极客汇全新升级，Agent市场正式上线，欢迎体验!', bg: 'bg-blue-50 border-l-4 border-blue-500', iconColor: 'text-blue-500' },
-  { text: '本周五 15:00 AI辅助无线研发技术分享会，点击报名 →', bg: 'bg-amber-50 border-l-4 border-amber-500', iconColor: 'text-amber-500' },
+const changelog = [
+  { version: 'v1.2.0', date: '2026-06-01', title: 'Agent市场正式上线，支持工具和Agent的一键部署与分享', changes: ['新增Agent市场模块', '上线首批社区精选Agent工具', '优化首页加载性能'] },
+  { version: 'v1.1.0', date: '2026-05-15', title: '课程中心与AI论坛上线，社区互动功能全面开放', changes: ['新增课程中心，支持内外部课程分享', 'AI论坛上线，支持话题发布与讨论', '新增优秀实践与百宝箱模块'] },
 ]
 </script>
 
@@ -65,16 +65,23 @@ const announcements = [
           </div>
           <ActivityCalendar />
         </div>
-        <!-- Announcements (1/4) -->
+        <!-- Changelog (1/4) -->
         <div class="lg:w-1/4 flex flex-col">
           <div class="flex items-center gap-2 mb-3">
-            <h2 class="text-lg font-bold text-foreground">社区公告</h2>
+            <h2 class="text-lg font-bold text-foreground">更新日志</h2>
           </div>
           <div class="flex flex-col gap-3 flex-1">
-            <div v-for="(ann, i) in announcements" :key="i" :class="['p-4 rounded-lg flex-1 flex items-start', ann.bg]">
-              <div class="flex items-start gap-3">
-                <Megaphone :class="['w-5 h-5 mt-0.5 flex-shrink-0', ann.iconColor]" />
-                <p class="text-sm text-foreground leading-relaxed">{{ ann.text }}</p>
+            <div v-for="(item, i) in changelog" :key="i" class="p-4 rounded-lg bg-white border border-gray-200 flex-1">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="text-xs font-medium px-1.5 py-0.5 rounded bg-blue-50 text-blue-600">{{ item.version }}</span>
+                <span class="text-xs text-muted-foreground">{{ item.date }}</span>
+              </div>
+              <h4 class="text-sm font-semibold text-foreground mb-2">{{ item.title }}</h4>
+              <div class="space-y-1">
+                <div v-for="(change, j) in item.changes" :key="j" class="flex items-start gap-1.5 text-xs text-muted-foreground">
+                  <GitCommit class="w-3 h-3 text-blue-500 mt-0.5 flex-shrink-0" />
+                  <span>{{ change }}</span>
+                </div>
               </div>
             </div>
           </div>
