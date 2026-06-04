@@ -1,32 +1,11 @@
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue'
 import { ChevronLeft, ChevronRight, Calendar as CalendarIcon, MapPin, Clock, Users, Zap } from 'lucide-vue-next'
-
-interface Activity {
-  date: string
-  title: string
-  desc: string
-  location: string
-  time: string
-  participants: number
-  type: '线上' | '线下'
-  typeColor: string
-}
-
-const activities: Activity[] = [
-  { date: '2026-06-02', title: 'AI辅助编码实战 Workshop', desc: '动手体验AI辅助编程工具，提升研发效率', location: '研发中心A栋3楼', time: '14:00-17:00', participants: 30, type: '线下', typeColor: 'bg-blue-50 text-blue-600' },
-  { date: '2026-06-05', title: '大模型在无线测试中的应用分享', desc: '测试部分享GPT-4在自动化测试中的最新实践', location: '线上会议室', time: '15:00-16:30', participants: 120, type: '线上', typeColor: 'bg-green-50 text-green-600' },
-  { date: '2026-06-08', title: 'Agent开发入门培训', desc: '从零开始学习Agent开发与部署', location: '培训中心', time: '09:30-12:00', participants: 50, type: '线下', typeColor: 'bg-blue-50 text-blue-600' },
-  { date: '2026-06-12', title: 'Q2 AI技术圆桌讨论', desc: '季度技术深度交流，聚焦多Agent协作', location: '总部会议中心', time: '14:00-18:00', participants: 25, type: '线下', typeColor: 'bg-blue-50 text-blue-600' },
-  { date: '2026-06-15', title: '代码审查最佳实践分享会', desc: '分享AI辅助代码审查的流程与工具', location: '线上', time: '19:00-20:30', participants: 200, type: '线上', typeColor: 'bg-green-50 text-green-600' },
-  { date: '2026-06-18', title: '无线AI极客汇周年庆', desc: '社区一周年庆典，回顾与展望', location: '总部大礼堂', time: '13:30-17:00', participants: 300, type: '线下', typeColor: 'bg-purple-50 text-purple-600' },
-  { date: '2026-06-22', title: 'MCP协议深度解析', desc: '深入理解Model Context Protocol的设计与实现', location: '线上会议室', time: '20:00-21:30', participants: 80, type: '线上', typeColor: 'bg-green-50 text-green-600' },
-  { date: '2026-06-25', title: 'Prompt Engineering 进阶课程', desc: '高级提示词工程技巧与实战案例', location: '研发中心B栋', time: '14:00-17:00', participants: 40, type: '线下', typeColor: 'bg-blue-50 text-blue-600' },
-  { date: '2026-06-28', title: '月度优秀Agent评选颁奖', desc: '评选本月最佳Agent扩展，颁发荣誉证书', location: '线上', time: '16:00-17:00', participants: 500, type: '线上', typeColor: 'bg-amber-50 text-amber-600' },
-]
+import { activities } from '../data/home'
+import type { ActivityItem } from '../types/home'
 
 const activityMap = computed(() => {
-  const map: Record<string, Activity> = {}
+  const map: Record<string, ActivityItem> = {}
   activities.forEach(a => { map[a.date] = a })
   return map
 })

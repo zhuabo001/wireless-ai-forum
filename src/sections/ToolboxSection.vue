@@ -1,16 +1,20 @@
 <script setup lang="ts">
 import { Wrench, FileText, GitMerge, Terminal, Search, Settings, Shield, Database } from 'lucide-vue-next'
+import { tools as toolData } from '../data/home'
+import type { IconName } from '../types/home'
 
-const tools = [
-  { icon: Wrench, title: '调试助手', desc: '智能调试工具，快速定位问题' },
-  { icon: FileText, title: '文档生成器', desc: '自动生成技术文档' },
-  { icon: GitMerge, title: '代码合并助手', desc: '智能合并冲突解决' },
-  { icon: Terminal, title: 'CLI工具集', desc: '命令行AI工具集合' },
-  { icon: Search, title: '智能检索', desc: '跨平台代码和文档检索' },
-  { icon: Settings, title: '模型管理', desc: 'AI模型版本和部署管理' },
-  { icon: Shield, title: '安全扫描', desc: '自动化安全漏洞检测' },
-  { icon: Database, title: '数据治理', desc: 'AI数据质量治理工具' },
-]
+const iconMap: Partial<Record<IconName, unknown>> = {
+  wrench: Wrench,
+  'file-text': FileText,
+  'git-merge': GitMerge,
+  terminal: Terminal,
+  search: Search,
+  settings: Settings,
+  shield: Shield,
+  database: Database,
+}
+
+const tools = toolData.map((tool) => ({ ...tool, icon: iconMap[tool.icon] }))
 
 </script>
 <template>

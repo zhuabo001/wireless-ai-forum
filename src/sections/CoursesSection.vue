@@ -1,14 +1,6 @@
 <script setup lang="ts">
 import { Clock, Star, User } from 'lucide-vue-next'
-
-const courses = [
-  { title: '大模型驱动无线研发入门', instructor: '张明远', avatar: '/avatar-1.webp', org: '无线研究院', hours: 8, rating: 4.9, students: 1250, cover: '/course-1.webp', tag: '内部课程' },
-  { title: 'LangChain应用开发实战', instructor: '李思涵', avatar: '/avatar-2.webp', org: 'AI实验室', hours: 12, rating: 4.8, students: 980, cover: '/course-2.webp', tag: '外部推荐' },
-  { title: 'AI辅助代码审查实践', instructor: '王雪晴', avatar: '/avatar-3.webp', org: '工程技术部', hours: 6, rating: 4.7, students: 756, cover: '/course-3.webp', tag: '内部课程' },
-  { title: '无线信号AI处理技术', instructor: '陈志强', avatar: '/avatar-4.webp', org: '数据科学中心', hours: 10, rating: 4.9, students: 632, cover: '/course-4.webp', tag: '外部推荐' },
-  { title: 'Agent开发与部署指南', instructor: '刘浩然', avatar: '/avatar-5.webp', org: '工程技术部', hours: 8, rating: 4.8, students: 890, cover: '/course-5.webp', tag: '内部课程' },
-  { title: '多模态AI技术与应用', instructor: '赵敏华', avatar: '/avatar-6.webp', org: 'AI实验室', hours: 10, rating: 4.7, students: 543, cover: '/course-6.webp', tag: '外部推荐' },
-]
+import { courses } from '../data/home'
 
 </script>
 <template>

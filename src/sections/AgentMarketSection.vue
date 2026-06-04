@@ -1,18 +1,22 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { Download, Star, Puzzle, Sparkles, Link2, Bot, Command } from 'lucide-vue-next'
+import { marketCategories, marketItems, marketTypeColors } from '../data/home'
+import type { IconName } from '../types/home'
 
 const active = ref('全部')
-const categories = ['全部', 'Extension', 'Skill', 'MCP', 'Subagent', 'Command']
-const items = [
-  { name: 'CodeLens', type: 'Extension', desc: '智能代码分析插件，支持多种语言', downloads: '2.3k', rating: 4.8, icon: Puzzle },
-  { name: 'TestGenius', type: 'Skill', desc: '自动化测试用例生成技能', downloads: '1.8k', rating: 4.7, icon: Sparkles },
-  { name: 'GitBridge', type: 'MCP', desc: 'Git仓库AI增强连接器', downloads: '1.5k', rating: 4.6, icon: Link2 },
-  { name: 'ReviewBot', type: 'Subagent', desc: '自动化代码审查子代理', downloads: '1.2k', rating: 4.9, icon: Bot },
-  { name: 'DevCLI', type: 'Command', desc: '开发者命令行工具集', downloads: '980', rating: 4.5, icon: Command },
-  { name: 'PromptHub', type: 'Extension', desc: 'Prompt模板管理与共享', downloads: '3.1k', rating: 4.8, icon: Puzzle },
-]
-const typeColors: Record<string,string> = { 'Extension': 'bg-blue-50 text-blue-600', 'Skill': 'bg-emerald-50 text-emerald-600', 'MCP': 'bg-purple-50 text-purple-600', 'Subagent': 'bg-orange-50 text-orange-600', 'Command': 'bg-gray-100 text-gray-600' }
+const categories = marketCategories
+const typeColors = marketTypeColors
+
+const iconMap: Partial<Record<IconName, unknown>> = {
+  puzzle: Puzzle,
+  sparkles: Sparkles,
+  link: Link2,
+  bot: Bot,
+  command: Command,
+}
+
+const items = marketItems.map((item) => ({ ...item, icon: iconMap[item.icon] }))
 const filtered = computed(() => active.value === '全部' ? items : items.filter(i => i.type === active.value))
 
 </script>

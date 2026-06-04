@@ -2,6 +2,8 @@
 import { ref } from 'vue'
 import { Bot, Package, Tags, GitBranch, Zap, Server } from 'lucide-vue-next'
 import ImageModal from '../components/ImageModal.vue'
+import { capabilities as capabilityData } from '../data/home'
+import type { IconName } from '../types/home'
 
 const modalOpen = ref(false)
 
@@ -9,14 +11,16 @@ function openModal() {
   modalOpen.value = true
 }
 
-const capabilities = [
-  { icon: Bot, title: '面向Agent的AR模板构建', desc: '基于Agent的增强现实模板快速构建能力' },
-  { icon: Package, title: 'Harness前馈资产构建', desc: '前馈资产自动化打包与分发' },
-  { icon: Tags, title: '代码批量标注能力', desc: '大规模代码库智能标注与分类' },
-  { icon: GitBranch, title: 'SDD开发流程定义与框架开发', desc: '规格驱动开发全流程框架支持' },
-  { icon: Zap, title: '软件开发流程Skills', desc: '可复用的开发流程技能模块' },
-  { icon: Server, title: 'MCP服务能力', desc: '模型上下文协议服务集成与管理' },
-]
+const iconMap: Partial<Record<IconName, unknown>> = {
+  bot: Bot,
+  package: Package,
+  tags: Tags,
+  'git-branch': GitBranch,
+  zap: Zap,
+  server: Server,
+}
+
+const capabilities = capabilityData.map((cap) => ({ ...cap, icon: iconMap[cap.icon] }))
 
 </script>
 <template>

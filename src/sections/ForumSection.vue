@@ -1,20 +1,15 @@
 <script setup lang="ts">
 import { MessageCircle, ThumbsUp, Eye, ChevronRight, MessagesSquare, Reply, Users } from 'lucide-vue-next'
+import { forumStats as forumStatData, forumTopics as topics } from '../data/home'
+import type { IconName } from '../types/home'
 
-const forumStats = [
-  { icon: MessagesSquare, label: '话题', value: '3,600+' },
-  { icon: Reply, label: '回复', value: '12,800+' },
-  { icon: Users, label: '今日活跃', value: '128' },
-]
+const iconMap: Partial<Record<IconName, unknown>> = {
+  'messages-square': MessagesSquare,
+  reply: Reply,
+  users: Users,
+}
 
-const topics = [
-  { title: 'GPT-4在协议分析中的应用心得', author: '张明远', avatar: '/avatar-1.webp', tag: 'HOT', tagColor: 'bg-red-50 text-red-600', replies: 128, views: '1.2k', likes: 89 },
-  { title: 'Agent调试中遇到的常见问题和解决方案', author: '李思涵', avatar: '/avatar-2.webp', tag: 'HOT', tagColor: 'bg-red-50 text-red-600', replies: 96, views: '876', likes: 56 },
-  { title: '求助：Agent在5G协议测试中遇到的边界case处理', author: '陈志强', avatar: '/avatar-4.webp', tag: '求助', tagColor: 'bg-orange-50 text-orange-600', replies: 72, views: '654', likes: 23 },
-  { title: '分享一个自制的代码审查Prompt模板', author: '王雪晴', avatar: '/avatar-3.webp', tag: '分享', tagColor: 'bg-green-50 text-green-600', replies: 84, views: '2.1k', likes: 156 },
-  { title: '关于多Agent协作模式在基站部署项目中的实践总结', author: '刘浩然', avatar: '/avatar-5.webp', tag: '实践', tagColor: 'bg-blue-50 text-blue-600', replies: 65, views: '543', likes: 45 },
-  { title: 'AI生成代码的安全性审查流程与最佳实践', author: '赵敏华', avatar: '/avatar-6.webp', tag: '讨论', tagColor: 'bg-purple-50 text-purple-600', replies: 58, views: '987', likes: 72 },
-]
+const forumStats = forumStatData.map((stat) => ({ ...stat, icon: iconMap[stat.icon] }))
 
 </script>
 <template>

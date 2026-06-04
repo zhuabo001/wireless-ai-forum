@@ -1,15 +1,19 @@
 <script setup lang="ts">
 import { Cpu, Award, Briefcase, Newspaper, BookOpen, MessageSquare, Layers } from 'lucide-vue-next'
+import { quickLinks as quickLinkData } from '../data/navigation'
+import type { IconName } from '../types/home'
 
-const quickLinks = [
-  { icon: Cpu, label: '工程能力', href: '#engineering', color: 'bg-blue-50 text-blue-600', desc: '构建与部署核心工程能力' },
-  { icon: Award, label: '优秀实践', href: '#practices', color: 'bg-emerald-50 text-emerald-600', desc: '精选行业最佳实践案例' },
-  { icon: Briefcase, label: '百宝箱', href: '#toolbox', color: 'bg-amber-50 text-amber-600', desc: '高效工具与资源集合' },
-  { icon: Newspaper, label: '情报局', href: '#intelligence', color: 'bg-rose-50 text-rose-600', desc: '最新技术情报速递' },
-  { icon: BookOpen, label: '热门课程', href: '#courses', color: 'bg-violet-50 text-violet-600', desc: '前沿技术体系化课程' },
-  { icon: MessageSquare, label: 'AI论坛', href: '#forum', color: 'bg-cyan-50 text-cyan-600', desc: '技术交流与观点碰撞' },
-  { icon: Layers, label: 'Agent市场', href: '#market', color: 'bg-orange-50 text-orange-600', desc: '智能体应用与服务市场' },
-]
+const iconMap: Partial<Record<IconName, unknown>> = {
+  cpu: Cpu,
+  award: Award,
+  briefcase: Briefcase,
+  newspaper: Newspaper,
+  'book-open': BookOpen,
+  'message-square': MessageSquare,
+  layers: Layers,
+}
+
+const quickLinks = quickLinkData.map((link) => ({ ...link, icon: iconMap[link.icon] }))
 </script>
 
 <template>

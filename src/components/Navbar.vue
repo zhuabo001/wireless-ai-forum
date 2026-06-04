@@ -1,19 +1,9 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
 import { Search, User, Menu, X, Zap } from 'lucide-vue-next'
+import { brand, navLinks } from '../data/navigation'
 const scrolled = ref(false)
 const mobileOpen = ref(false)
-
-const navLinks = [
-  { label: '首页', href: '#hero' },
-  { label: 'AI优秀实践', href: '#practices' },
-  { label: 'AI百宝箱', href: '#toolbox' },
-  { label: '情报局', href: '#intelligence' },
-  { label: '课程', href: '#courses' },
-  { label: '论坛', href: '#forum' },
-  { label: '氛围建设', href: '#atmosphere' },
-  { label: 'Agent市场', href: '#market' },
-]
 
 const handleScroll = () => { scrolled.value = window.scrollY > 20 }
 onMounted(() => window.addEventListener('scroll', handleScroll, { passive: true }))
@@ -29,7 +19,7 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
           <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-sm">
             <Zap class="w-5 h-5 text-white" />
           </div>
-          <span>无线AI极客汇</span>
+          <span>{{ brand.name }}</span>
         </a>
 
         <!-- Desktop Nav -->

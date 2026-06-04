@@ -1,11 +1,6 @@
 <script setup lang="ts">
 import { Calendar, MapPin, Users } from 'lucide-vue-next'
-
-const events = [
-  { title: 'AI技术圆桌讨论 — Q1季度', date: '2024-03-15', location: '总部会议中心', desc: '季度技术分享，聚焦大模型在无线研发中的最新实践', image: '/event-1.webp', participants: 25 },
-  { title: 'Agent开发 Workshop', date: '2024-04-20', location: '研发中心B栋', desc: '动手实践Agent开发，从Prompt设计到工具集成', image: '/event-2.webp', participants: 40 },
-  { title: '年度AI创新颁奖典礼', date: '2024-06-30', location: '总部大礼堂', desc: '表彰年度AI创新项目和优秀实践团队', image: '/event-3.webp', participants: 200 },
-]
+import { atmosphereEvents as events } from '../data/home'
 
 </script>
 <template>

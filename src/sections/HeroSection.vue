@@ -4,22 +4,21 @@ import ShinyText from '../components/ShinyText.vue'
 import MarqueeCarousel from '../components/MarqueeCarousel.vue'
 import ActivityCalendar from '../components/ActivityCalendar.vue'
 import { ArrowRight, Users, MessageSquare, Wrench, BookOpen, FileText, Activity, GitCommit } from 'lucide-vue-next'
+import { changelog, heroContent, heroStats } from '../data/home'
+import type { IconName } from '../types/home'
 
 const sectionRef = ref<HTMLElement | null>(null)
 
-const stats = [
-  { icon: Users, label: '社区成员', value: '2,500+' },
-  { icon: MessageSquare, label: '活跃话题', value: '3,600+' },
-  { icon: Wrench, label: 'Agent工具', value: '180+' },
-  { icon: BookOpen, label: '精品课程', value: '50+' },
-  { icon: FileText, label: '实践案例', value: '360+' },
-  { icon: Activity, label: '今日活跃', value: '128' },
-]
+const iconMap: Partial<Record<IconName, unknown>> = {
+  users: Users,
+  'message-square': MessageSquare,
+  wrench: Wrench,
+  'book-open': BookOpen,
+  'file-text': FileText,
+  activity: Activity,
+}
 
-const changelog = [
-  { version: 'v1.2.0', date: '2026-06-01', title: 'Agent市场正式上线，支持工具和Agent的一键部署与分享', changes: ['新增Agent市场模块', '上线首批社区精选Agent工具', '优化首页加载性能'] },
-  { version: 'v1.1.0', date: '2026-05-15', title: '课程中心与AI论坛上线，社区互动功能全面开放', changes: ['新增课程中心，支持内外部课程分享', 'AI论坛上线，支持话题发布与讨论', '新增优秀实践与百宝箱模块'] },
-]
+const stats = heroStats.map((stat) => ({ ...stat, icon: iconMap[stat.icon] }))
 </script>
 
 <template>
@@ -27,18 +26,26 @@ const changelog = [
       <!-- Main Title -->
       <div class="text-center pt-20 pb-6">
         <span class="inline-block px-3 py-1 mb-4 text-xs font-medium tracking-wider text-primary bg-primary/10 rounded-full uppercase">
-          AI-Powered Wireless R&D Community
+          {{ heroContent.eyebrow }}
         </span>
         <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground mb-4 leading-normal">
-          <ShinyText text="无线AI极客汇" :speed="4" base-color="#0f172a" shine-color="#60a5fa" />
+          <ShinyText :text="heroContent.title" :speed="4" base-color="#0f172a" shine-color="#60a5fa" />
         </h1>
-        <p class="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto mb-8">AI赋能无线研发，连接每一位创新者</p>
+        <p class="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto mb-8">{{ heroContent.subtitle }}</p>
         <div class="flex flex-wrap items-center justify-center gap-4">
-          <a href="#forum" class="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white font-medium rounded-lg hover:bg-primary/90 transition-colors shadow-sm">
-            进入论坛 <ArrowRight class="w-4 h-4" />
-          </a>
-          <a href="#practices" class="inline-flex items-center gap-2 px-6 py-3 bg-white text-foreground font-medium rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors">
-            进入优秀实践
+          <a
+            v-for="action in heroContent.actions"
+            :key="action.href"
+            :href="action.href"
+            :class="[
+              'inline-flex items-center gap-2 px-6 py-3 font-medium rounded-lg transition-colors',
+              action.variant === 'primary'
+                ? 'bg-primary text-white hover:bg-primary/90 shadow-sm'
+                : 'bg-white text-foreground border border-gray-200 hover:bg-gray-50'
+            ]"
+          >
+            {{ action.label }}
+            <ArrowRight v-if="action.icon === 'arrow-right'" class="w-4 h-4" />
           </a>
         </div>
       </div>
