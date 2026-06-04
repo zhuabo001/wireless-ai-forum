@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { Contributor } from '@/types/pageDesign/practices'
-import { ElAvatar } from 'element-plus'
 import IconRenderer from '@/components/ui/IconRenderer.vue'
 
 defineProps<{
@@ -20,9 +19,9 @@ defineProps<{
         :key="c.name"
         class="flex items-center gap-3"
       >
-        <ElAvatar :size="36" class="!bg-gradient-to-br !from-primary/80 !to-indigo-600 !text-white !text-sm !font-medium shrink-0">
+        <div class="w-9 h-9 rounded-full bg-gradient-to-br from-primary/80 to-indigo-600 flex items-center justify-center text-white text-sm font-medium shrink-0">
           {{ c.surname }}
-        </ElAvatar>
+        </div>
         <div class="flex-1 min-w-0">
           <p class="text-sm font-medium text-foreground truncate">{{ c.name }}</p>
           <p class="text-xs text-muted-foreground">{{ c.articles }} 篇实践 · {{ c.likes }} 赞</p>

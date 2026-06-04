@@ -23,7 +23,7 @@ function toggleCategory(id: string): void {
   emit('update:expandedCategoryIds', next)
 }
 
-function selectSubCategory(subId: string): void {
+function selectSubCategory(catId: string, subId: string): void {
   emit('update:selectedCategoryId', subId)
 }
 
@@ -68,7 +68,7 @@ function isSelected(id: string): boolean {
               :class="isSelected(sub.id)
                 ? 'text-foreground bg-muted'
                 : 'text-muted-foreground hover:text-foreground hover:bg-muted'"
-              @click="selectSubCategory(sub.id)"
+              @click="selectSubCategory(cat.id, sub.id)"
             >
               <span>{{ sub.name }}</span>
               <span class="text-xs" :class="isSelected(sub.id) ? 'text-muted-foreground' : ''">{{ sub.count }}</span>
