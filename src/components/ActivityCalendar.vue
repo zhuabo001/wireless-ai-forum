@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue'
+import { ElButton, ElCalendar, ElTag } from 'element-plus'
 import { ChevronLeft, ChevronRight, Calendar as CalendarIcon, MapPin, Clock, Users, Zap } from 'lucide-vue-next'
 import { activities } from '../data/home'
 import type { ActivityItem } from '../types/home'
@@ -10,45 +11,25 @@ const activityMap = computed(() => {
   return map
 })
 
-const today = new Date()
 const currentYear = ref(2026)
 const currentMonth = ref(5)
+const currentDate = ref(new Date(currentYear.value, currentMonth.value, 1))
 const selectedDate = ref('2026-06-02')
 
 const monthNames = ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月']
-const weekDays = ['日', '一', '二', '三', '四', '五', '六']
-
-const firstDayOfMonth = computed(() => new Date(currentYear.value, currentMonth.value, 1).getDay())
-const daysInMonth = computed(() => new Date(currentYear.value, currentMonth.value + 1, 0).getDate())
-
-const calendarDays = computed(() => {
-  const days: { day: number; dateStr: string; hasActivity: boolean; isSelected: boolean }[] = []
-  const prefix = firstDayOfMonth.value
-  for (let i = 0; i < prefix; i++) days.push({ day: 0, dateStr: '', hasActivity: false, isSelected: false })
-  const year = currentYear.value
-  const month = currentMonth.value
-  const mStr = String(month + 1).padStart(2, '0')
-  for (let d = 1; d <= daysInMonth.value; d++) {
-    const dateStr = `${year}-${mStr}-${String(d).padStart(2, '0')}`
-    days.push({
-      day: d,
-      dateStr,
-      hasActivity: !!activityMap.value[dateStr],
-      isSelected: dateStr === selectedDate.value,
-    })
-  }
-  return days
-})
 
 const selectedActivity = computed(() => activityMap.value[selectedDate.value] || null)
+const selectedActivityTagType = computed(() => selectedActivity.value?.type === '线上' ? 'success' : 'primary')
 
 function prevMonth() {
   if (currentMonth.value === 0) { currentMonth.value = 11; currentYear.value-- }
   else currentMonth.value--
+  currentDate.value = new Date(currentYear.value, currentMonth.value, 1)
 }
 function nextMonth() {
   if (currentMonth.value === 11) { currentMonth.value = 0; currentYear.value++ }
   else currentMonth.value++
+  currentDate.value = new Date(currentYear.value, currentMonth.value, 1)
 }
 function selectDate(dateStr: string, hasActivity: boolean) {
   if (!dateStr || !hasActivity) return
@@ -74,12 +55,12 @@ watch([currentYear, currentMonth], () => {
       <div class="flex items-center gap-2 mb-3">
         <CalendarIcon class="w-5 h-5 text-primary" />
         <h3 class="text-base font-semibold text-foreground">活动详情</h3>
-        <span v-if="selectedActivity" :class="['ml-auto text-xs font-medium px-2 py-0.5 rounded', selectedActivity.typeColor]">
+        <ElTag v-if="selectedActivity" :type="selectedActivityTagType" size="small" class="ml-auto">
           {{ selectedActivity.type }}
-        </span>
-        <span v-else class="ml-auto text-xs font-medium px-2 py-0.5 rounded bg-gray-100 text-gray-400">
+        </ElTag>
+        <ElTag v-else type="info" size="small" class="ml-auto">
           无活动
-        </span>
+        </ElTag>
       </div>
       <!-- Has activity -->
       <div v-if="selectedActivity" class="bg-white/80 backdrop-blur-sm rounded-xl border border-gray-200 p-5 hover:shadow-md transition-all flex-1">
@@ -103,9 +84,9 @@ watch([currentYear, currentMonth], () => {
             <span>{{ selectedActivity.participants }}人已报名</span>
           </div>
         </div>
-        <button class="mt-4 w-full py-2 bg-primary text-white text-sm font-medium rounded-lg hover:bg-primary/90 transition-colors">
+        <ElButton type="primary" class="mt-4 w-full">
           立即报名
-        </button>
+        </ElButton>
       </div>
       <!-- No activity -->
       <div v-else class="bg-white/80 backdrop-blur-sm rounded-xl border border-gray-200 p-5 flex-1 flex flex-col items-center justify-center text-center">
@@ -133,29 +114,25 @@ watch([currentYear, currentMonth], () => {
       </div>
 
       <!-- Weekday headers -->
-      <div class="grid grid-cols-7 gap-1 mb-2">
-        <div v-for="wd in weekDays" :key="wd" class="text-center text-xs font-medium text-muted-foreground py-1">
-          {{ wd }}
-        </div>
-      </div>
-
-      <!-- Days grid -->
-      <div class="grid grid-cols-7 gap-1 flex-1">
-        <div
-          v-for="(day, i) in calendarDays"
-          :key="i"
-          @click="selectDate(day.dateStr, day.hasActivity)"
-          :class="[
-            'relative flex flex-col items-center justify-center rounded-lg text-sm transition-all',
-            day.day === 0 ? 'invisible' : '',
-            day.isSelected ? 'bg-primary text-white shadow-sm' : '',
-            !day.isSelected && day.hasActivity ? 'text-foreground font-medium hover:bg-gray-100 cursor-pointer' : '',
-            !day.isSelected && !day.hasActivity ? 'text-gray-300 cursor-not-allowed' : '',
-          ]"
-        >
-          <span>{{ day.day || '' }}</span>
-        </div>
-      </div>
+      <ElCalendar :model-value="currentDate" class="activity-el-calendar flex-1">
+        <template #header>
+          <div />
+        </template>
+        <template #date-cell="{ data }">
+          <div
+            @click="selectDate(data.day, !!activityMap[data.day])"
+            :class="[
+              'activity-calendar-day relative flex flex-col items-center justify-center rounded-lg text-sm transition-all',
+              data.type !== 'current-month' ? 'invisible' : '',
+              data.day === selectedDate ? 'bg-primary text-white shadow-sm' : '',
+              data.day !== selectedDate && activityMap[data.day] ? 'text-foreground font-medium hover:bg-gray-100 cursor-pointer' : '',
+              data.day !== selectedDate && !activityMap[data.day] ? 'text-gray-300 cursor-not-allowed' : '',
+            ]"
+          >
+            <span>{{ Number(data.day.slice(-2)) }}</span>
+          </div>
+        </template>
+      </ElCalendar>
 
     </div>
   </div>

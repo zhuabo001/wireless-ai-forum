@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
+import { ElButton } from 'element-plus'
 import SectionHeader from '../components/layout/SectionHeader.vue'
 import BaseCard from '../components/ui/BaseCard.vue'
 import IconRenderer from '../components/ui/IconRenderer.vue'
@@ -17,8 +18,15 @@ const filtered = computed(() => active.value === '全部' ? marketItems : market
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <SectionHeader title="Agent市场" description="无线用户发布的Agent拓展生态 — extension、skill、MCP、subagent、command" />
       <div class="flex flex-wrap justify-center gap-2 mb-8">
-        <button v-for="cat in categories" :key="cat" @click="active = cat"
-          :class="['px-4 py-2 text-sm font-medium rounded-lg transition-colors', active === cat ? 'bg-primary text-white' : 'bg-gray-100 text-gray-500 hover:bg-gray-200']">{{ cat }}</button>
+        <ElButton
+          v-for="cat in categories"
+          :key="cat"
+          :type="active === cat ? 'primary' : 'default'"
+          class="market-filter-button"
+          @click="active = cat"
+        >
+          {{ cat }}
+        </ElButton>
       </div>
       <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
         <BaseCard v-for="(item,i) in filtered" :key="`${item.name}-${i}`" interactive>
