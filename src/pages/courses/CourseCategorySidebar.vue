@@ -14,7 +14,7 @@ const emit = defineEmits<{
 
 const expandedGroups = ref<Set<string>>(new Set(props.categoryGroups.map((g) => g.id)))
 
-function toggleGroup(groupId: string) {
+function toggleGroup(groupId: string): void {
   if (expandedGroups.value.has(groupId)) {
     expandedGroups.value.delete(groupId)
   } else {
@@ -22,7 +22,7 @@ function toggleGroup(groupId: string) {
   }
 }
 
-function selectCategory(categoryId: string) {
+function selectCategory(categoryId: string): void {
   emit('update:selectedCategoryId', categoryId)
 }
 </script>

@@ -30,3 +30,7 @@ export interface CoursesPageMeta {
   title: string
   description: string
 }
+
+export interface PaginationConfig {
+  pageSize: number
+}

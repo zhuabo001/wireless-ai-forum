@@ -18,6 +18,7 @@ const selectedCategoryId = ref<string>(defaultCategoryId)
 const currentPage = ref(1)
 
 const filteredCourses = computed<CourseItem[]>(() => {
+  if (!selectedCategoryId.value) return courseItems
   return courseItems.filter((item) => item.categoryId === selectedCategoryId.value)
 })
 
@@ -28,12 +29,12 @@ const pagedCourses = computed(() => {
   return filteredCourses.value.slice(start, start + PAGE_SIZE)
 })
 
-function onCategoryChange(id: string) {
+function onCategoryChange(id: string): void {
   selectedCategoryId.value = id
   currentPage.value = 1
 }
 
-function onPageChange(page: number) {
+function onPageChange(page: number): void {
   currentPage.value = page
 }
 </script>

@@ -1,4 +1,8 @@
-import type { CourseItem, CourseCategoryGroup, CoursesPageMeta } from '@/types/pageDesign/courses'
+import type { CourseItem, CourseCategoryGroup, CoursesPageMeta, PaginationConfig } from '@/types/pageDesign/courses'
+
+export const paginationConfig: PaginationConfig = {
+  pageSize: 6,
+}
 
 export const coursesMeta: CoursesPageMeta = {
   title: '课程中心',
@@ -98,8 +102,4 @@ export const courseItems: CourseItem[] = [
   },
 ]
 
-export const defaultCategoryId = 'ran'
-
-export const paginationConfig = {
-  pageSize: 6,
-}
+export const defaultCategoryId = ''

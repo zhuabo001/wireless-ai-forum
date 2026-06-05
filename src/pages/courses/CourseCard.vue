@@ -9,7 +9,7 @@ const props = defineProps<{
 
 function categoryName(categoryId: string): string {
   for (const group of courseCategoryGroups) {
-    const child = group.children.find((c) => c.id === categoryId)
+    const child = group.children.find((c: { id: string; name: string }) => c.id === categoryId)
     if (child) return child.name
   }
   return categoryId
