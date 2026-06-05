@@ -42,6 +42,11 @@ const routes = [
     name: 'forum-new-topic',
     component: () => import('@/pages/forum-new-topic/Index.vue'),
   },
+  {
+    path: '/forum/post/:id',
+    name: 'forum-post-detail',
+    component: () => import('@/pages/forum-post-detail/Index.vue'),
+  },
 ]
 
 const router = createRouter({
