@@ -24,10 +24,12 @@ const selectedSort = ref<string>('latest')
 const keyword = ref<string>('')
 const currentPage = ref<number>(1)
 
-const filteredTopics = computed<TopicItem[]>(() => {
-  let result = topicItems
+const filteredAndSortedTopics = computed<TopicItem[]>(() => {
+  let result = [...topicItems]
 
-  if (activeTab.value !== 'all') {
+  if (activeTab.value === 'hot') {
+    result.sort((a, b) => b.likes - a.likes)
+  } else if (activeTab.value !== 'all') {
     const tabName = forumTabs.find((t) => t.id === activeTab.value)?.name
     if (tabName) {
       result = result.filter((t) => t.categoryBadge === tabName)
@@ -44,18 +46,32 @@ const filteredTopics = computed<TopicItem[]>(() => {
     )
   }
 
+  if (selectedSort.value === 'hottest') {
+    result.sort((a, b) => b.likes - a.likes)
+  }
+
   return result
 })
 
-const totalPages = computed<number>(() => Math.ceil(filteredTopics.value.length / PAGE_SIZE))
+const totalPages = computed<number>(() => Math.ceil(filteredAndSortedTopics.value.length / PAGE_SIZE))
 
 const pagedTopics = computed<TopicItem[]>(() => {
   const start = (currentPage.value - 1) * PAGE_SIZE
-  return filteredTopics.value.slice(start, start + PAGE_SIZE)
+  return filteredAndSortedTopics.value.slice(start, start + PAGE_SIZE)
 })
 
 function onTabChange(tabId: string): void {
   activeTab.value = tabId
+  currentPage.value = 1
+}
+
+function onCategoryChange(categoryId: string): void {
+  selectedCategory.value = categoryId
+  currentPage.value = 1
+}
+
+function onSortChange(sortId: string): void {
+  selectedSort.value = sortId
   currentPage.value = 1
 }
 
@@ -103,6 +119,8 @@ function onCreateTopic(): void {
             :category-options="categoryFilterOptions"
             :sort-options="sortFilterOptions"
             @update:active-tab="onTabChange"
+            @update:selected-category="onCategoryChange"
+            @update:selected-sort="onSortChange"
             @update:keyword="onKeywordChange"
           />
 
