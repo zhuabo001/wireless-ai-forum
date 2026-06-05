@@ -73,5 +73,5 @@ export const searchConfig = {
 }
 
 export const paginationConfig = {
-  pageSize: 8,
+  pageSize: 4,
 }

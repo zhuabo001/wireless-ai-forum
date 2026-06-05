@@ -8,7 +8,7 @@ import type {
 } from '@/types/pageDesign/forum'
 
 export const paginationConfig: PaginationConfig = {
-  pageSize: 6,
+  pageSize: 4,
 }
 
 export const forumMeta: ForumPageMeta = {

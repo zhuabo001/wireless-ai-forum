@@ -1,7 +1,7 @@
 import type { CourseItem, CourseCategoryGroup, CoursesPageMeta, PaginationConfig } from '@/types/pageDesign/courses'
 
 export const paginationConfig: PaginationConfig = {
-  pageSize: 6,
+  pageSize: 4,
 }
 
 export const coursesMeta: CoursesPageMeta = {
