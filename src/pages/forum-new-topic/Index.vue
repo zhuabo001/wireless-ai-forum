@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
+import { useRoute } from 'vue-router'
 import { ElForm, ElMessage } from 'element-plus'
 import type { EditorModeId, TopicFormData } from '@/types/pageDesign/forumNewTopic'
 import {
@@ -9,6 +10,8 @@ import {
   topicCategories,
   presetTags,
   editorModes,
+  sourcePageConfig,
+  defaultSource,
 } from '@/data/pageDesign/forumNewTopic'
 import NewTopicBreadcrumb from './NewTopicBreadcrumb.vue'
 import TopicTitleField from './TopicTitleField.vue'
@@ -30,6 +33,12 @@ const editorMode = ref<EditorModeId>('rich')
 const richContent = ref<string>('')
 const mdContent = ref<string>('')
 const isSubmitting = ref<boolean>(false)
+
+const route = useRoute()
+const sourcePage = (route.query.from as string) || defaultSource
+const sourceConfig = computed(() => sourcePageConfig[sourcePage] ?? sourcePageConfig[defaultSource])
+const dynamicBackLink = computed(() => sourceConfig.value.href)
+const sourceLabel = computed(() => sourceConfig.value.label)
 
 function handleSubmit(): void {
   if (!title.value.trim()) {
@@ -83,10 +92,11 @@ function handleCancel(): void {
   <div class="pt-16">
     <div class="w-full lg:w-2/3 xl:w-3/5 mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <NewTopicBreadcrumb
-        :back-link="pageMeta.backLink"
+        :back-link="dynamicBackLink"
         :back-title="pageMeta.backTitle"
         :breadcrumb-items="pageMeta.breadcrumbItems"
         :current-label="pageMeta.title"
+        :source-label="sourceLabel"
       />
 
       <ElForm class="space-y-6" @submit.prevent="handleSubmit">
@@ -114,7 +124,7 @@ function handleCancel(): void {
 
         <PublishActions
           :notice-text="formLabels.noticeText"
-          :cancel-link="pageMeta.backLink"
+          :cancel-link="dynamicBackLink"
           :cancel-text="formLabels.cancelText"
           :submit-text="formLabels.submitText"
           :is-submitting="isSubmitting"

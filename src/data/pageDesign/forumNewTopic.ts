@@ -23,6 +23,14 @@ export const pageMeta: ForumNewTopicMeta = {
   ],
 }
 
+export const sourcePageConfig: Record<string, { label: string; href: string }> = {
+  practices: { label: '优秀实践', href: '/practices' },
+  toolbox: { label: '百宝箱', href: '/toolbox' },
+  forum: { label: 'AI论坛', href: '/forum' },
+}
+
+export const defaultSource = 'forum'
+
 export const formLabels: FormLabels = {
   titleLabel: '帖子标题',
   titlePlaceholder: '用一句话清晰描述你的问题或分享内容',

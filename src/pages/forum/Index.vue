@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
+import { useRouter } from 'vue-router'
 import type { TopicItem } from '@/types/pageDesign/forum'
 import {
   forumMeta,
@@ -84,8 +85,10 @@ function onPageChange(page: number): void {
   currentPage.value = page
 }
 
+const router = useRouter()
+
 function onCreateTopic(): void {
-  console.log('发起话题')
+  router.push({ path: '/forum/new-topic', query: { from: 'forum' } })
 }
 </script>
 

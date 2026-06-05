@@ -7,6 +7,7 @@ defineProps<{
   backTitle: string
   breadcrumbItems: BreadcrumbItem[]
   currentLabel: string
+  sourceLabel?: string
 }>()
 </script>
 
@@ -23,7 +24,7 @@ defineProps<{
       <div class="flex items-center gap-2 text-sm text-muted-foreground">
         <template v-for="(item, index) in breadcrumbItems" :key="item.href">
           <router-link :to="item.href" class="hover:text-primary transition-colors">
-            {{ item.label }}
+            {{ sourceLabel ?? item.label }}
           </router-link>
           <IconRenderer name="chevron-right" class="w-3.5 h-3.5" />
         </template>

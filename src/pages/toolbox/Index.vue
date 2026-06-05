@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
+import { useRouter } from 'vue-router'
 import type { ToolArticle } from '@/types/pageDesign/toolbox'
 import {
   toolboxMeta,
@@ -80,6 +81,12 @@ function onPageChange(page: number) {
 watch(keyword, () => {
   currentPage.value = 1
 })
+
+const router = useRouter()
+
+function handleSubmitManual(): void {
+  router.push({ path: '/forum/new-topic', query: { from: 'toolbox' } })
+}
 </script>
 
 <template>
@@ -93,6 +100,7 @@ watch(keyword, () => {
         </div>
         <button
           class="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-primary text-white text-sm font-medium rounded-lg hover:bg-primary/90 transition-colors shadow-sm"
+          @click="handleSubmitManual"
         >
           <IconRenderer name="file-plus-2" class="w-4 h-4" />提交手册
         </button>

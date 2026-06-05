@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
+import { useRouter } from 'vue-router'
 import type { PracticeItem } from '@/types/pageDesign/practices'
 import {
   practicesMeta,
@@ -64,9 +65,10 @@ function goToPage(page: number | string) {
   }
 }
 
-function handlePublish() {
-  // 打桩：后续接入发布实践功能
-  console.log('发布实践')
+const router = useRouter()
+
+function handlePublish(): void {
+  router.push({ path: '/forum/new-topic', query: { from: 'practices' } })
 }
 </script>
 
