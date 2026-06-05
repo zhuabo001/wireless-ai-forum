@@ -3,6 +3,7 @@ import { computed } from 'vue'
 import {
   Activity,
   ArrowDownUp,
+  ArrowLeft,
   ArrowRight,
   Award,
   BookOpen,
@@ -33,6 +34,8 @@ import {
   Github,
   GitMerge,
   Globe,
+  ImagePlus,
+  Info,
   Layers,
   Link2,
   Mail,
@@ -77,6 +80,7 @@ const props = withDefaults(defineProps<{
 const iconMap = {
   activity: Activity,
   'arrow-down-up': ArrowDownUp,
+  'arrow-left': ArrowLeft,
   'arrow-right': ArrowRight,
   award: Award,
   'book-open': BookOpen,
@@ -107,6 +111,8 @@ const iconMap = {
   github: Github,
   'git-merge': GitMerge,
   globe: Globe,
+  'image-plus': ImagePlus,
+  info: Info,
   layers: Layers,
   link: Link2,
   mail: Mail,
