@@ -1,14 +1,21 @@
 <script setup lang="ts">
+import { useRouter } from 'vue-router'
 import type { TopicItem } from '@/types/pageDesign/forum'
 import IconRenderer from '@/components/ui/IconRenderer.vue'
 
-defineProps<{
+const props = defineProps<{
   topic: TopicItem
 }>()
+
+const router = useRouter()
+
+function goToDetail(): void {
+  router.push(`/forum/post/${props.topic.id}`)
+}
 </script>
 
 <template>
-  <div class="flex items-center gap-4 px-5 py-4 hover:bg-gray-50 transition-colors cursor-pointer border-b border-border/50 last:border-b-0">
+  <div @click="goToDetail" class="flex items-center gap-4 px-5 py-4 hover:bg-gray-50 transition-colors cursor-pointer border-b border-border/50 last:border-b-0">
     <div
       :class="['w-10 h-10 rounded-full bg-gradient-to-br flex items-center justify-center text-white text-sm font-bold flex-shrink-0', topic.author.gradientFrom, topic.author.gradientTo]"
     >
