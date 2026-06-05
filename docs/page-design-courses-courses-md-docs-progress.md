@@ -10,4 +10,4 @@
 | 6. 创建CoursePagination组件 | 完成 | 创建courses页面：类型定义、数据、组件、路由 |
 | 7. 创建Index.vue页面入口 | 完成 | 创建courses页面：类型定义、数据、组件、路由 |
 | 8. 添加路由 `/courses` | 完成 | 创建courses页面：类型定义、数据、组件、路由 |
-| 9. 验证与HTML对比 | 未完成 | — |
+| 9. 验证与HTML对比 | 完成 | 修复sidebar样式细节：font-semibold/mt-0.5/默认展开所有分组 |

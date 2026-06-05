@@ -12,7 +12,7 @@ const emit = defineEmits<{
   'update:selectedCategoryId': [value: string]
 }>()
 
-const expandedGroups = ref<Set<string>>(new Set([props.categoryGroups[0]?.id ?? '']))
+const expandedGroups = ref<Set<string>>(new Set(props.categoryGroups.map((g) => g.id)))
 
 function toggleGroup(groupId: string) {
   if (expandedGroups.value.has(groupId)) {
@@ -32,7 +32,7 @@ function selectCategory(categoryId: string) {
     <div class="sticky top-24 space-y-1">
       <div v-for="group in categoryGroups" :key="group.id">
         <button
-          class="flex items-center justify-between w-full px-3 py-2 text-sm font-medium text-foreground rounded-lg hover:bg-muted transition-colors"
+          class="flex items-center justify-between w-full px-3 py-2 text-sm font-semibold text-foreground rounded-lg hover:bg-muted transition-colors"
           @click="toggleGroup(group.id)"
         >
           <span>{{ group.name }}</span>
@@ -42,7 +42,7 @@ function selectCategory(categoryId: string) {
             :class="{ 'rotate-180': expandedGroups.has(group.id) }"
           />
         </button>
-        <div v-if="expandedGroups.has(group.id)" class="ml-2 pl-2 border-l border-border space-y-0.5">
+        <div v-if="expandedGroups.has(group.id)" class="ml-2 pl-2 border-l border-border space-y-0.5 mt-0.5">
           <button
             v-for="child in group.children"
             :key="child.id"
