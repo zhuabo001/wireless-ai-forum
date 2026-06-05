@@ -1,13 +1,25 @@
 <script setup lang="ts">
+import { useRouter } from 'vue-router'
 import type { ToolArticle } from '@/types/pageDesign/toolbox'
 
-defineProps<{
+const props = defineProps<{
   article: ToolArticle
 }>()
+
+const router = useRouter()
+
+function goToPostDetail(): void {
+  if (props.article.postId) {
+    router.push({
+      path: `/forum/post/${props.article.postId}`,
+      query: { from: 'toolbox' },
+    })
+  }
+}
 </script>
 
 <template>
-  <article class="p-5 hover:bg-gray-50 transition-colors cursor-pointer group">
+  <article class="p-5 hover:bg-gray-50 transition-colors cursor-pointer group" @click="goToPostDetail">
     <h3 class="text-base font-semibold text-foreground group-hover:text-primary transition-colors mb-2">
       {{ article.title }}
     </h3>

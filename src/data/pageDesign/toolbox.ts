@@ -23,6 +23,7 @@ export const toolboxArticles: ToolArticle[] = [
     author: '张明远',
     avatar: '/avatar-1.webp',
     date: '2026-05-28',
+    postId: '1',
   },
   {
     id: 't2',
@@ -32,6 +33,7 @@ export const toolboxArticles: ToolArticle[] = [
     author: '李思涵',
     avatar: '/avatar-2.webp',
     date: '2026-05-26',
+    postId: '1',
   },
   {
     id: 't3',
@@ -41,6 +43,7 @@ export const toolboxArticles: ToolArticle[] = [
     author: '陈志强',
     avatar: '/avatar-3.webp',
     date: '2026-05-23',
+    postId: '1',
   },
   {
     id: 't4',
@@ -50,6 +53,7 @@ export const toolboxArticles: ToolArticle[] = [
     author: '王雪晴',
     avatar: '/avatar-4.webp',
     date: '2026-05-20',
+    postId: '1',
   },
   {
     id: 't5',
@@ -59,6 +63,7 @@ export const toolboxArticles: ToolArticle[] = [
     author: '刘浩然',
     avatar: '/avatar-5.webp',
     date: '2026-05-18',
+    postId: '1',
   },
 ]
 

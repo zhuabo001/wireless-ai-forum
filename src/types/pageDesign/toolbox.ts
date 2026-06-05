@@ -15,6 +15,7 @@ export interface ToolArticle {
   author: string
   avatar: string
   date: string
+  postId?: string
 }
 
 export interface SortOption {

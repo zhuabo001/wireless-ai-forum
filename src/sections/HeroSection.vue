@@ -22,10 +22,10 @@ const sectionRef = ref<HTMLElement | null>(null)
         </h1>
         <p class="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto mb-8">{{ heroContent.subtitle }}</p>
         <div class="flex flex-wrap items-center justify-center gap-4">
-          <a
+          <router-link
             v-for="action in heroContent.actions"
             :key="action.href"
-            :href="action.href"
+            :to="action.href"
             :class="[
               'inline-flex items-center gap-2 px-6 py-3 font-medium rounded-lg transition-colors',
               action.variant === 'primary'
@@ -35,7 +35,7 @@ const sectionRef = ref<HTMLElement | null>(null)
           >
             {{ action.label }}
             <IconRenderer v-if="action.icon" :name="action.icon" class-name="w-4 h-4" />
-          </a>
+          </router-link>
         </div>
       </div>
 

@@ -221,8 +221,13 @@ export const comments: Comment[] = [
   },
 ]
 
-export const backLink = '/forum'
-export const backTitle = '返回论坛'
+export const sourcePageConfig: Record<string, { label: string; href: string }> = {
+  practices: { label: '返回优秀实践', href: '/practices' },
+  toolbox: { label: '返回百宝箱', href: '/toolbox' },
+  forum: { label: '返回论坛', href: '/forum' },
+}
+
+export const defaultSource = 'forum'
 
 export const currentUser = {
   name: '当前用户',

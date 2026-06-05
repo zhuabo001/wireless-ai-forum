@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
+import { useRoute } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import type { Comment, Reply } from '@/types/pageDesign/forumPostDetail'
 import {
@@ -8,8 +9,8 @@ import {
   resourceLinks,
   commentSortOptions,
   comments as initialComments,
-  backLink,
-  backTitle,
+  sourcePageConfig,
+  defaultSource,
   currentUser,
 } from '@/data/pageDesign/forumPostDetail'
 import PostHeader from './PostHeader.vue'
@@ -24,6 +25,12 @@ const isBookmarked = ref<boolean>(false)
 const likeCount = ref<number>(postDetail.likeCount)
 const comments = ref<Comment[]>(initialComments)
 const currentSort = ref<string>('hottest')
+
+const route = useRoute()
+const sourcePage = (route.query.from as string) || defaultSource
+const sourceConfig = computed(() => sourcePageConfig[sourcePage] ?? sourcePageConfig[defaultSource])
+const dynamicBackLink = computed<string>(() => sourceConfig.value.href)
+const dynamicBackTitle = computed<string>(() => sourceConfig.value.label)
 
 function toggleLike(): void {
   isLiked.value = !isLiked.value
@@ -93,8 +100,8 @@ function handleLoadMore(): void {
       />
 
       <PostHeader
-        :back-link="backLink"
-        :back-title="backTitle"
+        :back-link="dynamicBackLink"
+        :back-title="dynamicBackTitle"
         :categories="postDetail.categories"
         :title="postDetail.title"
         :author="postDetail.author"

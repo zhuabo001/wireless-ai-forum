@@ -32,8 +32,8 @@ export const heroContent = {
   title: '无线AI极客汇',
   subtitle: 'AI赋能无线研发，连接每一位创新者',
   actions: [
-    { label: '进入论坛', href: '#forum', variant: 'primary', icon: 'arrow-right' },
-    { label: '进入优秀实践', href: '#practices', variant: 'secondary' },
+    { label: '进入论坛', href: '/forum', variant: 'primary', icon: 'arrow-right' },
+    { label: '进入优秀实践', href: '/practices', variant: 'secondary' },
   ],
 }
 
