@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ref } from 'vue'
 import IconRenderer from '@/components/ui/IconRenderer.vue'
 
 defineProps<{
@@ -8,11 +9,21 @@ defineProps<{
   isBookmarked: boolean
 }>()
 
-defineEmits<{
+const emit = defineEmits<{
   toggleLike: []
   scrollToComments: []
   toggleBookmark: []
 }>()
+
+const heartAnimating = ref<boolean>(false)
+
+function handleToggleLike(): void {
+  emit('toggleLike')
+  heartAnimating.value = true
+  setTimeout(() => {
+    heartAnimating.value = false
+  }, 300)
+}
 </script>
 
 <template>
@@ -23,9 +34,9 @@ defineEmits<{
           'action-bar-btn w-12 h-12 rounded-xl flex flex-col items-center justify-center',
           isLiked ? 'text-rose-500 bg-rose-50 active' : 'text-muted-foreground hover:text-rose-500 hover:bg-rose-50'
         ]"
-        @click="$emit('toggleLike')"
+        @click="handleToggleLike"
       >
-        <IconRenderer name="thumbs-up" class="w-5 h-5" />
+        <IconRenderer :class="['w-5 h-5', { 'heart-anim': heartAnimating }]" name="thumbs-up" />
         <span class="text-[10px] font-medium mt-0.5">{{ likeCount }}</span>
       </button>
       <div class="w-8 h-px bg-border/60"></div>

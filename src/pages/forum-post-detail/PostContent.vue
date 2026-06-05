@@ -1,26 +1,9 @@
 <script setup lang="ts">
-import type { ContentBlock, ContentBlockType } from '@/types/pageDesign/forumPostDetail'
+import type { ContentBlock } from '@/types/pageDesign/forumPostDetail'
 
 defineProps<{
   blocks: ContentBlock[]
 }>()
-
-function blockTag(type: ContentBlockType, level?: number): string {
-  switch (type) {
-    case 'heading':
-      return level === 3 ? 'h3' : 'h2'
-    case 'list':
-      return 'ul'
-    case 'code':
-      return 'pre'
-    case 'blockquote':
-      return 'blockquote'
-    case 'table':
-      return 'table'
-    default:
-      return 'p'
-  }
-}
 </script>
 
 <template>

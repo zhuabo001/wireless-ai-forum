@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ref } from 'vue'
 import IconRenderer from '@/components/ui/IconRenderer.vue'
 
 defineProps<{
@@ -8,11 +9,21 @@ defineProps<{
   isBookmarked: boolean
 }>()
 
-defineEmits<{
+const emit = defineEmits<{
   toggleLike: []
   scrollToComments: []
   toggleBookmark: []
 }>()
+
+const heartAnimating = ref<boolean>(false)
+
+function handleToggleLike(): void {
+  emit('toggleLike')
+  heartAnimating.value = true
+  setTimeout(() => {
+    heartAnimating.value = false
+  }, 300)
+}
 </script>
 
 <template>
@@ -22,9 +33,9 @@ defineEmits<{
         'action-bar-btn flex items-center gap-2 px-4 py-2 rounded-xl',
         isLiked ? 'text-rose-500' : 'text-muted-foreground hover:text-rose-500'
       ]"
-      @click="$emit('toggleLike')"
+      @click="handleToggleLike"
     >
-      <IconRenderer name="thumbs-up" class="w-5 h-5" />
+      <IconRenderer :class="['w-5 h-5', { 'heart-anim': heartAnimating }]" name="thumbs-up" />
       <span class="text-sm font-medium">{{ likeCount }}</span>
     </button>
     <button
@@ -50,4 +61,16 @@ defineEmits<{
 <style scoped>
 .action-bar-btn { transition: all 150ms ease-out; }
 .action-bar-btn:hover { transform: translateY(-2px); }
+
+@keyframes heart-burst {
+  0% { transform: scale(1); }
+  30% { transform: scale(1.3); }
+  60% { transform: scale(0.95); }
+  100% { transform: scale(1); }
+}
+.heart-anim { animation: heart-burst 300ms ease-out; }
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+}
 </style>
