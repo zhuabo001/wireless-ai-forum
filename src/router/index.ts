@@ -32,6 +32,11 @@ const routes = [
     name: 'courses',
     component: () => import('@/pages/courses/Index.vue'),
   },
+  {
+    path: '/forum',
+    name: 'forum',
+    component: () => import('@/pages/forum/Index.vue'),
+  },
 ]
 
 const router = createRouter({
