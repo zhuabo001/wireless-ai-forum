@@ -64,7 +64,7 @@ function handleKeydown(event: KeyboardEvent): void {
           v-for="tag in presetTags"
           :key="tag.id"
           :label="tag.name"
-          :value="tag.id"
+          :value="tag.name"
         />
       </ElSelect>
       <div class="w-full px-3 py-2 text-sm border border-border rounded-xl focus-within:ring-2 focus-within:ring-primary/20 focus-within:border-primary transition-colors bg-white flex flex-wrap items-center gap-1.5">
