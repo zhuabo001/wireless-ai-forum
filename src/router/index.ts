@@ -27,6 +27,11 @@ const routes = [
     name: 'toolbox',
     component: () => import('@/pages/toolbox/Index.vue'),
   },
+  {
+    path: '/courses',
+    name: 'courses',
+    component: () => import('@/pages/courses/Index.vue'),
+  },
 ]
 
 const router = createRouter({
