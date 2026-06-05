@@ -32,6 +32,7 @@ export interface PracticeItem {
   categoryId: string
   subCategoryId: string
   tags: PracticeTag[]
+  postId?: string
 }
 
 export interface HotPost {

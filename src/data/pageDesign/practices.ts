@@ -59,6 +59,7 @@ export const practiceItems: PracticeItem[] = [
     categoryId: 'wireless-rd',
     subCategoryId: 'protocol-analysis',
     tags: ['精华'],
+    postId: '1',
   },
   {
     id: 'p2',
@@ -72,6 +73,7 @@ export const practiceItems: PracticeItem[] = [
     categoryId: 'wireless-rd',
     subCategoryId: 'protocol-analysis',
     tags: ['模板'],
+    postId: '1',
   },
   {
     id: 'p3',
@@ -85,6 +87,7 @@ export const practiceItems: PracticeItem[] = [
     categoryId: 'wireless-rd',
     subCategoryId: 'protocol-analysis',
     tags: ['案例复盘'],
+    postId: '1',
   },
   {
     id: 'p4',
@@ -98,6 +101,7 @@ export const practiceItems: PracticeItem[] = [
     categoryId: 'wireless-rd',
     subCategoryId: 'protocol-analysis',
     tags: ['工具链'],
+    postId: '1',
   },
 ]
 

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import { useRouter } from 'vue-router'
 import type { PracticeItem } from '@/types/pageDesign/practices'
 import IconRenderer from '@/components/ui/IconRenderer.vue'
 import { practiceCategories, tagStyles, categoryColorStyles } from '@/data/pageDesign/practices'
@@ -7,6 +8,17 @@ import { practiceCategories, tagStyles, categoryColorStyles } from '@/data/pageD
 const props = defineProps<{
   practice: PracticeItem
 }>()
+
+const router = useRouter()
+
+function goToPostDetail(): void {
+  if (props.practice.postId) {
+    router.push({
+      path: `/forum/post/${props.practice.postId}`,
+      query: { from: 'practices' },
+    })
+  }
+}
 
 const categoryName = computed(() => {
   for (const cat of practiceCategories) {
@@ -24,6 +36,7 @@ const categoryStyle = computed(() => {
 <template>
   <article
     class="bg-white rounded-xl border border-border p-5 hover:shadow-md transition-shadow cursor-pointer group"
+    @click="goToPostDetail"
   >
     <div class="flex items-center gap-2 mb-2">
       <span
