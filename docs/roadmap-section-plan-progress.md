@@ -5,5 +5,5 @@
 | 步骤 1：类型与数据（新增 RoadmapItem 类型与 roadmapItems 数据） | 完成 | 8b71195 feat(roadmap): 新增 RoadmapItem 类型与 roadmapItems 数据 |
 | 步骤 2：组件实现（新增 RoadMapSection.vue 与 RoadMapCard.vue） | 完成 | cdc8fdb feat(roadmap): 实现 RoadMapSection 与 RoadMapCard 组件 |
 | 步骤 3：接入首页（更新 HomePage.vue 与 homeSections） | 完成 | e975d17 feat(roadmap): 在首页注册 RoadMapSection |
-| 步骤 4：样式与响应式（横向时间轴、移动端竖向时间轴） | 完成 |  |
-| 步骤 5：验证（开发服务器、悬停效果、响应式、类型检查） | 未完成 |  |
+| 步骤 4：样式与响应式（横向时间轴、移动端竖向时间轴） | 完成 | c144888 style(roadmap): 对齐项目设计 token |
+| 步骤 5：验证（开发服务器、悬停效果、响应式、类型检查） | 完成 |  |
