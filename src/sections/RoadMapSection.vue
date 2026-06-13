@@ -92,7 +92,7 @@ const handleLeave = (): void => {
       90deg,
       rgba(148, 163, 184, 0.25) 0%,
       rgba(148, 163, 184, 0.25) 70%,
-      rgba(59, 130, 246, 0.4) 100%
+      hsla(217, 91%, 40%, 0.4) 100%
     );
     border-radius: 2px;
   }
@@ -126,24 +126,24 @@ const handleLeave = (): void => {
   }
 
   &__node--current &__dot {
-    background: var(--color-primary, #3b82f6);
-    border-color: var(--color-primary, #3b82f6);
-    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.18);
+    background: var(--home-primary, hsl(217 91% 40%));
+    border-color: var(--home-primary, hsl(217 91% 40%));
+    box-shadow: 0 0 0 4px hsla(217, 91%, 40%, 0.18);
     animation: roadmap-pulse 2s ease-in-out infinite;
   }
 
   &__node--current &__label {
-    color: var(--color-primary, #3b82f6);
+    color: var(--home-primary, hsl(217 91% 40%));
   }
 
   &__node--active &__dot {
     transform: scale(1.15);
-    border-color: var(--color-primary, #3b82f6);
-    box-shadow: 0 0 0 6px rgba(59, 130, 246, 0.18);
+    border-color: var(--home-primary, hsl(217 91% 40%));
+    box-shadow: 0 0 0 6px hsla(217, 91%, 40%, 0.18);
   }
 
   &__node--active &__label {
-    color: var(--color-primary, #3b82f6);
+    color: var(--home-primary, hsl(217 91% 40%));
   }
 
   &__node--dimmed {
@@ -168,10 +168,10 @@ const handleLeave = (): void => {
 
 @keyframes roadmap-pulse {
   0%, 100% {
-    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.18);
+    box-shadow: 0 0 0 4px hsla(217, 91%, 40%, 0.18);
   }
   50% {
-    box-shadow: 0 0 0 8px rgba(59, 130, 246, 0.05);
+    box-shadow: 0 0 0 8px hsla(217, 91%, 40%, 0.05);
   }
 }
 

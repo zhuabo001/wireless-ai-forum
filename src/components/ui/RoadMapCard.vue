@@ -88,7 +88,7 @@ withDefaults(defineProps<{
 
 <style scoped lang="scss">
 .roadmap-card {
-  border-color: rgb(229 231 235);
+  border-color: var(--home-border, hsl(214 32% 91%));
   opacity: 1;
 
   &__bar {
@@ -103,7 +103,7 @@ withDefaults(defineProps<{
   }
 
   &--current &__bar {
-    background: var(--color-primary, #3b82f6);
+    background: var(--home-primary, hsl(217 91% 40%));
   }
 
   &--done &__bar {
@@ -113,7 +113,7 @@ withDefaults(defineProps<{
   &--active {
     transform: translateY(-4px);
     box-shadow: 0 18px 30px -12px rgba(15, 23, 42, 0.18);
-    border-color: var(--color-primary, #3b82f6);
+    border-color: var(--home-primary, hsl(217 91% 40%));
   }
 
   &--active &__bar {
