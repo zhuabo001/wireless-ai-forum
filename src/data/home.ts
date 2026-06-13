@@ -26,6 +26,7 @@ export const homeSections: HomeSectionMeta[] = [
   { id: 'atmosphere', component: 'AtmosphereSection', className: 'py-16' },
   { id: 'forum', component: 'ForumSection', className: 'py-16' },
   { id: 'market', component: 'AgentMarketSection', className: 'py-16' },
+  { id: 'roadmap', component: 'RoadMapSection', className: 'py-16' },
 ]
 
 export const heroContent = {
