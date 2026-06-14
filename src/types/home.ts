@@ -193,3 +193,20 @@ export interface HomeSectionMeta {
   component: string
   className?: string
 }
+
+export type RoadmapStatus = 'completed' | 'in-progress'
+
+export interface RoadmapFeature {
+  icon: IconName
+  text: string
+}
+
+export interface RoadmapItem {
+  month: string
+  label: string
+  status: RoadmapStatus
+  title: string
+  summary: string
+  features: RoadmapFeature[]
+  upcoming?: RoadmapFeature[]
+}

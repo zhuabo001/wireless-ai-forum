@@ -11,6 +11,7 @@ import CoursesSection from '@/sections/CoursesSection.vue'
 import AtmosphereSection from '@/sections/AtmosphereSection.vue'
 import ForumSection from '@/sections/ForumSection.vue'
 import AgentMarketSection from '@/sections/AgentMarketSection.vue'
+import RoadMapSection from '@/sections/RoadMapSection.vue'
 import { homeSections } from '@/data/home'
 
 const sectionComponents: Record<string, Component> = {
@@ -23,6 +24,7 @@ const sectionComponents: Record<string, Component> = {
   AtmosphereSection,
   ForumSection,
   AgentMarketSection,
+  RoadMapSection,
 }
 </script>
 

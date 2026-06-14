@@ -11,6 +11,7 @@ import type {
   IntelligenceItem,
   MarketItem,
   PracticeItem,
+  RoadmapItem,
   TickerItem,
   ToolItem,
 } from '../types/home'
@@ -25,6 +26,7 @@ export const homeSections: HomeSectionMeta[] = [
   { id: 'atmosphere', component: 'AtmosphereSection', className: 'py-16' },
   { id: 'forum', component: 'ForumSection', className: 'py-16' },
   { id: 'market', component: 'AgentMarketSection', className: 'py-16' },
+  { id: 'roadmap', component: 'RoadMapSection', className: 'py-16' },
 ]
 
 export const heroContent = {
@@ -179,6 +181,61 @@ export const marketTypeColors: Record<string, string> = {
   Subagent: 'bg-orange-50 text-orange-600',
   Command: 'bg-gray-100 text-gray-600',
 }
+
+export const roadmapItems: RoadmapItem[] = [
+  {
+    month: '2026-03',
+    label: '3月',
+    status: 'completed',
+    title: '首页结构化重构',
+    summary: '将首页改造为数据驱动的 section 架构。',
+    features: [
+      { icon: 'layers', text: 'section 组件化拆分与数据驱动渲染' },
+      { icon: 'puzzle', text: 'BaseCard / SectionHeader 等基础组件落地' },
+      { icon: 'zap', text: 'Element Plus 低风险控件接入' },
+    ],
+  },
+  {
+    month: '2026-04',
+    label: '4月',
+    status: 'completed',
+    title: '论坛与课程上线',
+    summary: '完成社区核心内容模块的首版交付。',
+    features: [
+      { icon: 'messages-square', text: 'AI 论坛话题列表与统计卡' },
+      { icon: 'book-open', text: '课程中心卡片与分类' },
+      { icon: 'calendar', text: '活动日历与氛围建设展示' },
+    ],
+  },
+  {
+    month: '2026-05',
+    label: '5月',
+    status: 'completed',
+    title: 'Agent 生态初版',
+    summary: '搭建 Agent 市场与首批工具上架。',
+    features: [
+      { icon: 'package', text: 'Agent 市场模块上线' },
+      { icon: 'sliders-horizontal', text: '市场分类筛选交互' },
+      { icon: 'star', text: '首批社区精选 Agent 工具' },
+    ],
+  },
+  {
+    month: '2026-06',
+    label: '6月',
+    status: 'in-progress',
+    title: '体验与连接增强',
+    summary: '打通帖子详情，强化模块间的跳转与回流。',
+    features: [
+      { icon: 'file-text', text: '论坛帖子详情页开发' },
+      { icon: 'git-merge', text: '实践 / 工具箱卡片路由至帖子详情' },
+      { icon: 'arrow-right', text: '动态返回按钮与首页 CTA 连接' },
+    ],
+    upcoming: [
+      { icon: 'newspaper', text: 'AI 情报订阅' },
+      { icon: 'calendar', text: '活动报名流程' },
+    ],
+  },
+]
 
 export const activities: ActivityItem[] = [
   { date: '2026-06-02', title: 'AI辅助编码实战 Workshop', desc: '动手体验AI辅助编程工具，提升研发效率', location: '研发中心A栋3楼', time: '14:00-17:00', participants: 30, type: '线下', typeColor: 'bg-blue-50 text-blue-600' },
