@@ -18,13 +18,17 @@ export interface PostDetail {
   likeCount: number
 }
 
-export type ContentBlockType = 'paragraph' | 'heading' | 'list' | 'code' | 'blockquote' | 'table'
+export type ContentBlockType = 'paragraph' | 'heading' | 'list' | 'code' | 'blockquote' | 'table' | 'diagram'
+
+export type DiagramEngine = 'mermaid' | 'plantuml'
 
 export interface ContentBlock {
   type: ContentBlockType
   html: string
   level?: number
   ordered?: boolean
+  engine?: DiagramEngine
+  source?: string
 }
 
 export interface ResourceLink {
