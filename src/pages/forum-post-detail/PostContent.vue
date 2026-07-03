@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { ContentBlock } from '@/types/pageDesign/forumPostDetail'
+import DiagramBlock from './DiagramBlock.vue'
 
 defineProps<{
   blocks: ContentBlock[]
@@ -16,6 +17,12 @@ defineProps<{
       <pre v-else-if="block.type === 'code'"><code v-html="block.html"></code></pre>
       <blockquote v-else-if="block.type === 'blockquote'" v-html="block.html"></blockquote>
       <table v-else-if="block.type === 'table'" v-html="block.html"></table>
+      <DiagramBlock
+        v-else-if="block.type === 'diagram' && block.engine && block.source"
+        :engine="block.engine"
+        :source="block.source"
+        :fallback-html="block.html"
+      />
       <p v-else v-html="block.html"></p>
     </template>
   </article>
@@ -39,4 +46,11 @@ defineProps<{
 .article-body table { width: 100%; border-collapse: collapse; margin: 1.25rem 0; font-size: 0.9375rem; }
 .article-body th, .article-body td { border: 1px solid #e2e8f0; padding: 0.625rem 1rem; text-align: left; }
 .article-body th { background: #f8fafc; font-weight: 600; color: #0f172a; }
+.article-body .diagram-block { margin: 1.5rem 0; }
+.article-body .diagram-svg-container { display: flex; justify-content: center; overflow-x: auto; }
+.article-body .diagram-svg-container svg { max-width: 100%; height: auto; }
+.article-body .diagram-loading { display: flex; justify-content: center; align-items: center; padding: 2rem 1.25rem; background: #f8fafc; border-radius: 0.625rem; border: 1px dashed #cbd5e1; }
+.article-body .diagram-loading-text { color: #94a3b8; font-size: 0.875rem; }
+.article-body .diagram-fallback pre { background: #f1f5f9; padding: 1rem 1.25rem; border-radius: 0.625rem; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 0.875rem; overflow-x: auto; line-height: 1.65; }
+.article-body .diagram-fallback code { background: none; padding: 0; }
 </style>

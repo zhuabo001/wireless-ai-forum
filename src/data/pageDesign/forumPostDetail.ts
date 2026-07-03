@@ -127,6 +127,12 @@ export const postContentBlocks: ContentBlock[] = [
     html: '五、踩过的坑与经验',
   },
   {
+    type: 'diagram',
+    engine: 'mermaid',
+    source: 'flowchart LR\n  A["UE上报<br/>CQI/PMI/RI"] --> B["构建<br/>状态向量"]\n  B --> C["DRL策略<br/>SAC推理"]\n  C --> D["输出调度决策<br/>RBG + MCS"]\n  D --> E["现网部署<br/>ONNX推理 0.3ms"]\n  C --> F["离线训练<br/>仿真环境"]\n  F --> G["奖励函数<br/>吞吐量 + 公平性\n- 丢包率惩罚\n- 时延违规惩罚"]\n  G --> C',
+    html: '<pre><code>flowchart LR\n  A[UE上报 CQI/PMI/RI] --&gt; B[构建状态向量]\n  B --&gt; C[DRL策略 SAC推理]\n  C --&gt; D[输出调度决策]\n  D --&gt; E[现网部署 ONNX推理]\n  C --&gt; F[离线训练 仿真环境]\n  F --&gt; G[奖励函数]\n  G --&gt; C</code></pre>',
+  },
+  {
     type: 'list',
     ordered: true,
     html: '<li><strong>Sim-to-real gap</strong>：仿真中的 CQI 上报是完美的，现网存在测量误差和上报延迟。我们在训练阶段加入了高斯噪声和随机延迟来增强鲁棒性。</li><li><strong>训练稳定性</strong>：早期训练经常出现策略崩溃（policy collapse），所有资源都分配给某一个 UE。通过加入熵正则和 reward shaping 缓解。</li><li><strong>计算资源</strong>：在 200 UE 场景下，单次推理需要评估的动作空间过大。我们采用 action masking 技术，只评估缓存非空且信道条件允许的 UE-MCS 组合，将计算量降低了约 70%。</li><li><strong>在线更新</strong>：无线环境随时间变化（用户行为、干扰源），离线训练的策略会退化。我们正在探索轻量级的在线微调方案，每周用现网收集的数据进行几轮 PPO 更新。</li>',
