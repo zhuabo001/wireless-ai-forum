@@ -40,6 +40,6 @@ onMounted(async () => {
       <span class="diagram-loading-text">图表加载中...</span>
     </div>
     <div v-else-if="renderFailed" class="diagram-fallback" v-html="fallbackHtml"></div>
-    <div v-else ref="diagramContainer" class="diagram-svg-container"></div>
+    <div v-show="!loading && !renderFailed" ref="diagramContainer" class="diagram-svg-container"></div>
   </div>
 </template>
