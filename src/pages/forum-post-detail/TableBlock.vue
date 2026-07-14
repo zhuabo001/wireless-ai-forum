@@ -29,13 +29,10 @@ function scrollHorizontally(distance: number): void {
 
 <style scoped>
 .table-block {
-  position: relative;
-  left: 50%;
-  width: calc(100vw - 2rem);
-  max-width: 72rem;
+  width: 100%;
+  max-width: 100%;
   margin: 1.25rem 0;
   overflow-x: auto;
-  transform: translateX(-50%);
   overscroll-behavior-inline: contain;
   -webkit-overflow-scrolling: touch;
 }
@@ -43,13 +40,6 @@ function scrollHorizontally(distance: number): void {
 .table-block:focus-visible {
   outline: 2px solid #0d55c9;
   outline-offset: 4px;
-}
-
-/* Reserve space for the fixed desktop action bar. */
-@media (min-width: 1024px) {
-  .table-block {
-    width: min(72rem, calc(100vw - 12rem));
-  }
 }
 
 .content-table {
