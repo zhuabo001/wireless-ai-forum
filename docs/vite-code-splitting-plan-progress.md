@@ -3,4 +3,4 @@
 | 任务/步骤 | 状态 | Commit 信息 & Hash |
 |-----------|------|-------------------|
 | 1. 在 vite.config.ts 中添加 codeSplitting 分组配置 | 完成 | feat: add codeSplitting groups - split node_modules deps into independent vendor chunks (a308f46) |
-| 2. 构建验证：确认 vendor chunks 正确拆分、入口体积减小 | 完成 | - |
+| 2. 构建验证：确认 vendor chunks 正确拆分、入口体积减小 | 完成 | chore: update progress and records for codeSplitting implementation (ffcc9b7) |
