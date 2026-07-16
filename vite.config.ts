@@ -19,9 +19,13 @@ export default defineConfig({
   build: {
     modulePreload: {
       resolveDependencies: (_url: string, deps: string[], { hostType }: { hostType: 'html' | 'js' }) => {
-        // 入口 HTML（首页相关）：预加载全部依赖
         if (hostType === 'html') {
-          return deps
+          // 入口 HTML 预加载：排除非首页专用的 vendor chunk
+          // vendor-mermaid/katex/wangeditor/md-editor 仅特定子页面使用，首页无需预加载
+          return deps.filter(d => {
+            if (/vendor-(mermaid|katex|wangeditor|md-editor)/.test(d)) return false
+            return true
+          })
         }
         // 动态 import（其他页面）：只预加载 CSS，JS 用到时才拉取
         return deps.filter(d => d.endsWith('.css'))
