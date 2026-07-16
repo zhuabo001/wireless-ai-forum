@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { ContentBlock } from '@/types/pageDesign/forumPostDetail'
 import DiagramBlock from './DiagramBlock.vue'
+import TableBlock from './TableBlock.vue'
 
 defineProps<{
   blocks: ContentBlock[]
@@ -16,7 +17,10 @@ defineProps<{
       <ul v-else-if="block.type === 'list' && !block.ordered" v-html="block.html"></ul>
       <pre v-else-if="block.type === 'code'"><code v-html="block.html"></code></pre>
       <blockquote v-else-if="block.type === 'blockquote'" v-html="block.html"></blockquote>
-      <table v-else-if="block.type === 'table'" v-html="block.html"></table>
+      <TableBlock
+        v-else-if="block.type === 'table'"
+        :html="block.html"
+      />
       <DiagramBlock
         v-else-if="block.type === 'diagram' && block.engine && block.source"
         :engine="block.engine"
@@ -43,9 +47,6 @@ defineProps<{
 .article-body img { max-width: 100%; border-radius: 0.625rem; margin: 1.5rem 0; }
 .article-body a { color: #0d55c9; text-decoration: none; }
 .article-body a:hover { text-decoration: underline; }
-.article-body table { width: 100%; border-collapse: collapse; margin: 1.25rem 0; font-size: 0.9375rem; }
-.article-body th, .article-body td { border: 1px solid #e2e8f0; padding: 0.625rem 1rem; text-align: left; }
-.article-body th { background: #f8fafc; font-weight: 600; color: #0f172a; }
 .article-body .diagram-block { margin: 1.5rem 0; }
 .article-body .diagram-svg-container { display: flex; justify-content: center; overflow-x: auto; }
 .article-body .diagram-svg-container svg { max-width: 100%; height: auto; }
