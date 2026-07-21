@@ -13,7 +13,7 @@ const categoryColors = intelligenceCategoryColors
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <SectionHeader title="AI情报局" description="搜罗每天最新的AI热点时事" />
       <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        <BaseCard v-for="(item,i) in intelligenceNews" :key="i" interactive class-name="flex items-start gap-3 p-4 group hover:translate-y-0">
+        <BaseCard v-for="item in intelligenceNews" :key="item.title" interactive class-name="flex items-start gap-3 p-4 group hover:translate-y-0">
           <div class="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5"><IconRenderer :name="item.icon" class-name="w-4 h-4 text-primary" /></div>
           <div class="flex-1 min-w-0">
             <div class="flex items-center gap-2 mb-1.5">

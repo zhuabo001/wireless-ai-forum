@@ -10,7 +10,7 @@ import { courses } from '../data/home'
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <SectionHeader title="热门课程" description="把公司内外的优秀课程在社区分享" />
       <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-        <MediaCard v-for="(c,i) in courses" :key="i" :image="c.cover" :title="c.title" :badge="c.tag">
+        <MediaCard v-for="c in courses" :key="c.title" :image="c.cover" :title="c.title" :badge="c.tag">
           <div class="flex items-center gap-2 mb-3">
             <img :src="c.avatar" :alt="c.instructor" class="w-5 h-5 rounded-full object-cover" />
             <span class="text-xs text-muted-foreground">{{ c.instructor }} · {{ c.org }}</span>

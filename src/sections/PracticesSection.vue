@@ -11,7 +11,7 @@ import { practices } from '../data/home'
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <SectionHeader title="优秀实践" description="各部门AI辅助作业的优秀实践分享" />
       <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-        <BaseCard v-for="(p,i) in practices" :key="i" interactive>
+        <BaseCard v-for="p in practices" :key="p.title" interactive>
           <div class="flex items-center gap-2 mb-3"><TagBadge :label="p.dept" class-name="bg-primary/10 text-primary px-2 py-1 rounded-md" /></div>
           <h3 class="text-base font-semibold text-foreground mb-2 flex items-center gap-2"><IconRenderer name="zap" class-name="w-4 h-4 text-amber-500" /> {{ p.title }}</h3>
           <p class="text-sm text-muted-foreground mb-3">{{ p.desc }}</p>

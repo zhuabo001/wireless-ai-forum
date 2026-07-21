@@ -11,8 +11,8 @@ import { atmosphereEvents as events } from '../data/home'
       <SectionHeader title="氛围建设" description="AI相关的线下研讨、圆桌讨论、荣誉颁奖" />
       <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
         <MediaCard
-          v-for="(e,i) in events"
-          :key="i"
+          v-for="e in events"
+          :key="e.title"
           :image="e.image"
           :title="e.title"
           image-class="h-40"
