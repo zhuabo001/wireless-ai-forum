@@ -5,7 +5,7 @@ export const marketMeta: MarketPageMeta = {
   description: '无线用户发布的Agent拓展生态 — extension、skill、MCP、subagent、command',
 }
 
-export const typeStyles: Record<string, string> = {
+const typeStyles: Record<string, string> = {
   Extension: 'bg-blue-50 text-blue-600',
   Skill: 'bg-emerald-50 text-emerald-600',
   MCP: 'bg-purple-50 text-purple-600',
