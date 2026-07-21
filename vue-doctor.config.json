@@ -1,0 +1,11 @@
+{
+  "diff": false,
+  "ignore": {
+    "rules": [
+      "vue-doctor/no-click-without-keyboard-handler",
+      "vue-doctor/require-img-alt",
+      "vue-doctor/no-barrel-import",
+      "vue-doctor/prefer-async-component"
+    ]
+  }
+}
