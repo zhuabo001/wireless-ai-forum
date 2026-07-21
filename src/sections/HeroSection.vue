@@ -63,7 +63,7 @@ const sectionRef = ref<HTMLElement | null>(null)
             <h2 class="text-lg font-bold text-foreground">更新日志</h2>
           </div>
           <div class="flex flex-col gap-3 flex-1">
-            <div v-for="(item, i) in changelog" :key="i" class="p-4 rounded-lg bg-white border border-gray-200 flex-1">
+            <div v-for="item in changelog" :key="item.version" class="p-4 rounded-lg bg-white border border-gray-200 flex-1">
               <div class="flex items-center gap-2 mb-2">
                 <span class="text-xs font-medium px-1.5 py-0.5 rounded bg-blue-50 text-blue-600">{{ item.version }}</span>
                 <span class="text-xs text-muted-foreground">{{ item.date }}</span>

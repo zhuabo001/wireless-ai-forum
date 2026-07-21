@@ -11,7 +11,7 @@ import { forumStats as forumStatData, forumTopics as topics } from '../data/home
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex items-center justify-between mb-8">
         <SectionHeader title="AI论坛" description="用户交流广场，任何问题讨论和话题交流都可以在这里发起" align="left" class-name="mb-0" />
-        <button class="hidden sm:inline-flex items-center gap-1 px-4 py-2 bg-primary text-white text-sm font-medium rounded-lg hover:bg-primary/90 transition-colors">发起话题 <IconRenderer name="chevron-right" class-name="w-4 h-4" /></button>
+        <button type="button" class="hidden sm:inline-flex items-center gap-1 px-4 py-2 bg-primary text-white text-sm font-medium rounded-lg hover:bg-primary/90 transition-colors">发起话题 <IconRenderer name="chevron-right" class-name="w-4 h-4" /></button>
       </div>
       <div class="grid grid-cols-3 gap-4 mb-6">
         <MetricCard v-for="stat in forumStatData" :key="stat.label" :icon="stat.icon" :value="stat.value" :label="stat.label" layout="inline" />
