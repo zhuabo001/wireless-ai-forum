@@ -41,6 +41,7 @@ markdown 原文（数据层，模拟编辑器提交内容）
 2. **数据模型对齐内部 `page.content`**：`ContentBlock[]` 切块模型废弃，详情页消费整段 HTML 字符串；markdown→HTML 转换在数据层完成（真实链路中由后端承担）。
 3. **代码块增强在转换期生成结构**（语言标识 + 复制按钮），Vue 侧仅挂事件委托，无渲染后 DOM 扫描与生命周期竞态。
 4. **XSS 防线**：markdown-it `html:false`（源中 HTML 一律转义）+ 默认 `validateLink` 拦截 `javascript:`/`vbscript:`/`file:`/`data:` 链接与图片 + mermaid `securityLevel: 'strict'`。
+5. **图片点击放大用事件委托 + ElImageViewer**（对齐内部项目特性，但替代其 h() 重建 vnode 的实现）：与复制按钮共用同一委托入口，收集文章内全部 img 有序浏览，支持缩放/旋转/翻页；对任意 HTML 来源（后端归一化 HTML / markdown / 富文本）通吃，img 被 `<a>` 包裹时预览优先。
 
 ## verification-agent 对抗检查发现并已修复的问题
 
