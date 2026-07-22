@@ -1,35 +1,93 @@
 <script setup lang="ts">
-import type { ContentBlock } from '@/types/pageDesign/forumPostDetail'
-import DiagramBlock from './DiagramBlock.vue'
-import TableBlock from './TableBlock.vue'
+import { onBeforeUnmount, onMounted, ref } from 'vue'
+import 'highlight.js/styles/github.css'
 
 defineProps<{
-  blocks: ContentBlock[]
+  html: string
 }>()
+
+
+const articleRef = ref<HTMLElement | null>(null)
+
+/** 复制按钮反馈文案的恢复延迟（毫秒） */
+const COPY_FEEDBACK_DURATION = 1500
+
+/** 提取代码块内 pre code 的纯文本内容 */
+function extractCodeText(codeBlock: Element): string {
+  return codeBlock.querySelector('pre code')?.textContent ?? ''
+}
+
+/** 复制成功后在按钮上给出短暂反馈 */
+function showCopyFeedback(button: HTMLButtonElement): void {
+  const originalText: string = button.textContent ?? ''
+  button.textContent = '已复制'
+  button.classList.add('copied')
+  window.setTimeout(() => {
+    button.textContent = originalText
+    button.classList.remove('copied')
+  }, COPY_FEEDBACK_DURATION)
+}
+
+/** 事件委托处理复制按钮点击（按钮由 markdown 转换期生成，非 Vue 模板） */
+function handleArticleClick(event: MouseEvent): void {
+  const target = event.target as HTMLElement | null
+  const button = target?.closest('.code-copy-btn')
+  if (!(button instanceof HTMLButtonElement)) return
+
+  const codeBlock = button.closest('.code-block')
+  if (!codeBlock) return
+
+  const text: string = extractCodeText(codeBlock)
+  if (!text) return
+
+  navigator.clipboard
+    .writeText(text)
+    .then(() => showCopyFeedback(button))
+    .catch((error: unknown) => {
+      console.warn('[PostContent] 复制失败:', error instanceof Error ? error.message : error)
+    })
+}
+
+/** 挂载后二次解析 mermaid 占位块，渲染为 SVG；失败时回退展示源码 */
+async function renderMermaidBlocks(): Promise<void> {
+  const blocks = articleRef.value?.querySelectorAll('.mermaid-block')
+  if (!blocks || blocks.length === 0) return
+
+  const mermaid = await import('mermaid')
+  mermaid.default.initialize({
+    startOnLoad: false,
+    theme: 'default',
+    securityLevel: 'strict',
+  })
+
+  for (const block of Array.from(blocks)) {
+    const source: string = block.querySelector('.mermaid-source')?.textContent ?? ''
+    const container = block.querySelector('.mermaid-container')
+    if (!source || !container) continue
+
+    try {
+      const id = `mermaid-${crypto.randomUUID()}`
+      const { svg } = await mermaid.default.render(id, source)
+      container.innerHTML = svg
+    } catch (error: unknown) {
+      console.warn('[PostContent] mermaid 渲染失败，回退为源码展示:', error instanceof Error ? error.message : error)
+      block.classList.add('mermaid-fallback')
+    }
+  }
+}
+
+onMounted(() => {
+  articleRef.value?.addEventListener('click', handleArticleClick)
+  renderMermaidBlocks()
+})
+
+onBeforeUnmount(() => {
+  articleRef.value?.removeEventListener('click', handleArticleClick)
+})
 </script>
 
 <template>
-  <article class="article-body text-base sm:text-[0.9375rem] mb-16">
-    <template v-for="(block, index) in blocks" :key="index">
-      <h2 v-if="block.type === 'heading' && block.level !== 3" v-html="block.html"></h2>
-      <h3 v-else-if="block.type === 'heading' && block.level === 3" v-html="block.html"></h3>
-      <ol v-else-if="block.type === 'list' && block.ordered" v-html="block.html"></ol>
-      <ul v-else-if="block.type === 'list' && !block.ordered" v-html="block.html"></ul>
-      <pre v-else-if="block.type === 'code'"><code v-html="block.html"></code></pre>
-      <blockquote v-else-if="block.type === 'blockquote'" v-html="block.html"></blockquote>
-      <TableBlock
-        v-else-if="block.type === 'table'"
-        :html="block.html"
-      />
-      <DiagramBlock
-        v-else-if="block.type === 'diagram' && block.engine && block.source"
-        :engine="block.engine"
-        :source="block.source"
-        :fallback-html="block.html"
-      />
-      <p v-else v-html="block.html"></p>
-    </template>
-  </article>
+  <article ref="articleRef" class="article-body text-base sm:text-[0.9375rem] mb-16" v-html="html"></article>
 </template>
 
 <style>
@@ -43,15 +101,29 @@ defineProps<{
 .article-body blockquote { border-left: 3px solid #cbd5e1; padding-left: 1.25rem; color: #475569; margin: 1.5rem 0; font-style: italic; }
 .article-body pre { background: #f1f5f9; padding: 1rem 1.25rem; border-radius: 0.625rem; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 0.875rem; overflow-x: auto; line-height: 1.65; margin: 1.25rem 0; }
 .article-body code { background: #f1f5f9; padding: 0.15rem 0.4rem; border-radius: 0.25rem; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 0.875em; color: #0f172a; }
-.article-body pre code { background: none; padding: 0; }
+.article-body pre code { background: none; padding: 0; font-size: inherit; }
 .article-body img { max-width: 100%; border-radius: 0.625rem; margin: 1.5rem 0; }
 .article-body a { color: #0d55c9; text-decoration: none; }
 .article-body a:hover { text-decoration: underline; }
-.article-body .diagram-block { margin: 1.5rem 0; }
-.article-body .diagram-svg-container { display: flex; justify-content: center; overflow-x: auto; }
-.article-body .diagram-svg-container svg { max-width: 100%; height: auto; }
-.article-body .diagram-loading { display: flex; justify-content: center; align-items: center; padding: 2rem 1.25rem; background: #f8fafc; border-radius: 0.625rem; border: 1px dashed #cbd5e1; }
-.article-body .diagram-loading-text { color: #94a3b8; font-size: 0.875rem; }
-.article-body .diagram-fallback pre { background: #f1f5f9; padding: 1rem 1.25rem; border-radius: 0.625rem; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 0.875rem; overflow-x: auto; line-height: 1.65; }
-.article-body .diagram-fallback code { background: none; padding: 0; }
+
+/* 代码块（markdown 转换期生成 .code-block 结构） */
+.article-body .code-block { margin: 1.25rem 0; border-radius: 0.625rem; overflow: hidden; border: 1px solid #e2e8f0; }
+.article-body .code-block .code-header { display: flex; justify-content: space-between; align-items: center; padding: 0.375rem 0.875rem; background: #e2e8f0; font-size: 0.75rem; color: #64748b; }
+.article-body .code-block .code-lang { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; text-transform: lowercase; }
+.article-body .code-block .code-copy-btn { color: #475569; cursor: pointer; padding: 0.125rem 0.5rem; border-radius: 0.25rem; transition: background-color 0.15s ease, color 0.15s ease; }
+.article-body .code-block .code-copy-btn:hover { background: #cbd5e1; color: #0f172a; }
+.article-body .code-block .code-copy-btn.copied { color: #15803d; }
+.article-body .code-block pre { margin: 0; border-radius: 0; }
+
+/* mermaid 二次解析 */
+.article-body .mermaid-block { margin: 1.5rem 0; }
+.article-body .mermaid-block .mermaid-container { display: flex; justify-content: center; overflow-x: auto; }
+.article-body .mermaid-block .mermaid-container svg { max-width: 100%; height: auto; }
+.article-body .mermaid-block.mermaid-fallback .mermaid-source { display: block; background: #f1f5f9; padding: 1rem 1.25rem; border-radius: 0.625rem; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 0.875rem; overflow-x: auto; line-height: 1.65; }
+.article-body .mermaid-block.mermaid-fallback .mermaid-container { display: none; }
+
+/* 表格（markdown GFM 表格） */
+.article-body table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.875rem; }
+.article-body th, .article-body td { border: 1px solid #e2e8f0; padding: 0.5rem 0.875rem; text-align: left; }
+.article-body th { background: #f8fafc; font-weight: 600; color: #0f172a; }
 </style>

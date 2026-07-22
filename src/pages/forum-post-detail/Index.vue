@@ -5,7 +5,7 @@ import { ElMessage } from 'element-plus'
 import type { Comment, Reply } from '@/types/pageDesign/forumPostDetail'
 import {
   postDetail,
-  postContentBlocks,
+  postContentHtml,
   resourceLinks,
   commentSortOptions,
   comments as initialComments,
@@ -110,7 +110,7 @@ function handleLoadMore(): void {
         :comment-count="postDetail.commentCount"
       />
 
-      <PostContent :blocks="postContentBlocks" />
+      <PostContent :html="postContentHtml" />
 
       <PostResourceLinks :links="resourceLinks" />
 
