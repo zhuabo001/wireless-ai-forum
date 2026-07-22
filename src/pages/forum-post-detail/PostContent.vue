@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted, ref } from 'vue'
+import { nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import 'highlight.js/styles/github.css'
 
-defineProps<{
+const props = defineProps<{
   html: string
 }>()
 
@@ -40,6 +40,12 @@ function handleArticleClick(event: MouseEvent): void {
   const text: string = extractCodeText(codeBlock)
   if (!text) return
 
+  // 非安全上下文（如 http 内网部署）无 clipboard API
+  if (!navigator.clipboard) {
+    console.warn('[PostContent] 当前环境不支持剪贴板 API，无法复制')
+    return
+  }
+
   navigator.clipboard
     .writeText(text)
     .then(() => showCopyFeedback(button))
@@ -50,10 +56,18 @@ function handleArticleClick(event: MouseEvent): void {
 
 /** 挂载后二次解析 mermaid 占位块，渲染为 SVG；失败时回退展示源码 */
 async function renderMermaidBlocks(): Promise<void> {
-  const blocks = articleRef.value?.querySelectorAll('.mermaid-block')
+  const blocks = articleRef.value?.querySelectorAll('.mermaid-block:not(.mermaid-fallback)')
   if (!blocks || blocks.length === 0) return
 
-  const mermaid = await import('mermaid')
+  let mermaid: typeof import('mermaid')
+  try {
+    mermaid = await import('mermaid')
+  } catch (error: unknown) {
+    console.warn('[PostContent] mermaid 模块加载失败，全部回退为源码展示:', error instanceof Error ? error.message : error)
+    blocks.forEach(block => block.classList.add('mermaid-fallback'))
+    return
+  }
+
   mermaid.default.initialize({
     startOnLoad: false,
     theme: 'default',
@@ -63,7 +77,8 @@ async function renderMermaidBlocks(): Promise<void> {
   for (const block of Array.from(blocks)) {
     const source: string = block.querySelector('.mermaid-source')?.textContent ?? ''
     const container = block.querySelector('.mermaid-container')
-    if (!source || !container) continue
+    // 已渲染过的块跳过（html 变化后重复触发时避免重渲染）
+    if (!source || !container || container.hasChildNodes()) continue
 
     try {
       const id = `mermaid-${crypto.randomUUID()}`
@@ -80,6 +95,15 @@ onMounted(() => {
   articleRef.value?.addEventListener('click', handleArticleClick)
   renderMermaidBlocks()
 })
+
+// 内容异步到达（如内部项目接口返回 page.content）时重新做 mermaid 二次解析
+watch(
+  () => props.html,
+  async () => {
+    await nextTick()
+    renderMermaidBlocks()
+  },
+)
 
 onBeforeUnmount(() => {
   articleRef.value?.removeEventListener('click', handleArticleClick)
@@ -119,6 +143,7 @@ onBeforeUnmount(() => {
 .article-body .mermaid-block { margin: 1.5rem 0; }
 .article-body .mermaid-block .mermaid-container { display: flex; justify-content: center; overflow-x: auto; }
 .article-body .mermaid-block .mermaid-container svg { max-width: 100%; height: auto; }
+.article-body .mermaid-block .mermaid-source { display: none; }
 .article-body .mermaid-block.mermaid-fallback .mermaid-source { display: block; background: #f1f5f9; padding: 1rem 1.25rem; border-radius: 0.625rem; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 0.875rem; overflow-x: auto; line-height: 1.65; }
 .article-body .mermaid-block.mermaid-fallback .mermaid-container { display: none; }
 

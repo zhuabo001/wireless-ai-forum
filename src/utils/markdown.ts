@@ -40,9 +40,10 @@ md.renderer.rules.fence = (tokens, idx): string => {
   const langName: string = resolveLangName(token.info)
 
   if (langName === 'mermaid') {
+    // mermaid-source 默认由 CSS 隐藏（不用内联样式，否则 fallback 时无法恢复显示）
     return (
       `<div class="mermaid-block">` +
-      `<pre class="mermaid-source" style="display:none">${md.utils.escapeHtml(token.content)}</pre>` +
+      `<pre class="mermaid-source">${md.utils.escapeHtml(token.content)}</pre>` +
       `<div class="mermaid-container"></div>` +
       `</div>\n`
     )
