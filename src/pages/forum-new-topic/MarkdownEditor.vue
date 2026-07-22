@@ -48,7 +48,9 @@ onMounted(() => {
     placeholder: '使用 Markdown 编写你的内容...',
     cache: { enable: false },
     toolbar,
-    // 注意：vditor 预览面板的高亮主题等部分资源默认从 CDN 加载
+    // vditor 运行时资源（lute/i18n/icons/预览高亮与 mermaid）默认从 unpkg CDN 加载，
+    // 内网/离线环境会卡死初始化，这里指向 public 下本地化的 dist 资源
+    cdn: '/vditor',
     input: (value: string) => emit('update:modelValue', value),
     after: () => {
       vditor?.setValue(props.modelValue)
