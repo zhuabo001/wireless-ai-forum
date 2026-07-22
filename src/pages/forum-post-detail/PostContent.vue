@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { ElImageViewer } from 'element-plus'
 import 'highlight.js/styles/github.css'
 
 const props = defineProps<{
@@ -8,6 +9,11 @@ const props = defineProps<{
 
 
 const articleRef = ref<HTMLElement | null>(null)
+
+/** 图片预览状态 */
+const previewVisible = ref<boolean>(false)
+const previewUrls = ref<string[]>([])
+const previewIndex = ref<number>(0)
 
 /** 复制按钮反馈文案的恢复延迟（毫秒） */
 const COPY_FEEDBACK_DURATION = 1500
@@ -28,9 +34,30 @@ function showCopyFeedback(button: HTMLButtonElement): void {
   }, COPY_FEEDBACK_DURATION)
 }
 
-/** 事件委托处理复制按钮点击（按钮由 markdown 转换期生成，非 Vue 模板） */
+/** 点击图片打开放大预览（多图按文档顺序浏览） */
+function handleImageClick(img: HTMLImageElement): void {
+  const images = Array.from(articleRef.value?.querySelectorAll('img') ?? [])
+  const urls: string[] = images.map(el => el.currentSrc || el.src).filter((src: string) => src.length > 0)
+  const index: number = images.indexOf(img)
+  if (urls.length === 0 || index < 0) return
+
+  previewUrls.value = urls
+  previewIndex.value = index
+  previewVisible.value = true
+}
+
+/** 事件委托处理复制按钮与图片点击（目标元素由 markdown 转换期生成，非 Vue 模板） */
 function handleArticleClick(event: MouseEvent): void {
   const target = event.target as HTMLElement | null
+
+  const img = target?.closest('img')
+  if (img instanceof HTMLImageElement && articleRef.value?.contains(img)) {
+    // 图片被 <a> 包裹时阻止跳页，预览优先
+    event.preventDefault()
+    handleImageClick(img)
+    return
+  }
+
   const button = target?.closest('.code-copy-btn')
   if (!(button instanceof HTMLButtonElement)) return
 
@@ -112,6 +139,12 @@ onBeforeUnmount(() => {
 
 <template>
   <article ref="articleRef" class="article-body text-base sm:text-[0.9375rem] mb-16" v-html="html"></article>
+  <ElImageViewer
+    v-if="previewVisible"
+    :url-list="previewUrls"
+    :initial-index="previewIndex"
+    @close="previewVisible = false"
+  />
 </template>
 
 <style>
@@ -126,7 +159,7 @@ onBeforeUnmount(() => {
 .article-body pre { background: #f1f5f9; padding: 1rem 1.25rem; border-radius: 0.625rem; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 0.875rem; overflow-x: auto; line-height: 1.65; margin: 1.25rem 0; }
 .article-body code { background: #f1f5f9; padding: 0.15rem 0.4rem; border-radius: 0.25rem; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 0.875em; color: #0f172a; }
 .article-body pre code { background: none; padding: 0; font-size: inherit; }
-.article-body img { max-width: 100%; border-radius: 0.625rem; margin: 1.5rem 0; }
+.article-body img { max-width: 100%; border-radius: 0.625rem; margin: 1.5rem 0; cursor: zoom-in; }
 .article-body a { color: #0d55c9; text-decoration: none; }
 .article-body a:hover { text-decoration: underline; }
 
