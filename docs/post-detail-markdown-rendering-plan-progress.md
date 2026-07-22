@@ -2,7 +2,7 @@
 
 | 任务/步骤名称 | 任务状态 | commit 信息与哈希值 |
 |---|---|---|
-| 1. 依赖调整（卸载 md-editor-v3，安装 vditor/markdown-it/highlight.js/@types/markdown-it） | 未完成 | - |
+| 1. 依赖调整（卸载 md-editor-v3，安装 vditor/markdown-it/highlight.js/@types/markdown-it） | 完成 | chore(deps): replace md-editor-v3 with vditor, add markdown-it and highlight.js — bce45a2 |
 | 2. 发帖页编辑器迁移（MarkdownEditor.vue → Vditor，保持 v-model API） | 未完成 | - |
 | 3. markdown → HTML 工具（src/utils/markdown.ts，hljs + 自定义 fence 渲染） | 未完成 | - |
 | 4. 数据层改造（forumPostDetail.ts 改为 markdown 原文 + contentHtml） | 未完成 | - |
