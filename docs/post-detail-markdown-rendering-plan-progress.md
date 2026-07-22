@@ -11,3 +11,4 @@
 | 7. 退役清理（DiagramBlock/TableBlock/ContentBlock 类型移除） | 完成 | chore: remove deprecated DiagramBlock, TableBlock, MermaidDiagram components and ContentBlock types — 8a93487（含 MermaidDiagram.vue，逻辑已内化到 PostContent） |
 | 8. 构建与效果验证（vite build + dev 页面核验） | 完成 | fix: localize vditor runtime assets (lute/i18n/icons/hljs/mermaid) to public dir, set cdn option — 1d692b9（验证发现 vditor 默认从 unpkg 加载 lute 等核心资源导致初始化卡死，已本地化；详情页代码块/复制/mermaid/表格与新编辑器均经浏览器实测通过） |
 | 9. verification-agent 对抗检查发现问题的修复（P1 mermaid fallback 显隐被内联样式压制、P2 html prop 异步变化不重解析 mermaid、P3 clipboard API 不存在时未捕获异常、P3 mermaid 动态 import 失败无 fallback） | 完成 | fix: address verification findings - mermaid fallback visibility, async html watch, clipboard and mermaid import guards — da4067d |
+| 10. 文章图片点击放大（对齐内部项目特性；事件委托 + ElImageViewer 多图缩放浏览，替代内部 h() 重建 vnode 的做法） | 完成 | feat: add article image click-to-zoom preview via event delegation and ElImageViewer — 6bb5849（注入双图实测：打开/翻页/缩放/关闭正常） |
