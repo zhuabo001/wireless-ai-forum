@@ -8,5 +8,5 @@
 | 4. 数据层改造（forumPostDetail.ts 改为 markdown 原文 + contentHtml） | 完成 | refactor: render post detail from markdown source as single HTML with code header and mermaid re-parsing — 2d35807（与任务5/6同提交，耦合改动避免中间态不可构建） |
 | 5. 详情渲染组件改造（PostContent.vue 整段渲染 + 复制委托 + mermaid 二次解析） | 完成 | 同上 — 2d35807 |
 | 6. 样式完善（hljs 主题、代码头部栏、pre code 字号、preflight 兼容） | 完成 | 同上 — 2d35807（hljs github 主题、.code-block 样式、pre code font-size 修复均含于 PostContent.vue 重写中，preflight 兼容性已逐项核对） |
-| 7. 退役清理（DiagramBlock/TableBlock/ContentBlock 类型移除） | 未完成 | - |
+| 7. 退役清理（DiagramBlock/TableBlock/ContentBlock 类型移除） | 完成 | chore: remove deprecated DiagramBlock, TableBlock, MermaidDiagram components and ContentBlock types — 8a93487（含 MermaidDiagram.vue，逻辑已内化到 PostContent） |
 | 8. 构建与效果验证（vite build + dev 页面核验） | 未完成 | - |
