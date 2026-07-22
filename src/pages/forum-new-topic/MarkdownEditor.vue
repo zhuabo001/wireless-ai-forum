@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-import { MdEditor } from 'md-editor-v3'
-import 'md-editor-v3/lib/style.css'
+import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import Vditor from 'vditor'
+import 'vditor/dist/index.css'
 
 const props = defineProps<{
   modelValue: string
@@ -11,60 +11,80 @@ const emit = defineEmits<{
   'update:modelValue': [value: string]
 }>()
 
-const mdValue = computed({
-  get: () => props.modelValue,
-  set: (val: string) => emit('update:modelValue', val),
-})
+const editorRef = ref<HTMLDivElement | null>(null)
+let vditor: Vditor | null = null
 
-const toolbars: string[] = [
+// 对齐原 md-editor-v3 工具栏能力；vditor 无内置下标/上标按钮，图片通过 markdown 语法插入
+const toolbar: string[] = [
+  'headings',
   'bold',
   'italic',
-  '-',
-  'title',
-  'strikeThrough',
-  'sub',
-  'sup',
+  'strike',
+  '|',
   'quote',
-  'unorderedList',
-  'orderedList',
-  'task',
-  '-',
-  'codeRow',
+  'list',
+  'ordered-list',
+  'check',
+  '|',
+  'inline-code',
   'code',
   'link',
-  'image',
   'table',
-  'revoke',
-  'next',
-  'save',
+  '|',
+  'undo',
+  'redo',
+  '|',
+  'edit-mode',
   'preview',
 ]
+
+onMounted(() => {
+  if (!editorRef.value) return
+
+  vditor = new Vditor(editorRef.value, {
+    height: 400,
+    mode: 'ir',
+    lang: 'zh_CN',
+    placeholder: '使用 Markdown 编写你的内容...',
+    cache: { enable: false },
+    toolbar,
+    // 注意：vditor 预览面板的高亮主题等部分资源默认从 CDN 加载
+    input: (value: string) => emit('update:modelValue', value),
+    after: () => {
+      vditor?.setValue(props.modelValue)
+    },
+  })
+})
+
+// 外部（如发布后清空表单）修改 modelValue 时同步进编辑器
+watch(
+  () => props.modelValue,
+  (value: string) => {
+    if (vditor && value !== vditor.getValue()) {
+      vditor.setValue(value)
+    }
+  },
+)
+
+onBeforeUnmount(() => {
+  vditor?.destroy()
+  vditor = null
+})
 </script>
 
 <template>
   <div class="border border-border rounded-xl overflow-hidden">
-    <MdEditor
-      v-model="mdValue"
-      :toolbars="toolbars"
-      theme="light"
-      preview-theme="default"
-      placeholder="使用 Markdown 编写你的内容..."
-      language="zh-CN"
-      class="custom-md-editor"
-    />
+    <div ref="editorRef" class="custom-md-editor"></div>
   </div>
 </template>
 
-<style>
+<style scoped>
 .custom-md-editor {
   height: 400px;
 }
-.custom-md-editor .md-editor-toolbar {
-  border-bottom: 1px solid #e2e8f0 !important;
-  background: #f8fafc !important;
-  border-radius: 0.75rem 0.75rem 0 0;
-}
-.custom-md-editor .md-editor-content {
-  min-height: 240px;
+
+.custom-md-editor :deep(.vditor-toolbar) {
+  border-bottom: 1px solid #e2e8f0;
+  background: #f8fafc;
 }
 </style>
