@@ -40,7 +40,7 @@ markdown 原文（数据层，模拟编辑器提交内容）
 1. **编辑器对齐内部项目换 Vditor**，发帖/详情同一 markdown 生态（Vditor 底层同为 markdown-it，语法行为一致）。
 2. **数据模型对齐内部 `page.content`**：`ContentBlock[]` 切块模型废弃，详情页消费整段 HTML 字符串；markdown→HTML 转换在数据层完成（真实链路中由后端承担）。
 3. **代码块增强在转换期生成结构**（语言标识 + 复制按钮），Vue 侧仅挂事件委托，无渲染后 DOM 扫描与生命周期竞态。
-4. **XSS 防线**：markdown-it `html:false`（源中 HTML 一律转义）+ 默认 `validateLink` 拦截 `javascript:`/`vbscript:`/`file:`/`data:` 链接与图片 + mermaid `securityLevel: 'strict'`。
+4. **XSS 防线**：markdown-it `html:false`（源中 HTML 一律转义）+ 显式覆写 `validateLink`（放行 `data:image/gif|png|jpeg|webp` —— Vditor 未配置上传时粘贴图片即 base64 data URI，位图 data 不可执行脚本；拦截 `javascript:`/`vbscript:`/`file:`/其余 `data:` 含 `data:image/svg` 与 `data:text/html`）+ mermaid `securityLevel: 'strict'`。
 5. **图片点击放大用事件委托 + ElImageViewer**（对齐内部项目特性，但替代其 h() 重建 vnode 的实现）：与复制按钮共用同一委托入口，收集文章内全部 img 有序浏览，支持缩放/旋转/翻页；对任意 HTML 来源（后端归一化 HTML / markdown / 富文本）通吃，img 被 `<a>` 包裹时预览优先。
 
 ## verification-agent 对抗检查发现并已修复的问题
@@ -51,6 +51,18 @@ markdown 原文（数据层，模拟编辑器提交内容）
 | P2 | `html` prop 异步变化不重新解析 mermaid（内部接口异步返回内容会踩中） | `watch` + `nextTick` 重解析，已渲染块跳过 |
 | P3 | 非安全上下文 `navigator.clipboard` 不存在时复制抛未捕获异常 | 存在性防御 |
 | P3 | mermaid 动态 import 失败无兜底 | try/catch，失败全部回退源码展示 |
+
+## PR #24 code review 修复轮（2026-07-25，`docs/pr24-review-fixes-plan.md`）
+
+| 严重度 | 问题 | 修复 |
+|--------|------|------|
+| P1 | `public/vditor/dist/**` 被未锚定的 `dist` gitignore 规则忽略，资源从未入库，干净 clone 编辑器 404 卡死 | `dist` → `/dist` 锚定 + 提交 8.5MB 资源（`b34c279`） |
+| P1 | TableBlock 退役后宽表格回归（压回正文宽度逐字换行） | 转换期 `table_open`/`table_close` 包裹可聚焦 `.table-block` 滚动容器 + 恢复等价样式；键盘滚动依赖浏览器原生行为（`d21844d`） |
+| P2 | 安全声明称"拦截 data:"但 data:image 图片实际放行，声明与行为不一致 | 显式覆写 `validateLink` 固化策略（决策 4 已更正表述），10/10 断言验收（`aec35e4`） |
+| P2 | HTTP 内网 `crypto.randomUUID()` 不可用导致 mermaid 全量降级源码 | 模块级递增计数器生成 ID（`62f5e17`） |
+| 清理 | `src/.DS_Store`、`src/components/.DS_Store` 无关二进制变更混入 PR | 还原基线版本（`6f79dd6`） |
+
+验收：干净 clone `npm ci` + build 通过、preview 下 vditor 资源 200；浏览器回归（编辑器挂载/代码块/复制/mermaid/图片放大/500px 宽表格横滚/1280px 同宽）全部通过。
 
 ## 对其他模块的影响
 
