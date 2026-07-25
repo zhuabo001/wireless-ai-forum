@@ -35,7 +35,8 @@ function resolveLangName(info: string): string {
   return info.trim().split(/\s+/g)[0] ?? ''
 }
 
-md.renderer.rules.fence = (tokens, idx): string => {  const token = tokens[idx]
+md.renderer.rules.fence = (tokens, idx): string => {
+  const token = tokens[idx]
   const langName: string = resolveLangName(token.info)
 
   if (langName === 'mermaid') {
