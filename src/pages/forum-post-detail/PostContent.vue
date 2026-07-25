@@ -1,3 +1,9 @@
+<script lang="ts">
+// 模块级 mermaid ID 计数器：crypto.randomUUID 仅安全上下文可用，
+// HTTP 内网部署会抛错导致图表降级，计数器不依赖任何环境 API 且页面内唯一
+let mermaidIdSeed = 0
+</script>
+
 <script setup lang="ts">
 import { nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { ElImageViewer } from 'element-plus'
@@ -108,7 +114,7 @@ async function renderMermaidBlocks(): Promise<void> {
     if (!source || !container || container.hasChildNodes()) continue
 
     try {
-      const id = `mermaid-${crypto.randomUUID()}`
+      const id = `mermaid-${++mermaidIdSeed}`
       const { svg } = await mermaid.default.render(id, source)
       container.innerHTML = svg
     } catch (error: unknown) {
