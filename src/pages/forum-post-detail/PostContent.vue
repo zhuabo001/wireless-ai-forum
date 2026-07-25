@@ -180,8 +180,10 @@ onBeforeUnmount(() => {
 .article-body .mermaid-block.mermaid-fallback .mermaid-source { display: block; background: #f1f5f9; padding: 1rem 1.25rem; border-radius: 0.625rem; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 0.875rem; overflow-x: auto; line-height: 1.65; }
 .article-body .mermaid-block.mermaid-fallback .mermaid-container { display: none; }
 
-/* 表格（markdown GFM 表格） */
-.article-body table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.875rem; }
-.article-body th, .article-body td { border: 1px solid #e2e8f0; padding: 0.5rem 0.875rem; text-align: left; }
-.article-body th { background: #f8fafc; font-weight: 600; color: #0f172a; }
+/* 表格（markdown 转换期包裹 .table-block 滚动容器，恢复宽表格行为） */
+.article-body .table-block { width: 100%; max-width: 100%; margin: 1.5rem 0; overflow-x: auto; overscroll-behavior-inline: contain; -webkit-overflow-scrolling: touch; }
+.article-body .table-block:focus-visible { outline: 2px solid #0d55c9; outline-offset: 4px; }
+.article-body .table-block table { width: max-content; min-width: 100%; margin: 0; border-collapse: collapse; font-size: 0.875rem; }
+.article-body .table-block th, .article-body .table-block td { border: 1px solid #e2e8f0; padding: 0.5rem 0.875rem; text-align: left; vertical-align: top; min-inline-size: 8rem; white-space: nowrap; }
+.article-body .table-block th { background: #f8fafc; font-weight: 600; color: #0f172a; }
 </style>

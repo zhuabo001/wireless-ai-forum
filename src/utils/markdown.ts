@@ -35,8 +35,7 @@ function resolveLangName(info: string): string {
   return info.trim().split(/\s+/g)[0] ?? ''
 }
 
-md.renderer.rules.fence = (tokens, idx): string => {
-  const token = tokens[idx]
+md.renderer.rules.fence = (tokens, idx): string => {  const token = tokens[idx]
   const langName: string = resolveLangName(token.info)
 
   if (langName === 'mermaid') {
@@ -62,6 +61,18 @@ md.renderer.rules.fence = (tokens, idx): string => {
     `</div>\n`
   )
 }
+
+/**
+ * 表格外包裹可聚焦的横向滚动容器（恢复 TableBlock 组件退役前的宽表格行为）。
+ * 容器不超过正文宽度，宽表格仅在容器内横滚；tabindex=0 使浏览器原生支持
+ * 聚焦后方向键滚动，无需额外 JS。
+ */
+md.renderer.rules.table_open = (tokens, idx, options, _env, self): string =>
+  `<div class="table-block" role="region" aria-label="可横向滚动的文章表格" tabindex="0">\n` +
+  self.renderToken(tokens, idx, options)
+
+md.renderer.rules.table_close = (tokens, idx, options, _env, self): string =>
+  self.renderToken(tokens, idx, options) + `</div>\n`
 
 /** 将 markdown 原文渲染为整段 HTML 字符串 */
 export function renderMarkdown(source: string): string {
