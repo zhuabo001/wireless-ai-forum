@@ -63,6 +63,22 @@ md.renderer.rules.fence = (tokens, idx): string => {  const token = tokens[idx]
 }
 
 /**
+ * 链接/图片 URL 安全策略（将 markdown-it 上游默认行为显式固化，避免升级漂移）：
+ * - 放行 data:image/gif|png|jpeg|webp —— Vditor 未配置上传 handler 时，粘贴图片
+ *   即生成 base64 data URI，禁掉会导致用户粘贴的图片在详情页丢失；
+ *   位图 data URI 不可执行脚本，风险仅限体积/追踪。
+ * - 拦截 javascript:/vbscript:/file:/其余 data:（如 data:text/html 可携带脚本）。
+ */
+const ALLOWED_DATA_IMAGE_RE: RegExp = /^data:image\/(gif|png|jpeg|webp);/
+const BLOCKED_PROTOCOL_RE: RegExp = /^(vbscript|javascript|file|data):/
+
+md.validateLink = (url: string): boolean => {
+  const normalized: string = url.trim().toLowerCase()
+  if (!BLOCKED_PROTOCOL_RE.test(normalized)) return true
+  return ALLOWED_DATA_IMAGE_RE.test(normalized)
+}
+
+/**
  * 表格外包裹可聚焦的横向滚动容器（恢复 TableBlock 组件退役前的宽表格行为）。
  * 容器不超过正文宽度，宽表格仅在容器内横滚；tabindex=0 使浏览器原生支持
  * 聚焦后方向键滚动，无需额外 JS。
