@@ -1,0 +1,11 @@
+# pr24-review-fixes-plan 进度面板
+
+| 任务/步骤名称 | 任务状态 | commit 信息与哈希值 |
+|---|---|---|
+| 1. .gitignore 锚定 dist 规则 + 提交 public/vditor 资源（修复 P1 资源未入库） | 完成 | fix: anchor dist gitignore rule and commit vendored vditor runtime assets — b34c279 |
+| 2. markdown 转换期表格包装（table_open/table_close）+ PostContent 宽表格样式恢复（修复 P1 宽表格回归） | 未完成 | — |
+| 3. 显式覆写 validateLink（放行 data:image 白名单）+ 脚本断言验收（修复 P2 声明与行为不一致） | 未完成 | — |
+| 4. mermaid ID 改用模块级递增计数器（修复 P2 HTTP 环境 randomUUID 不可用） | 未完成 | — |
+| 5. 还原 src/.DS_Store 与 src/components/.DS_Store 无关二进制变更 | 未完成 | — |
+| 6. 干净 clone 验收（npm ci + /vditor 资源 200）+ 浏览器回归（编辑器/代码块/mermaid/图片放大/375px 宽表格） | 未完成 | — |
+| 7. records 更正 data URI 声明与补充修复记录 + PR #24 描述更新 | 未完成 | — |
