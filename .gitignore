@@ -1,7 +1,8 @@
 .DS_Store
 node_modules
-dist
-.claude
+# 锚定根目录，仅忽略构建产物；避免误伤 public/vditor/dist 等待入库的静态资源
+/dist
+playwright*
 # Playwright / Playwright MCP runtime artifacts
 .playwright-mcp
 playwright-report/
