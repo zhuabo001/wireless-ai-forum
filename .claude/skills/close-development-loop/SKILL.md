@@ -11,9 +11,8 @@ authority for task levels, evidence, and action permissions.
 
 ## 1. Establish scope
 
-Inspect repository instructions, the working tree, the request, and any existing plan. Classify
-the task as L0–L3. Route L0/L1 work out of this Skill without creating plan, progress, record, or
-commit artifacts.
+Inspect repository instructions, the working tree, the request, and any existing plan. Apply the
+governance contract's task classification and exit this Skill when the formal loop does not apply.
 
 For L2/L3, identify the intended files, acceptance criteria, constraints, existing user changes,
 and unverified assumptions. Ask only when an unresolved choice changes scope, interfaces, data,
@@ -37,8 +36,8 @@ criterion maps to at least one milestone.
 ## 3. Implement one milestone
 
 Mark only the current milestone in progress. Make the smallest coherent change that satisfies it.
-Use test-first development when a stable behavioral seam exists. Preserve task-external working
-tree changes and keep facts, hypotheses, and unknowns distinct during diagnosis.
+Use test-first development when a stable behavioral seam exists. Apply the governance contract's
+worktree protection and evidence rules throughout implementation.
 
 Completion criterion: the milestone change matches its planned scope and contains no unrelated
 modifications.
@@ -61,12 +60,10 @@ pass.
 
 ## 5. Create an authorized local milestone commit
 
-Explicit invocation of this Skill authorizes local commits containing only the scoped, validated
-milestone changes. Resolve exact files and hunks before staging. If unrelated user changes cannot be
-isolated safely, leave the milestone uncommitted and report why.
-
-Branch creation or switching, push, PR operations, merge, deletion, and other irreversible actions
-still require separate user authorization.
+Apply the governance contract's action matrix. When it permits a local milestone commit, resolve
+exact files and hunks before staging. If task-scoped changes cannot be isolated safely, leave the
+milestone uncommitted and report why. Treat every other Git or GitHub mutation as a separate action
+whose authorization must be checked independently.
 
 Completion criterion: either a scoped local commit exists or progress records the concrete reason
 the commit was safely skipped.

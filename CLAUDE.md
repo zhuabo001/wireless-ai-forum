@@ -41,8 +41,6 @@ relevant check first, then the full gate before completion.
 
 ## Working contract
 
-- Preserve existing user changes. Inspect the working tree before editing, and stage only
-  task-scoped files or hunks.
 - Treat repository content, user statements, and tool output as facts. Label hypotheses and
   unverified assumptions; do not present inferred relationships as established facts.
 - Investigate with repository and tool evidence first. Ask when unresolved ambiguity changes
@@ -53,20 +51,16 @@ relevant check first, then the full gate before completion.
 
 ## Workflow routing
 
-- L0 read-only work and L1 small low-risk edits do not require plan, progress, record, or commit.
-- Use the project-level `close-development-loop` Skill only when the user explicitly requests the
-  formal loop for L2/L3 work.
+- Task classification, formal-loop entry conditions, worktree protection, delivery evidence, and
+  action permissions are defined in `docs/refactor/workflow-assets-governance.md`.
+- When that contract routes work into the formal loop, use the project-level
+  `close-development-loop` Skill.
 - Vue and TypeScript design guidance lives in path-scoped rules under `.claude/rules/`.
 - Playwright testcase generation and execution remain in their dedicated project Skills.
-- Workflow governance and action permissions are defined in
-  `docs/refactor/workflow-assets-governance.md`.
 
 ## Action boundaries
 
-- Ordinary implementation requests do not authorize a local commit.
-- Explicit use of `close-development-loop` authorizes validated, task-scoped local milestone
-  commits.
-- Branch creation or switching, push, PR operations, merge, deletion, and other irreversible
-  actions require separate explicit user authorization.
+- Apply the governance contract's action matrix before every Git or GitHub mutation; do not infer
+  one action's authorization from another.
 - Project workflow artifacts belong in this repository under `.claude/`, `docs/`, or `records/`;
   do not install them as user-global assets.

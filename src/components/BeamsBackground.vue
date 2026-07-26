@@ -9,7 +9,7 @@ onMounted(() => {
   if (!canvas) return
   const context = canvas.getContext('2d')
   if (!context) return
-  const ctx: CanvasRenderingContext2D = context
+  const ctx = context
 
   let W = 0, H = 0, dpr = 1
   let animId = 0, running = true

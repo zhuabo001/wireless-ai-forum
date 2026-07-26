@@ -49,6 +49,33 @@ Vite build 保留依赖 `@vueuse/core` 的 Rolldown pure annotation 警告和既
 - 正确识别 push 仍需明确远端和目标分支，merge 和删除没有授权。
 - 正确选择逐 hunk 基线、精确暂存和无法隔离时跳过 commit 的保护策略。
 
+## 独立审查
+
+### Standards
+
+独立审查发现一项规范硬问题、一项判断项和一项既有设计债：
+
+- 根 `CLAUDE.md` 与 Skill 重复定义治理契约中的任务分级、工作区保护和 Git 授权。
+  已改为短路由，由 `workflow-assets-governance.md` 保持唯一政策所有权。
+- `BeamsBackground.vue` 在空值收窄后仍显式标注局部 Canvas context 类型。已移除冗余
+  标注，交由 TypeScript 推断。
+- 三个 WangEditor 组件存在相似生命周期代码。该重复在本任务前已经存在，本次只为通过
+  类型门禁调整 ref 空值形态；不扩大为组件架构重构。
+
+修正后重新执行 `npm run check` 与 Skill 结构校验，均通过。
+
+### Spec
+
+独立规格复核对照 P0–P6 检查治理契约、质量入口、Skill、路径规则、根文件和验证记录，
+未发现 Critical 或 Important 规格缺口。
+
+## 并发工作区说明
+
+分支创建后，共享工作区产生并发提交 `eb288ae`。该提交包含本任务 P2 所需的
+`package.json`、`package-lock.json` 质量门禁改动，同时包含另一项 Vditor 运行时资产
+改造。为避免覆盖或改写他人工作，本任务保留该提交，并在最终 record 中单独标注归属；
+本任务没有把 Vditor 改造计入工作流资产交付范围。
+
 ## 已知限制与后续观察
 
 - Skill 的首次真实项目使用仍应观察触发准确率、progress 模板负担和人工验收恢复路径。
