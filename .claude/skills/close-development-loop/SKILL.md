@@ -1,103 +1,86 @@
 ---
 name: close-development-loop
-description: Close a formal development request through scoped planning, milestone implementation, evidence-backed validation, authorized local commits, independent verification, human acceptance, and a final record. Use only when the user explicitly requests this closed-loop workflow for a multi-file or high-risk change with multiple acceptance criteria.
+description: 通过范围化规划、里程碑实施、证据化验证、已授权的本地提交、独立复核、人工验收和最终记录闭环正式开发请求。仅当用户明确要求对具有多个验收条件的多文件或高风险变更执行此闭环工作流时使用。
 ---
 
-# Close Development Loop
+# 需求开发闭环
 
-Use this project-level delivery loop for L2 and L3 work. Read
-`../../../docs/refactor/workflow-assets-governance.md` before creating artifacts; it is the
-authority for task levels, evidence, and action permissions.
+将本项目级交付闭环用于 L2 和 L3 工作。创建任何产物前，先阅读
+`../../../docs/contracts/workflow-governance.md`；该文件是任务等级、证据和动作权限的
+唯一权威来源。
 
-## 1. Establish scope
+## 1. 确立范围
 
-Inspect repository instructions, the working tree, the request, and any existing plan. Apply the
-governance contract's task classification and exit this Skill when the formal loop does not apply.
+检查仓库指令、工作区、请求和已有计划。应用治理契约的任务分级；当正式闭环不适用时退出此 Skill。
 
-For L2/L3, identify the intended files, acceptance criteria, constraints, existing user changes,
-and unverified assumptions. Ask only when an unresolved choice changes scope, interfaces, data,
-security, or an irreversible action.
+对于 L2/L3，识别目标文件、验收条件、约束、已有用户修改和未验证假设。只有未解决的选择会改变
+范围、接口、数据、安全或不可逆动作时才提问。
 
-Completion criterion: the task level, scope, acceptance criteria, protected user changes, and
-effective plan source are explicit.
+完成条件：任务等级、范围、验收条件、受保护的用户修改和有效计划来源均已明确。
 
-## 2. Create or locate delivery artifacts
+## 2. 创建或定位交付产物
 
-Use the user-provided plan when available. Otherwise create a focused plan under `docs/` from the
-confirmed request. Create its sibling progress file from
-[`assets/progress-template.md`](assets/progress-template.md), named `<plan-stem>-progress.md`.
+存在用户提供的计划时优先使用；否则根据已确认的请求，在 `docs/` 下创建聚焦计划。使用
+[`assets/progress-template.md`](assets/progress-template.md) 创建同级进度文件，命名为
+`<plan-stem>-progress.md`。
 
-List milestones as pending and record their expected outputs and verification. Keep commit hashes
-out of progress; the final record owns the commit list.
+将各里程碑列为待处理，并记录预期输出和验证方式。不要在 progress 中记录 commit 哈希；完整的
+commit 列表由最终 record 负责。
 
-Completion criterion: one authoritative plan and one progress file exist, and every acceptance
-criterion maps to at least one milestone.
+完成条件：存在一份权威计划和一份进度文件，且每个验收条件至少映射到一个里程碑。
 
-## 3. Implement one milestone
+## 3. 实施一个里程碑
 
-Mark only the current milestone in progress. Make the smallest coherent change that satisfies it.
-Use test-first development when a stable behavioral seam exists. Apply the governance contract's
-worktree protection and evidence rules throughout implementation.
+只将当前里程碑标记为进行中。实施满足它的最小完整变更。存在稳定的行为测试切面时使用测试先行；
+实施全程应用治理契约中的工作区保护和证据规则。
 
-Completion criterion: the milestone change matches its planned scope and contains no unrelated
-modifications.
+完成条件：里程碑变更符合计划范围，且不包含无关修改。
 
-## 4. Validate and record evidence
+## 4. 验证并记录证据
 
-Run the narrowest relevant checks during implementation. Before final completion, run the
-project-level quality entrypoint:
+实施期间运行范围最小的相关检查。最终完成前运行项目级质量入口：
 
 ```bash
 npm run check
 ```
 
-When validation fails, keep the milestone incomplete. Reproduce the failure, establish a root-cause
-hypothesis, test it, fix the cause, and rerun the failed check plus relevant regression coverage.
-Record commands, results, remaining risks, and unverified items in progress.
+验证失败时，保持里程碑未完成。复现失败、建立根因假设、检验假设、修复原因，再重新运行失败检查和
+相关回归覆盖。将命令、结果、剩余风险和未验证项记录在 progress 中。
 
-Completion criterion: every validation result is recorded and all required checks for the milestone
-pass.
+完成条件：所有验证结果均已记录，且该里程碑所需检查全部通过。
 
-## 5. Create an authorized local milestone commit
+## 5. 创建已授权的本地里程碑 commit
 
-Apply the governance contract's action matrix. When it permits a local milestone commit, resolve
-exact files and hunks before staging. If task-scoped changes cannot be isolated safely, leave the
-milestone uncommitted and report why. Treat every other Git or GitHub mutation as a separate action
-whose authorization must be checked independently.
+应用治理契约的动作矩阵。当矩阵允许创建本地里程碑 commit 时，暂存前确认精确的文件和 hunk。
+如果无法安全隔离任务范围变更，则不要提交该里程碑，并报告原因。将每一项其他 Git 或 GitHub
+变更视为独立动作，分别检查其授权。
 
-Completion criterion: either a scoped local commit exists or progress records the concrete reason
-the commit was safely skipped.
+完成条件：存在范围明确的本地 commit，或 progress 已记录安全跳过 commit 的具体原因。
 
-## 6. Independently verify
+## 6. 独立复核
 
-Use a separate reviewer when the environment supports one; otherwise perform a fresh checklist pass
-without relying on the implementation narrative. Compare the plan, diff, validation evidence,
-authorization boundaries, and working-tree protection. Resolve Critical and Important findings,
-then repeat affected checks.
+环境支持时使用独立审查者；否则不依赖实施叙述，执行一次全新的检查清单。对照计划、diff、验证证据、
+授权边界和工作区保护。解决 Critical 和 Important 问题后，重新运行受影响的检查。
 
-Completion criterion: every acceptance criterion is accounted for and no unresolved Critical or
-Important finding remains.
+完成条件：每个验收条件都有对应证据，且没有未解决的 Critical 或 Important 问题。
 
-## 7. Request human acceptance
+## 7. 请求人工验收
 
-Present the implemented scope, validation evidence, known limitations, and any skipped commit.
-Pause for human acceptance. Treat requested changes as new incomplete milestones and resume at
-Step 3.
+展示已实施范围、验证证据、已知限制和所有跳过的 commit。暂停并等待人工验收。将所要求的修改视为
+新的未完成里程碑，并从第 3 步恢复。
 
-Completion criterion: the user explicitly accepts the result.
+完成条件：用户明确接受结果。
 
-## 8. Write the final record
+## 8. 编写最终 record
 
-Create `records/<task-slug>-<YYYY-MM-DD>.md` from
-[`assets/record-template.md`](assets/record-template.md). Summarize the objective, changed files,
-validation, local commits, impacts, unresolved risks, and acceptance. Mark the progress file fully
-complete only after the record is accurate.
+依据 [`assets/record-template.md`](assets/record-template.md) 创建
+`records/<task-slug>-<YYYY-MM-DD>.md`。汇总目标、变更文件、验证、本地 commits、影响、
+未解决风险和验收；仅在 record 准确后将 progress 标为完全完成。
 
-Completion criterion: plan, progress, diff, validation evidence, commit list, acceptance, and final
-record agree, with no required work remaining.
+完成条件：plan、progress、diff、验证证据、commit 列表、验收和最终 record 相互一致，且没有剩余
+必做工作。
 
-## Resume and failure behavior
+## 恢复与失败处理
 
-Resume from the first incomplete milestone in progress. Preserve recorded evidence and rerun checks
-whose underlying files changed. Keep blocked or failed work visibly incomplete; never convert a
-failure, missing dependency, permission gap, or unverified assumption into a completion claim.
+从 progress 中第一个未完成的里程碑恢复。保留已记录的证据，并重新运行底层文件发生变化的检查。
+让受阻或失败的工作保持明确的未完成状态；不得将失败、缺失依赖、权限缺口或未验证假设表述为已完成。

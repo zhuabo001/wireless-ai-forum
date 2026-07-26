@@ -11,7 +11,7 @@
 
 ## 交付范围
 
-- 建立 `docs/refactor/workflow-assets-governance.md`，统一定义 L0–L3、证据要求、
+- 建立 `docs/contracts/workflow-governance.md`，统一定义 L0–L3、证据要求、
   根因纪律和 Git/GitHub 动作授权。
 - 将根 `CLAUDE.md` 收敛为项目模型、关键入口、统一命令与资产路由。
 - 新建路径级 Vue、TypeScript Rules，将可机器判断的规则交给 ESLint、`vue-tsc`

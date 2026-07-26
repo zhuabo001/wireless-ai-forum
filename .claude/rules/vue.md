@@ -3,13 +3,13 @@ paths:
   - "**/*.vue"
 ---
 
-# Vue design rules
+# Vue 设计规则
 
-- Use `<script setup lang="ts">` for new and substantially edited SFCs.
-- Extract a component when it creates a meaningful behavioral, reuse, testing, or ownership boundary. Keep one-off markup local when extraction only adds indirection.
-- Keep state local by default. Use props and emits for direct ownership relationships; use Pinia or another shared abstraction when state is genuinely shared across distant components or routes.
-- Define public props and emits with explicit TypeScript contracts. Model optional values and defaults deliberately.
-- Keep event handlers focused on one user intent. Move reusable domain or side-effect logic into a composable or service instead of growing the component script.
-- Prefer existing layout and UI primitives under `src/components/` before creating a parallel abstraction.
-- Scope component styles by default. Use global styles only for intentional application-wide tokens, resets, or third-party overrides.
-- Let ESLint and `vue-tsc` own syntax, unused bindings, template validity, and type correctness; do not duplicate those checks as prose rules.
+- 新建或大幅修改的单文件组件使用 `<script setup lang="ts">`。
+- 当拆分能形成有意义的行为、复用、测试或所有权边界时再提取组件；若只会增加间接层，一次性标记应留在本地。
+- 默认保持状态局部化。直接所有权关系使用 props 和 emits；只有状态确实跨越远距组件或路由共享时，才使用 Pinia 或其他共享抽象。
+- 为公开的 props 和 emits 定义明确的 TypeScript 契约；审慎建模可选值与默认值。
+- 事件处理器只聚焦一个用户意图。将可复用的领域逻辑或副作用逻辑移入 composable 或 service，不要持续膨胀组件脚本。
+- 创建平行抽象前，优先复用 `src/components/` 下现有的布局和 UI 基元。
+- 默认使用组件作用域样式。全局样式仅用于有意设置的应用级设计令牌、重置样式或第三方覆盖。
+- 语法、未使用绑定、模板有效性和类型正确性由 ESLint 与 `vue-tsc` 负责；不得用自然语言重复这些可自动检查的规则。

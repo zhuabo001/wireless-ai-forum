@@ -1,25 +1,25 @@
-# <Task name> progress
+# <任务名称> 进度
 
-Plan: `<path-to-plan>`
+计划：`<path-to-plan>`
 
-Task level: `L2 | L3`
+任务等级：`L2 | L3`
 
-Scope: <files, modules, or boundaries included>
+范围：<包含的文件、模块或边界>
 
-Acceptance criteria: <short list or link to plan section>
+验收条件：<简短列表或计划章节链接>
 
-| Milestone | Status | Expected output | Validation evidence | Notes / blockers |
+| 里程碑 | 状态 | 预期输出 | 验证证据 | 备注 / 阻塞项 |
 | --- | --- | --- | --- | --- |
-| <milestone> | Pending | <artifact or behavior> | <command and expected result> | |
+| <里程碑> | 待处理 | <产物或行为> | <命令和预期结果> | |
 
-Allowed states: `Pending`, `In progress`, `Blocked`, `Complete`.
+允许的状态：`待处理`、`进行中`、`受阻`、`完成`。
 
-## Protected working-tree changes
+## 受保护的工作区变更
 
-- <pre-existing file or hunk that must not be overwritten or committed>
+- <不得覆盖或提交的既有文件或 hunk>
 
-## Assumptions and risks
+## 假设与风险
 
-- Fact: <verified repository, user, or tool evidence>
-- Hypothesis: <unverified explanation being tested>
-- Unverified: <remaining gap and its impact>
+- 事实：<已验证的仓库、用户或工具证据>
+- 假设：<正在检验的未验证解释>
+- 未验证项：<剩余缺口及其影响>

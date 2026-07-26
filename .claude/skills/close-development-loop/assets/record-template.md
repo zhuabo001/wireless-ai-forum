@@ -1,45 +1,45 @@
-# <Task name>
+# <任务名称>
 
-Date: `<YYYY-MM-DD>`
+日期：`<YYYY-MM-DD>`
 
-Plan: `<path-to-plan>`
+计划：`<path-to-plan>`
 
-Progress: `<path-to-progress>`
+进度：`<path-to-progress>`
 
-Task level: `L2 | L3`
+任务等级：`L2 | L3`
 
-## Objective
+## 目标
 
-<What outcome was requested and why>
+<请求的结果及其原因>
 
-## Changed files
+## 变更文件
 
-| File | Change | Impact |
+| 文件 | 变更 | 影响 |
 | --- | --- | --- |
-| `<path>` | <summary> | <affected modules or none> |
+| `<path>` | <摘要> | <受影响模块或无> |
 
-## Validation evidence
+## 验证证据
 
-| Command or review | Result | Notes |
+| 命令或审查 | 结果 | 备注 |
 | --- | --- | --- |
-| `<command>` | Pass / Fail / Not run | <relevant output or reason> |
+| `<command>` | 通过 / 失败 / 未运行 | <相关输出或原因> |
 
-## Local commits
+## 本地 commits
 
-| Commit | Scope |
+| Commit | 范围 |
 | --- | --- |
-| `<hash or intentionally skipped>` | <milestone or reason> |
+| `<哈希或有意跳过>` | <里程碑或原因> |
 
-## Independent verification
+## 独立复核
 
-<Reviewer or checklist used, findings, and resolutions>
+<使用的审查者或检查清单、发现和处理结果>
 
-## Remaining risks and unverified items
+## 剩余风险与未验证项
 
-- <risk, limitation, or `None`>
+- <风险、限制或 `无`>
 
-## Human acceptance
+## 人工验收
 
-Accepted by: `<user>`
+验收人：`<user>`
 
-Acceptance evidence: <response or reference>
+验收证据：<回复或引用>

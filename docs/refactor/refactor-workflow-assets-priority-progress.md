@@ -4,7 +4,7 @@
 
 | 阶段 | 状态 | 产物与验证证据 |
 | --- | --- | --- |
-| P0 固化治理边界 | 完成 | `workflow-assets-governance.md` 已记录资产迁移、保护边界和验收标准 |
+| P0 固化治理边界 | 完成 | `docs/contracts/workflow-governance.md` 已记录资产迁移、保护边界和验收标准 |
 | P1 重写需求闭环契约 | 完成 | 已固化 L0–L3、完成证据、根因纪律和 Git/GitHub 授权矩阵 |
 | P2 盘点并收敛机器质量门禁 | 完成 | 建立 ESLint Flat Config 与 `lint/type-check/check`；`npm run lint`、`npm run type-check` 通过 |
 | P3 创建需求闭环 Skill | 完成 | 项目级 Skill、progress/record 模板与 UI 元数据已创建；官方结构校验通过 |

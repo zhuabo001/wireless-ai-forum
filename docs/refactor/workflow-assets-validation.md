@@ -56,7 +56,7 @@ Vite build 保留依赖 `@vueuse/core` 的 Rolldown pure annotation 警告和既
 独立审查发现一项规范硬问题、一项判断项和一项既有设计债：
 
 - 根 `CLAUDE.md` 与 Skill 重复定义治理契约中的任务分级、工作区保护和 Git 授权。
-  已改为短路由，由 `workflow-assets-governance.md` 保持唯一政策所有权。
+  已改为短路由，由 `docs/contracts/workflow-governance.md` 保持唯一政策所有权。
 - `BeamsBackground.vue` 在空值收窄后仍显式标注局部 Canvas context 类型。已移除冗余
   标注，交由 TypeScript 推断。
 - 三个 WangEditor 组件存在相似生命周期代码。该重复在本任务前已经存在，本次只为通过
