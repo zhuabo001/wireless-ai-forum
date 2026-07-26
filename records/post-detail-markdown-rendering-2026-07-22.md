@@ -32,7 +32,7 @@ markdown 原文（数据层，模拟编辑器提交内容）
 | `src/pages/forum-post-detail/DiagramBlock.vue` | 删除 | 切块模型退役（mermaid 逻辑内化到 PostContent） |
 | `src/pages/forum-post-detail/TableBlock.vue` | 删除 | 切块模型退役（GFM 表格由 `.article-body` 样式接管） |
 | `src/pages/forum-post-detail/MermaidDiagram.vue` | 删除 | 切块模型退役 |
-| `public/vditor/` | 新增 | vditor 运行时资源本地化（lute/i18n/icons/highlight.js/mermaid/content-theme，约 8.5MB），解决默认 unpkg CDN 不可达导致编辑器初始化卡死 |
+| `vite.config.ts` | 修改 | `vite-plugin-static-copy` 构建期将 `node_modules/vditor/dist/{js,css}` 拷贝到 `dist/vditor/dist/`（dev 由插件中间件直接从 node_modules 提供），资源版本随 package.json 锁定 |
 | `docs/post-detail-markdown-rendering-plan*.md` | 新增 | plan 与任务面板 |
 
 ## 关键决策
@@ -56,7 +56,7 @@ markdown 原文（数据层，模拟编辑器提交内容）
 
 | 严重度 | 问题 | 修复 |
 |--------|------|------|
-| P1 | `public/vditor/dist/**` 被未锚定的 `dist` gitignore 规则忽略，资源从未入库，干净 clone 编辑器 404 卡死 | `dist` → `/dist` 锚定 + 提交 8.5MB 资源（`b34c279`） |
+| P1 | `public/vditor/dist/**` 被未锚定的 `dist` gitignore 规则忽略，资源从未入库，干净 clone 编辑器 404 卡死 | `dist` → `/dist` 锚定（`b34c279`）；后续改为构建期从 node_modules 拷贝（见下） |
 | P1 | TableBlock 退役后宽表格回归（压回正文宽度逐字换行） | 转换期 `table_open`/`table_close` 包裹可聚焦 `.table-block` 滚动容器 + 恢复等价样式；键盘滚动依赖浏览器原生行为（`d21844d`） |
 | P2 | 安全声明称"拦截 data:"但 data:image 图片实际放行，声明与行为不一致 | 显式覆写 `validateLink` 固化策略（决策 4 已更正表述），10/10 断言验收（`aec35e4`） |
 | P2 | HTTP 内网 `crypto.randomUUID()` 不可用导致 mermaid 全量降级源码 | 模块级递增计数器生成 ID（`62f5e17`） |
