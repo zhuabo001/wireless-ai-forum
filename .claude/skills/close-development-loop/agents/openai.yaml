@@ -1,0 +1,7 @@
+interface:
+  display_name: "Close Development Loop"
+  short_description: "Run an auditable development delivery loop"
+  default_prompt: "Use $close-development-loop to deliver this scoped change with auditable progress and verification."
+
+policy:
+  allow_implicit_invocation: false

@@ -1,31 +1,72 @@
-# 开发指导
+# Wireless AI Forum project guide
 
-1. 任何代码开发需求，再开始前需要向开发者确认对应的plan.md文档的位置(本项目目前都放在了项目根目录的`/docs`目录下)，禁止在缺少plan.md的情况下进行开发!
-2. 实际开发前，需要在plan.md的同级路径下，项目根目录下`/docs`下新建一个名为`[plan.md名称]-progress.md`的文件用来作为任务面板，可以以三列多行的表格的形式，第一列为任务/步骤名称， 第二列为任务状态，第三列为完成该任务时的commit信息和commit的哈希值；初始都为未完成，当你认为任务完成时，先比对代码修改和plan.md中的步骤描述，内容对齐后再将对应的progress.md中的任务状态标记为完成！
-3. 标记完状态后进行一次commit，作为代码修改节点，方便后续回滚，将本次commit的哈希值存入到对应progress文档的第三列
-4. 完成上述行为后再进行下一步开发
-5. progress.md的任务状态都为'完成'后，拉起一个verification-agent专门用来比对plan.md和所有代码修改，判断是否完成了所有plan.md指示的内容，并进行代码对抗性检查
-6. 检查没有问题后通知开发者进行人工验收，若发现问题务必遵循上面1-5步进行问题修复！
-7. 成功后在 `records`目录下创建一个markdown文档来填入一些摘要信息，包括为了完成什么功能修改了什么文件对别的模块是否存在影响
+## Project model
 
-## html转vue阶段
-若碰到html文件转vue组件的任务，请前往'page-design/rules/html-convert-to-vue.md'查看细则。
+Wireless AI Forum is a Vue 3 single-page community application for wireless AI knowledge,
+discussion, courses, practices, intelligence, and an Agent marketplace.
 
-## vue组件
-1. vue文件内必须使用`<scirpt setup lang="ts"></script>`语法糖
-2. 父子组件通信必须控制在一层以内，超过一个层级考虑使用pinia创建store
-3. 交互组件绑定的逻辑函数必须遵守"单一职能"原则，避免逻辑函数过长
-4. 如果某一段`<template>`代码仅用于展示信息，那么这段代码可以被优先考虑抽取成组件
-5. 禁止为了组件化而进行组件抽取
-6. `<style scoped >`style模块必须使用scoped，至于要不要用scss请分析是否和tailwind.css有冲突，若没有，则强制使用scss，使用前先使用npm进行安装
+- Stack: Vue 3, TypeScript, Vite, Vue Router, Pinia, Element Plus, Tailwind CSS, and Sass.
+- Application flow: typed domain models and mock data feed route pages and home sections, which
+  compose shared layout and UI components.
+- Entry points: `src/main.ts`, `src/App.vue`, and `src/router/index.ts`.
+- Alias: `@/*` resolves to `src/*`.
 
-## typescript
-`<script setup lang="ts">`标签内的ts代码必须遵守：
-1. 变量必须加类型声明
-2. 优先使用'unknown'而不是'any'
-3. 类型不确定时优先使用泛型
-4. 函数形参也需要标注类型，包括返回值类型
+## Key paths
 
-# 重要
-1.如果开发者在开发过程中做出动态调整，以开发者指令为准！
-2. 项目中查找符号或者定位函数定义和引用时，优先使用serena-mcp!grep工具和glob工具作为兜底！
+| Concern | Path |
+| --- | --- |
+| Route pages | `src/pages/` |
+| Home sections | `src/sections/` |
+| Shared components | `src/components/` |
+| Reusable UI primitives | `src/components/ui/` |
+| Static data and page configuration | `src/data/` |
+| Shared and page-level types | `src/types/` |
+| Router | `src/router/index.ts` |
+| Global styles and tokens | `src/assets/` |
+| Plans and progress | `docs/` |
+| Completed delivery records | `records/` |
+
+## Development commands
+
+```bash
+npm run dev
+npm run lint
+npm run type-check
+npm run build
+npm run check
+```
+
+Use `npm run check` as the final local quality gate. During implementation, run the narrowest
+relevant check first, then the full gate before completion.
+
+## Working contract
+
+- Preserve existing user changes. Inspect the working tree before editing, and stage only
+  task-scoped files or hunks.
+- Treat repository content, user statements, and tool output as facts. Label hypotheses and
+  unverified assumptions; do not present inferred relationships as established facts.
+- Investigate with repository and tool evidence first. Ask when unresolved ambiguity changes
+  scope, interfaces, data, security, or an irreversible action; otherwise state the assumption and
+  continue.
+- Prefer semantic symbol navigation when available, with `rg` and file search as fallbacks.
+- User instructions override this file when they explicitly change the task.
+
+## Workflow routing
+
+- L0 read-only work and L1 small low-risk edits do not require plan, progress, record, or commit.
+- Use the project-level `close-development-loop` Skill only when the user explicitly requests the
+  formal loop for L2/L3 work.
+- Vue and TypeScript design guidance lives in path-scoped rules under `.claude/rules/`.
+- Playwright testcase generation and execution remain in their dedicated project Skills.
+- Workflow governance and action permissions are defined in
+  `docs/refactor/workflow-assets-governance.md`.
+
+## Action boundaries
+
+- Ordinary implementation requests do not authorize a local commit.
+- Explicit use of `close-development-loop` authorizes validated, task-scoped local milestone
+  commits.
+- Branch creation or switching, push, PR operations, merge, deletion, and other irreversible
+  actions require separate explicit user authorization.
+- Project workflow artifacts belong in this repository under `.claude/`, `docs/`, or `records/`;
+  do not install them as user-global assets.

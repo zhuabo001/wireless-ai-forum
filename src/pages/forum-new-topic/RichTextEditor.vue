@@ -12,7 +12,7 @@ const emit = defineEmits<{
   'update:modelValue': [value: string]
 }>()
 
-const editorRef = shallowRef<IDomEditor | null>(null)
+const editorRef = shallowRef<IDomEditor>()
 const isEditorReady = ref<boolean>(false)
 
 const toolbarConfig: Partial<IToolbarConfig> = {
@@ -58,7 +58,7 @@ watch(() => props.modelValue, (newVal) => {
 onBeforeUnmount(() => {
   if (editorRef.value) {
     editorRef.value.destroy()
-    editorRef.value = null
+    editorRef.value = undefined
   }
 })
 </script>

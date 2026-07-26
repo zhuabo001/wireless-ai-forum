@@ -1,0 +1,5 @@
+{
+  "skillOverrides": {
+    "close-development-loop": "user-invocable-only"
+  }
+}

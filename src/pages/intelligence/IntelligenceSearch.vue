@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import IconRenderer from '@/components/ui/IconRenderer.vue'
 
-const props = defineProps<{
+defineProps<{
   keyword: string
   placeholder: string
 }>()

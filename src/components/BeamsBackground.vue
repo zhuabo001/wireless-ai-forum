@@ -7,8 +7,9 @@ let cleanup: (() => void) | null = null
 onMounted(() => {
   const canvas = canvasRef.value
   if (!canvas) return
-  const ctx = canvas.getContext('2d')
-  if (!ctx) return
+  const context = canvas.getContext('2d')
+  if (!context) return
+  const ctx: CanvasRenderingContext2D = context
 
   let W = 0, H = 0, dpr = 1
   let animId = 0, running = true
