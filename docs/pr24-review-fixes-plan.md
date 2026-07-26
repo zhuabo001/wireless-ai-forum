@@ -79,6 +79,18 @@ PR #24（贴文详情 markdown 渲染重构）经本地 code review 发现 2 个
 
 ## 任务分解（与 progress 面板对应）
 
+### 8.（追加）vditor 运行时资源改为构建期拷贝，移除 public 下 vendored 资源
+
+**背景**：任务 1 采用 review 方案 1（资源入库）解决了干净 clone 404 问题，但引入两个缺点：8.5MB/274 文件进 git；vendored 副本与 `package.json` 版本可能漂移（升级 vditor 需手工重新拷贝）。经讨论切换为 review 方案 2（构建期从 node_modules 拷贝）。
+
+**方案**：
+- 安装 devDependency `vite-plugin-static-copy`；`vite.config.ts` 增加拷贝目标 `node_modules/vditor/dist/{js,css}` → `dist/vditor/`（dev 模式由插件中间件直接从 node_modules 提供 `/vditor/**`，无需真实拷贝）。
+- 删除 `public/vditor/` 全部 274 个入库文件。
+- `.gitignore` 的 `/dist` 锚定改动保留（卫生改动，与本方案无冲突）。
+- `cdn: '/vditor'` 配置不变。
+- 验收：dev 下 `/vditor/dist/**` 200 且编辑器可挂载；build 产物 `dist/vditor/**` 存在；干净 clone `npm ci` + build + preview 验收；records 与 PR 描述同步更新。
+- 风险：`vite-plugin-static-copy` 与本项目 rolldown-vite（vite 8）的兼容性——插件使用标准 rollup 钩子（`writeBundle`）与 dev 中间件，预期兼容，以实测为准。
+
 | # | 任务 | 产出 |
 |---|------|------|
 | 1 | .gitignore 锚定 + 提交 public/vditor 资源 | `.gitignore`、8.5MB vendored 资源入库 |
@@ -88,3 +100,4 @@ PR #24（贴文详情 markdown 渲染重构）经本地 code review 发现 2 个
 | 5 | 还原 .DS_Store 变更 | 2 个文件恢复基线 |
 | 6 | 干净 clone + 浏览器回归验收 | 验收记录 |
 | 7 | records 更正 + PR 描述更新 | records 文档、PR #24 描述 |
+| 8 | vditor 资源改构建期拷贝，删除 public/vditor | `vite.config.ts`、`package.json`、-274 文件 |
