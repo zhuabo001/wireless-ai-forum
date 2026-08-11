@@ -5,11 +5,22 @@ import pinia from './store'
 import 'element-plus/dist/index.css'
 import './assets/main.css'
 
-const app = createApp(App)
+// dev 环境按 VITE_ENABLE_MSW=true 启动 MSW worker，拦截 /api/* 请求返回模拟数据；
+// 需在挂载前完成注册，避免首屏请求漏过拦截
+async function enableMocking(): Promise<void> {
+  if (!import.meta.env.DEV || import.meta.env.VITE_ENABLE_MSW !== 'true') return
+  const { worker } = await import('./mocks/browser')
+  await worker.start({ onUnhandledRequest: 'bypass' })
+}
 
-app.use(router)
+async function bootstrap(): Promise<void> {
+  await enableMocking()
 
-router.isReady().then(() => {
+  const app = createApp(App)
+  app.use(router)
+  await router.isReady()
   app.use(pinia)
   app.mount('#app')
-})
+}
+
+void bootstrap()

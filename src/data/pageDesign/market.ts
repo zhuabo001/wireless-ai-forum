@@ -1,4 +1,4 @@
-import type { AgentItem, DownloadRankItem, MarketPageMeta, NewDeveloperItem } from '@/types/pageDesign/market'
+import type { AgentItem, DownloadRankItem, MarketPageMeta, MarketSortOption, NewDeveloperItem, UsageGuide } from '@/types/pageDesign/market'
 
 export const marketMeta: MarketPageMeta = {
   title: 'Agent市场',
@@ -153,7 +153,7 @@ export const agentItems: AgentItem[] = [
 
 export const categoryOptions: string[] = ['全部', 'Extension', 'Skill', 'MCP', 'Subagent', 'Command']
 
-export const sortOptions: { label: string; value: string }[] = [
+export const sortOptions: MarketSortOption[] = [
   { label: '综合排序', value: 'default' },
   { label: '下载最多', value: 'downloads' },
   { label: '评分最高', value: 'rating' },
@@ -174,7 +174,7 @@ export const newDevelopers: NewDeveloperItem[] = [
   { surname: '郑', fullName: '郑浩然', gradientFrom: '#2dd4bf', gradientTo: '#06b6d4', contribution: '发布了 3 个 Skill' },
 ]
 
-export const usageGuide = {
+export const usageGuide: UsageGuide = {
   description: '了解如何安装、配置和发布Agent，快速上手Agent市场',
   linkText: '查看文档',
   linkHref: '#',
