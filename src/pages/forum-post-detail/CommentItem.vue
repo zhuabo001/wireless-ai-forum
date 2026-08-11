@@ -6,19 +6,19 @@ import type { IDomEditor, IToolbarConfig } from '@wangeditor/editor'
 import type { Comment } from '@/types/pageDesign/forumPostDetail'
 import IconRenderer from '@/components/ui/IconRenderer.vue'
 
-const props = defineProps<{
+defineProps<{
   comment: Comment
   currentUserAvatar: string
 }>()
 
-defineEmits<{
+const emit = defineEmits<{
   toggleLike: [commentId: string]
   submitReply: [commentId: string, html: string]
 }>()
 
 const showReplyEditor = ref<boolean>(false)
 
-const replyEditorRef = shallowRef<IDomEditor | null>(null)
+const replyEditorRef = shallowRef<IDomEditor>()
 
 const replyToolbarConfig: Partial<IToolbarConfig> = {
   excludeKeys: [
@@ -71,7 +71,7 @@ onBeforeUnmount(() => {
   const editor = replyEditorRef.value
   if (editor) {
     editor.destroy()
-    replyEditorRef.value = null
+    replyEditorRef.value = undefined
   }
 })
 </script>

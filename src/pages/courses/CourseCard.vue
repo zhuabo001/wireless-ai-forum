@@ -3,7 +3,7 @@ import type { CourseItem } from '@/types/pageDesign/courses'
 import TagBadge from '@/components/ui/TagBadge.vue'
 import { courseCategoryGroups } from '@/data/pageDesign/courses'
 
-const props = defineProps<{
+defineProps<{
   course: CourseItem
 }>()
 

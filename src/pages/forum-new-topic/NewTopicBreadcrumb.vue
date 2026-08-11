@@ -22,7 +22,7 @@ defineProps<{
         <IconRenderer name="arrow-left" class="w-4 h-4 text-muted-foreground" />
       </router-link>
       <div class="flex items-center gap-2 text-sm text-muted-foreground">
-        <template v-for="(item, index) in breadcrumbItems" :key="item.href">
+        <template v-for="item in breadcrumbItems" :key="item.href">
           <router-link :to="item.href" class="hover:text-primary transition-colors">
             {{ sourceLabel ?? item.label }}
           </router-link>

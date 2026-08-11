@@ -109,7 +109,7 @@ function handleCancel(): void {
           <TopicTagPicker v-model="tags" :preset-tags="presetTags" :max-tags="formLimits.tagsMax" />
         </div>
 
-        <CoverUploader v-model="coverFile" :max-size-mb="formLimits.coverMaxSizeMB" />
+        <CoverUploader v-model="coverFile" :max-size-m-b="formLimits.coverMaxSizeMB" />
 
         <div>
           <div class="flex items-center justify-between mb-2">

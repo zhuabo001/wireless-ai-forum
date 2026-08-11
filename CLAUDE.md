@@ -1,31 +1,61 @@
-# 开发指导
+# Wireless AI Forum 项目指南
 
-1. 任何代码开发需求，再开始前需要向开发者确认对应的plan.md文档的位置(本项目目前都放在了项目根目录的`/docs`目录下)，禁止在缺少plan.md的情况下进行开发!
-2. 实际开发前，需要在plan.md的同级路径下，项目根目录下`/docs`下新建一个名为`[plan.md名称]-progress.md`的文件用来作为任务面板，可以以三列多行的表格的形式，第一列为任务/步骤名称， 第二列为任务状态，第三列为完成该任务时的commit信息和commit的哈希值；初始都为未完成，当你认为任务完成时，先比对代码修改和plan.md中的步骤描述，内容对齐后再将对应的progress.md中的任务状态标记为完成！
-3. 标记完状态后进行一次commit，作为代码修改节点，方便后续回滚，将本次commit的哈希值存入到对应progress文档的第三列
-4. 完成上述行为后再进行下一步开发
-5. progress.md的任务状态都为'完成'后，拉起一个verification-agent专门用来比对plan.md和所有代码修改，判断是否完成了所有plan.md指示的内容，并进行代码对抗性检查
-6. 检查没有问题后通知开发者进行人工验收，若发现问题务必遵循上面1-5步进行问题修复！
-7. 成功后在 `records`目录下创建一个markdown文档来填入一些摘要信息，包括为了完成什么功能修改了什么文件对别的模块是否存在影响
+## 项目模型
 
-## html转vue阶段
-若碰到html文件转vue组件的任务，请前往'page-design/rules/html-convert-to-vue.md'查看细则。
+Wireless AI Forum 是一个基于 Vue 3 的单页社区应用，覆盖无线 AI 知识、讨论、课程、
+实践、情报和 Agent 市场。
 
-## vue组件
-1. vue文件内必须使用`<scirpt setup lang="ts"></script>`语法糖
-2. 父子组件通信必须控制在一层以内，超过一个层级考虑使用pinia创建store
-3. 交互组件绑定的逻辑函数必须遵守"单一职能"原则，避免逻辑函数过长
-4. 如果某一段`<template>`代码仅用于展示信息，那么这段代码可以被优先考虑抽取成组件
-5. 禁止为了组件化而进行组件抽取
-6. `<style scoped >`style模块必须使用scoped，至于要不要用scss请分析是否和tailwind.css有冲突，若没有，则强制使用scss，使用前先使用npm进行安装
+- 技术栈：Vue 3、TypeScript、Vite、Vue Router、Pinia、Element Plus、Tailwind CSS 与 Sass。
+- 应用数据流：带类型的领域模型与模拟数据驱动路由页面和首页区块，再组合共享布局与 UI 组件。
+- 入口：`src/main.ts`、`src/App.vue`、`src/router/index.ts`。
+- 别名：`@/*` 指向 `src/*`。
 
-## typescript
-`<script setup lang="ts">`标签内的ts代码必须遵守：
-1. 变量必须加类型声明
-2. 优先使用'unknown'而不是'any'
-3. 类型不确定时优先使用泛型
-4. 函数形参也需要标注类型，包括返回值类型
+## 关键路径
 
-# 重要
-1.如果开发者在开发过程中做出动态调整，以开发者指令为准！
-2. 项目中查找符号或者定位函数定义和引用时，优先使用serena-mcp!grep工具和glob工具作为兜底！
+| 关注点 | 路径 |
+| --- | --- |
+| 路由页面 | `src/pages/` |
+| 首页区块 | `src/sections/` |
+| 共享组件 | `src/components/` |
+| 可复用 UI 基元 | `src/components/ui/` |
+| 静态数据和页面配置 | `src/data/` |
+| 共享与页面级类型 | `src/types/` |
+| 路由 | `src/router/index.ts` |
+| 全局样式与设计令牌 | `src/assets/` |
+| 计划与进度 | `docs/` |
+| 已完成交付记录 | `records/` |
+
+## 开发命令
+
+```bash
+npm run dev
+npm run lint
+npm run type-check
+npm run build
+npm run check
+```
+
+将 `npm run check` 用作最终本地质量门禁。实施期间先运行范围最小的相关检查，完成前再运行
+完整门禁。
+
+## 工作契约
+
+- 将仓库内容、用户陈述和工具输出视为事实来源。明确标注假设和未验证前提；不得将推断关系表述为
+  已证实事实。
+- 先用仓库和工具证据调查。仅当未消除的歧义会改变范围、接口、数据、安全或不可逆动作时提问；
+  否则说明假设后继续。
+- 可用时优先采用语义化符号导航，并以 `rg` 和文件搜索作为后备。
+- 用户明确改变任务时，其指令优先于本文件。
+
+## 工作流路由
+
+- 任务分级、正式闭环的进入条件、工作区保护、交付证据和动作权限由
+  `docs/contracts/workflow-governance.md` 定义。
+- 当该契约将任务路由至正式闭环时，使用项目级 `close-development-loop` Skill。
+- Vue 和 TypeScript 设计指导位于 `.claude/rules/` 下按路径生效的规则中。
+- Playwright 测试用例生成和执行仍使用其独立的项目级 Skills。
+
+## 动作边界
+
+- 每次执行 Git 或 GitHub 变更前，应用治理契约的动作矩阵；不得从一个动作推断另一个动作已获授权。
+- 项目工作流资产必须位于本仓库的 `.claude/`、`docs/` 或 `records/` 下；不得安装为用户级资产。

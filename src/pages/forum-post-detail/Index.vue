@@ -63,11 +63,11 @@ function handleCommentLike(commentId: string): void {
   }
 }
 
-function handleSubmitComment(html: string): void {
+function handleSubmitComment(): void {
   ElMessage.success('评论已发表（演示）')
 }
 
-function handleSubmitReply(commentId: string, html: string): void {
+function handleSubmitReply(): void {
   ElMessage.success('回复已发表（演示）')
 }
 

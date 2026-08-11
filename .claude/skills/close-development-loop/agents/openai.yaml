@@ -1,0 +1,7 @@
+interface:
+  display_name: "需求开发闭环"
+  short_description: "执行可审计的开发交付闭环"
+  default_prompt: "使用 $close-development-loop 以可审计的进度与验证交付此范围明确的变更。"
+
+policy:
+  allow_implicit_invocation: false

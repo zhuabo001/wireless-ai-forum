@@ -8,7 +8,7 @@ const emit = defineEmits<{
   submit: [html: string]
 }>()
 
-const editorRef = shallowRef<IDomEditor | null>(null)
+const editorRef = shallowRef<IDomEditor>()
 const hasContent = ref<boolean>(false)
 
 const toolbarConfig: Partial<IToolbarConfig> = {
@@ -54,7 +54,7 @@ onBeforeUnmount(() => {
   const editor = editorRef.value
   if (editor) {
     editor.destroy()
-    editorRef.value = null
+    editorRef.value = undefined
   }
 })
 </script>
