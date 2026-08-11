@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import AutoImport from 'unplugin-auto-import/vite'
+import { viteStaticCopy } from 'vite-plugin-static-copy'
 import { fileURLToPath, URL } from 'node:url'
 
 export default defineConfig({
@@ -13,6 +14,17 @@ export default defineConfig({
       eslintrc: {
         enabled: true
       }
+    }),
+    // vditor 运行时资源（lute/i18n/icons/hljs/mermaid）由其自身在运行时按 cdn 基址
+    // 动态加载，不走模块打包；这里构建期从 node_modules 拷贝到 dist/vditor，
+    // dev 模式由插件中间件直接提供，资源版本随 package.json 锁定，无需 vendored 入库
+    viteStaticCopy({
+      targets: [{
+        src: 'node_modules/vditor/dist/{js,css}/**/*',
+        dest: 'vditor/dist',
+        // 剥离 node_modules/vditor/dist 三层前缀，保留 js/ css/ 结构
+        rename: { stripBase: 3 },
+      }],
     })
   ],
   resolve: { alias: { '@': fileURLToPath(new URL('./src', import.meta.url)) } },
