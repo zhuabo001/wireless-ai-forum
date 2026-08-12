@@ -58,6 +58,10 @@ export default defineConfig({
       output: {
         codeSplitting: {
           groups: [
+            // Vite 运行时助手（__vitePreload 等虚拟模块，路径不含 node_modules）。
+            // 必须固定到独立小 chunk：否则会被并入某个 vendor 大 chunk，
+            // 任何动态 import 都静态依赖该 chunk（曾导致全站加载 3MB vendor-mermaid）
+            { name: 'vite-runtime', test: /vite\/preload-helper/, priority: 100 },
             // 框架核心（所有页面共用，最高优先级）
             { name: 'vendor-vue', test: /node_modules[\\/](vue|vue-router|@vue|pinia|@vueuse)/, priority: 60 },
             // UI 组件库
