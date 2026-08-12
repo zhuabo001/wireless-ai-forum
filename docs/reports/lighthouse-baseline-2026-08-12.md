@@ -65,3 +65,36 @@ modulepreload 过滤（vendor-mermaid/katex/wangeditor/vditor 不预加载）工
 2. **长任务拆解**：226 ms 单任务会同时在真实设备上放大为 INP 风险
 3. 无障碍与 SEO 失败项修复（独立维度，不影响 Performance 分）
 4. robots.txt / llms.txt 合规化
+
+---
+
+## 优化记录 1：首页区块懒加载 + 切断 EP 静态边（2026-08-12）
+
+**归因**（source-map-explorer 生成字节级）：vendor-element-plus 246KB 中首页真正使用的仅
+ElButton/ElTag/ElCalendar/ElDialog（约 15KB），select/upload/form/async-validator 等约 190KB
+为懒加载页面专用，但因强制分组 + HeroSection 静态引用 ActivityCalendar（ElCalendar），
+整个 chunk 被压在首页关键路径。
+
+**改动**：
+- `HomeSection.vue`：IntersectionObserver 可见性门控（rootMargin 400px 预加载），占位 minHeight 防 CLS
+- `HomePage.vue`：HeroSection 保持静态，其余 9 个区块 defineAsyncComponent
+- `HeroSection.vue`：ActivityCalendar 改异步组件（EP 静态边的最后一处来源）
+- `data/home.ts` / `types/home.ts`：homeSections 增加 minHeight（实测高度）
+
+**效果**（同一无节流 lab 环境对比）：
+
+| 指标 | 基线 | 优化后 | 变化 |
+| --- | --- | --- | --- |
+| FCP | 379.3 ms | 313.9 ms | **-17%** |
+| LCP | 379 ms | 314 ms | **-17%** |
+| FCP 前主线程繁忙 | 314.3 ms | 276.8 ms | -12% |
+| 最长单任务 | 225.6 ms | 167.5 ms | **-26%** |
+| CLS | 0.00 | 0.00 | 无回归 |
+| 首页关键路径 JS | 436 KB | 171 KB | **-61%** |
+| 首页关键路径 CSS | index.css + EP 90.8KB | 仅 index.css 36.8KB | EP 样式移出 |
+
+入口静态依赖仅剩 vite-runtime + vendor-vue + vendor-lucide；vendor-element-plus（252KB）
+与 9 个区块 chunk（各 1–4.7KB）全部变为按需加载。`npm run check` 通过（含 verify-build
+深链与懒加载边界校验），滚动冒烟 9 区块均正常挂载，控制台零告警。
+
+**注**：无节流 lab 的绝对差值偏小，4x CPU 节流下相对收益预计放大 3–4 倍。

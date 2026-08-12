@@ -1,11 +1,15 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { defineAsyncComponent, ref } from 'vue'
 import ShinyText from '../components/ShinyText.vue'
 import MarqueeCarousel from '../components/MarqueeCarousel.vue'
-import ActivityCalendar from '../components/ActivityCalendar.vue'
 import IconRenderer from '../components/ui/IconRenderer.vue'
 import MetricCard from '../components/ui/MetricCard.vue'
 import { changelog, heroContent, heroStats } from '../data/home'
+
+// ActivityCalendar 依赖 ElCalendar（Element Plus），静态导入会把整个
+// vendor-element-plus 拖进首页关键路径；它位于 hero 区块下半屏，
+// 异步加载即可，挂载后并行拉取，不阻塞首屏绘制
+const ActivityCalendar = defineAsyncComponent(() => import('../components/ActivityCalendar.vue'))
 
 const sectionRef = ref<HTMLElement | null>(null)
 </script>

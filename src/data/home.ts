@@ -18,15 +18,16 @@ import type {
 
 export const homeSections: HomeSectionMeta[] = [
   { id: 'hero', component: 'HeroSection', className: 'py-16' },
-  { id: 'engineering', component: 'EngineeringSection', className: 'py-16' },
-  { id: 'practices', component: 'PracticesSection', className: 'py-16' },
-  { id: 'toolbox', component: 'ToolboxSection', className: 'py-16' },
-  { id: 'intelligence', component: 'IntelligenceSection', className: 'py-16' },
-  { id: 'courses', component: 'CoursesSection', className: 'py-16' },
-  { id: 'atmosphere', component: 'AtmosphereSection', className: 'py-16' },
-  { id: 'forum', component: 'ForumSection', className: 'py-16' },
-  { id: 'market', component: 'AgentMarketSection', className: 'py-16' },
-  { id: 'roadmap', component: 'RoadMapSection', className: 'py-16' },
+  // minHeight 取 2026-08-12 桌面端实测渲染高度，仅作懒加载占位，允许与实际有小幅偏差
+  { id: 'engineering', component: 'EngineeringSection', className: 'py-16', minHeight: 1246 },
+  { id: 'practices', component: 'PracticesSection', className: 'py-16', minHeight: 732 },
+  { id: 'toolbox', component: 'ToolboxSection', className: 'py-16', minHeight: 652 },
+  { id: 'intelligence', component: 'IntelligenceSection', className: 'py-16', minHeight: 637 },
+  { id: 'courses', component: 'CoursesSection', className: 'py-16', minHeight: 896 },
+  { id: 'atmosphere', component: 'AtmosphereSection', className: 'py-16', minHeight: 642 },
+  { id: 'forum', component: 'ForumSection', className: 'py-16', minHeight: 945 },
+  { id: 'market', component: 'AgentMarketSection', className: 'py-16', minHeight: 820 },
+  { id: 'roadmap', component: 'RoadMapSection', className: 'py-16', minHeight: 740 },
 ]
 
 export const heroContent = {
