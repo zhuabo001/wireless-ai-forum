@@ -6,7 +6,7 @@
 
 **目的**: 修复贴文详情页对 markdown 代码块渲染糟糕的根本问题 —— 原架构不存在 markdown 解析管线（详情页吃手工预切的 `ContentBlock[]`，代码块 `v-html` 未转义、无高亮），并与公司内部实际项目对齐（Vditor 编辑器 + 后端 `page.content` 整段 HTML 字符串模型 + 内嵌图片/mermaid 二次解析）。
 
-**计划文档**: `docs/post-detail-markdown-rendering-plan.md` / `docs/post-detail-markdown-rendering-plan-progress.md`
+**计划文档**: `docs/plans/post-detail-markdown-rendering-plan.md` / `docs/plans/post-detail-markdown-rendering-plan-progress.md`
 
 ## 渲染链路（改造后）
 
@@ -33,7 +33,7 @@ markdown 原文（数据层，模拟编辑器提交内容）
 | `src/pages/forum-post-detail/TableBlock.vue` | 删除 | 切块模型退役（GFM 表格由 `.article-body` 样式接管） |
 | `src/pages/forum-post-detail/MermaidDiagram.vue` | 删除 | 切块模型退役 |
 | `vite.config.ts` | 修改 | `vite-plugin-static-copy` 构建期将 `node_modules/vditor/dist/{js,css}` 拷贝到 `dist/vditor/dist/`（dev 由插件中间件直接从 node_modules 提供），资源版本随 package.json 锁定 |
-| `docs/post-detail-markdown-rendering-plan*.md` | 新增 | plan 与任务面板 |
+| `docs/plans/post-detail-markdown-rendering-plan*.md` | 新增 | plan 与任务面板 |
 
 ## 关键决策
 
@@ -52,7 +52,7 @@ markdown 原文（数据层，模拟编辑器提交内容）
 | P3 | 非安全上下文 `navigator.clipboard` 不存在时复制抛未捕获异常 | 存在性防御 |
 | P3 | mermaid 动态 import 失败无兜底 | try/catch，失败全部回退源码展示 |
 
-## PR #24 code review 修复轮（2026-07-25，`docs/pr24-review-fixes-plan.md`）
+## PR #24 code review 修复轮（2026-07-25，`docs/plans/pr24-review-fixes-plan.md`）
 
 | 严重度 | 问题 | 修复 |
 |--------|------|------|

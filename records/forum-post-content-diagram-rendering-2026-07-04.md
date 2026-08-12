@@ -17,8 +17,8 @@
 | 4 | `src/pages/forum-post-detail/MermaidDiagram.vue` | 新建 | Mermaid 客户端渲染组件，含 loading 态、错误降级、唯一 ID |
 | 5 | `src/pages/forum-post-detail/PostContent.vue` | 修改 | 新增 diagram 分支 + 图表容器样式 |
 | 6 | `src/data/pageDesign/forumPostDetail.ts` | 修改 | 补充 1 条 Mermaid 流程图示例 + 1 条 PlantUML 降级示例 |
-| 7 | `docs/forum-post-content-diagram-rendering-plan.md` | 新建 | 开发计划文档 |
-| 8 | `docs/forum-post-content-diagram-rendering-plan-progress.md` | 新建 | 任务进度面板 |
+| 7 | `docs/plans/forum-post-content-diagram-rendering-plan.md` | 新建 | 开发计划文档 |
+| 8 | `docs/plans/forum-post-content-diagram-rendering-plan-progress.md` | 新建 | 任务进度面板 |
 
 ## 对其他模块的影响
 

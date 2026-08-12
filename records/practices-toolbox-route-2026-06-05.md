@@ -1,7 +1,7 @@
 # 实践/工具箱卡片路由至帖子详情 + 首页按钮路由 — 摘要
 
 **日期**: 2026-06-05  
-**开发计划**: `docs/practices-toolbox-route-to-forum-post-detail-plan.md`  
+**开发计划**: `docs/plans/practices-toolbox-route-to-forum-post-detail-plan.md`  
 **Commits**: `486832c`, `84cfd7e`
 
 ## 功能概述

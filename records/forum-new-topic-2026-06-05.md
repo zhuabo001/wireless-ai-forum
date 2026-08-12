@@ -2,7 +2,7 @@
 
 **日期**: 2026-06-05  
 **方案来源**: `page-design/forum-new-topic/forum-new-topic.md`  
-**开发计划**: `docs/forum-new-topic-plan.md`  
+**开发计划**: `docs/plans/forum-new-topic-plan.md`  
 **原始 HTML**: `page-design/forum-new-topic/forum-new-topic.html`
 
 ## 功能概述

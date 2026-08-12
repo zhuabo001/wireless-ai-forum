@@ -22,7 +22,9 @@ Wireless AI Forum 是一个基于 Vue 3 的单页社区应用，覆盖无线 AI 
 | 共享与页面级类型 | `src/types/` |
 | 路由 | `src/router/index.ts` |
 | 全局样式与设计令牌 | `src/assets/` |
-| 计划与进度 | `docs/` |
+| 计划与进度 | `docs/plans/` |
+| 体检报告与分析笔记 | `docs/reports/` |
+| 治理契约 | `docs/contracts/` |
 | 已完成交付记录 | `records/` |
 
 ## 开发命令

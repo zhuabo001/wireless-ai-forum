@@ -1,6 +1,6 @@
 # 集成 unplugin-vue-components 进度记录
 
-计划：`docs/vite-unplugin-vue-components-plan.md`
+计划：`docs/plans/vite-unplugin-vue-components-plan.md`
 
 ## 已完成
 

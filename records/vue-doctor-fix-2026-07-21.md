@@ -28,8 +28,8 @@
 | `src/composables/useScrollReveal.ts` | 删除 | 无引用死代码（目录同时清空） |
 | `env.d.ts` | 删除 | 不在 tsconfig include 范围内，实际未加载 |
 | `vue-doctor.config.json` | 新增 | 配置 4 条 ignore.rules 忽略系统性误报 |
-| `docs/vue-doctor-fix-plan.md` | 新增 | 修复计划文档 |
-| `docs/vue-doctor-fix-plan-progress.md` | 新增 | 任务面板 |
+| `docs/plans/vue-doctor-fix-plan.md` | 新增 | 修复计划文档 |
+| `docs/plans/vue-doctor-fix-plan-progress.md` | 新增 | 任务面板 |
 
 ## 误报规则处理
 
