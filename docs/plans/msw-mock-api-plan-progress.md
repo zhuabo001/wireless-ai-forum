@@ -1,6 +1,6 @@
 # MSW 模拟接口接入进度
 
-计划文档：`docs/msw-mock-api-plan.md`
+计划文档：`docs/plans/msw-mock-api-plan.md`
 
 | 里程碑 | 状态 | 证据 |
 | --- | --- | --- |

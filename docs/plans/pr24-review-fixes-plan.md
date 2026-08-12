@@ -6,7 +6,7 @@
 
 **评审来源**: `docs/handoff/pr24-code-review-comment.md`（审查提交 `5e601f7`，基线 `384b7a8`）
 
-**关联文档**: `docs/post-detail-markdown-rendering-plan.md`、`records/post-detail-markdown-rendering-2026-07-22.md`
+**关联文档**: `docs/plans/post-detail-markdown-rendering-plan.md`、`records/post-detail-markdown-rendering-2026-07-22.md`
 
 ## 背景
 

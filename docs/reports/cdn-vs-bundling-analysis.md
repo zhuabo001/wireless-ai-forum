@@ -116,4 +116,4 @@
 ## 参考
 
 - Chrome 缓存分区公告（2020-10）："HTTP cache partitioning"（Chrome 86 起）
-- 本项目 bundle 体检：`docs/bundle-health-report-2026-08-12.md`
+- 本项目 bundle 体检：`docs/reports/bundle-health-report-2026-08-12.md`

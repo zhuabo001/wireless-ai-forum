@@ -20,7 +20,7 @@ description: 通过范围化规划、里程碑实施、证据化验证、已授�
 
 ## 2. 创建或定位交付产物
 
-存在用户提供的计划时优先使用；否则根据已确认的请求，在 `docs/` 下创建聚焦计划。使用
+存在用户提供的计划时优先使用；否则根据已确认的请求，在 `docs/plans/` 下创建聚焦计划。使用
 [`assets/progress-template.md`](assets/progress-template.md) 创建同级进度文件，命名为
 `<plan-stem>-progress.md`。
 
