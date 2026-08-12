@@ -50,7 +50,8 @@ const routes = [
 ]
 
 const router = createRouter({
-  history: createWebHistory(),
+  // 与 Vite 的 base 保持一致；当前为根路径，也为将来显式子路径部署保留单一配置源。
+  history: createWebHistory(import.meta.env.BASE_URL),
   routes,
   scrollBehavior(to) {
     if (to.hash) {

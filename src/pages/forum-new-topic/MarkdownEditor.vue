@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import type Vditor from 'vditor'
-import 'vditor/dist/index.css'
 
 const props = defineProps<{
   modelValue: string
@@ -44,7 +43,12 @@ onMounted(async () => {
   if (!editorRef.value) return
 
   try {
-    const { default: VditorClass } = await import('vditor')
+    // JS 与 CSS 必须一起动态加载；顶层 CSS import 会让 Rolldown 为样式顺序
+    // 生成 vendor-vditor 的静态副作用边，从而架空这里的动态 import。
+    const [{ default: VditorClass }] = await Promise.all([
+      import('vditor'),
+      import('vditor/dist/index.css'),
+    ])
     vditor = new VditorClass(editorRef.value, {
       height: 400,
       mode: 'ir',

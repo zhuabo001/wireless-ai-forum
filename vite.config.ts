@@ -7,7 +7,9 @@ import { viteStaticCopy } from 'vite-plugin-static-copy'
 import { fileURLToPath, URL } from 'node:url'
 
 export default defineConfig({
-  base: './',
+  // 站点部署在域名根路径。绝对资源 URL 能确保 history 路由深链直开时，
+  // /forum/post/1 不会把 ./assets/* 错误解析为 /forum/post/assets/*。
+  base: '/',
   plugins: [
     vue(),
     AutoImport({
@@ -66,8 +68,9 @@ export default defineConfig({
             { name: 'vendor-vue', test: /node_modules[\\/](vue|vue-router|@vue|pinia|@vueuse)/, priority: 60 },
             // UI 组件库
             { name: 'vendor-element-plus', test: /node_modules[\\/](element-plus|@element-plus)/, priority: 50 },
-            // 图表渲染（仅论坛详情页使用，Rolldown 自动包含其子依赖 cytoscape/dagre/d3）
-            { name: 'vendor-mermaid', test: /node_modules[\\/]mermaid/, priority: 50 },
+            // 图表渲染（仅论坛详情页使用）；@mermaid-js/parser 也必须归入本组，
+            // 否则 catch-all 会捕获 parser 后递归带入 mermaid，形成 common -> mermaid 静态边。
+            { name: 'vendor-mermaid', test: /node_modules[\\/](mermaid|@mermaid-js)/, priority: 50 },
             { name: 'vendor-katex', test: /node_modules[\\/]katex/, priority: 50 },
             // 富文本编辑器（仅论坛发帖页与帖子详情评论使用）
             { name: 'vendor-wangeditor', test: /node_modules[\\/]@wangeditor/, priority: 50 },

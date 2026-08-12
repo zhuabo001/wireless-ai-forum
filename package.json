@@ -10,7 +10,8 @@
     "lint:fix": "eslint src --fix",
     "preview": "vite preview",
     "type-check": "vue-tsc --noEmit",
-    "check": "npm run lint && npm run type-check && npm run build"
+    "verify-build": "node scripts/verify-build.mjs",
+    "check": "npm run lint && npm run type-check && npm run build -- --manifest && npm run verify-build"
   },
   "dependencies": {
     "@wangeditor/editor": "^5.1.23",

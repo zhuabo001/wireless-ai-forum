@@ -135,13 +135,40 @@ vendor-element-plus / vendor-lucide（≈151KB 传输量）。无 mermaid / wang
 mermaid chunk（791KB 传输）按需加载且流程图成功渲染为 SVG；wangeditor 未加载，
 点击评论占位框后按需加载并正常挂载。
 
-### 实测中发现的顺带问题（未修，新待办）
+### 实测中发现的顺带问题（已修）
 
 - **`base: './'` 导致深链接直开 404**：直接访问 `/forum/post/1` 时资源按相对路径解析为
-  `/forum/post/assets/*` 全部 404。SPA 内导航正常。此为既有部署约束（与本次改动无关），
-  如需支持深链接直开，需改 `base: '/'` 或服务端 rewrite，另行评估。
+  `/forum/post/assets/*` 全部 404。SPA 内导航正常。
+- **修复**：Vite `base` 改为 `/`，构建产物资源 URL 变为 `/assets/*`；Vue Router 显式使用
+  `import.meta.env.BASE_URL`，保证路由基址与构建基址一致。生产服务器仍需将应用路由请求
+  rewrite 到 `/index.html`。
+- **验证**：`vite preview` 下直接请求 `/forum/post/1` 返回应用入口，入口引用的 JS/CSS 资源均为
+  根路径绝对 URL 且返回 200；`npm run check` 通过。
+
+### 深链修复后的分包闭包复核（已修）
+
+深链修复完成后重新检查 manifest 的**传递静态依赖闭包**，发现原报告的两项验收存在遗漏：
+
+- `@mermaid-js/parser` 未命中 `vendor-mermaid`，落入 `vendor-common` 后因 Rolldown 默认递归捕获依赖，
+  形成 `vendor-common -> vendor-mermaid` 静态边。结果是即使帖子不含 Mermaid，详情页也会静态加载
+  3MB Mermaid chunk。
+- `MarkdownEditor.vue` 虽动态 import Vditor JS，但顶层静态 import 了 Vditor CSS，Rolldown 为样式顺序
+  生成 `forum-new-topic -> vendor-vditor` 静态副作用边。
+
+修复与防回归措施：
+
+- `vendor-mermaid` 正则扩展为同时匹配 `mermaid` 与 `@mermaid-js`，`vendor-common` 不再反向依赖
+  `vendor-mermaid`。
+- Vditor JS 与 CSS 改为在 Markdown 编辑器挂载时通过 `Promise.all` 一起动态加载。
+- 新增 `scripts/verify-build.mjs` 并纳入 `npm run check`，自动检查首页、帖子详情页、发帖页的
+  manifest 静态闭包及构建资源绝对路径。
+
+复核后的 manifest：
+
+- 首页静态闭包：无 Mermaid / WangEditor / Vditor。
+- 帖子详情页静态闭包：`vendor-common` 不再静态指向 Mermaid；Mermaid 与 WangEditor 均为动态边。
+- 发帖页默认富文本模式静态加载 WangEditor；Vditor 仅保留动态边，切换 Markdown 时才加载。
 
 ## 未验证项
 
-- 分组正则 `/vite\/preload-helper/` 已成功匹配 rolldown 的 helper 模块（构建产物验证，`vite-runtime` chunk 已生成）。
-- 未做浏览器实测（Lighthouse / 网络瀑布），上述加载图基于 manifest 静态边推导（已列为待办 #5）。
+- Lighthouse 未复测；本报告的加载边界已通过浏览器网络瀑布与 manifest 静态闭包两种方式验证。
