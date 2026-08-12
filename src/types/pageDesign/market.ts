@@ -33,3 +33,14 @@ export interface MarketPageMeta {
   title: string
   description: string
 }
+
+export interface MarketSortOption {
+  label: string
+  value: string
+}
+
+export interface UsageGuide {
+  description: string
+  linkText: string
+  linkHref: string
+}
