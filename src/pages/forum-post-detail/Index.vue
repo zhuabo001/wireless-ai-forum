@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
-import { ElMessage } from 'element-plus'
 import type { Comment, Reply } from '@/types/pageDesign/forumPostDetail'
 import {
   postDetail,

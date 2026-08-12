@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ElSelect, ElOption } from 'element-plus'
 import type { CommentSortOption } from '@/types/pageDesign/forumPostDetail'
 
 defineProps<{

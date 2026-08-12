@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { ElSelect, ElOption, ElTag } from 'element-plus'
 import type { PresetTag } from '@/types/pageDesign/forumNewTopic'
 import { formLabels } from '@/data/pageDesign/forumNewTopic'
 

@@ -2,7 +2,6 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
 import pinia from './store'
-import 'element-plus/dist/index.css'
 import './assets/main.css'
 
 // dev 环境按 VITE_ENABLE_MSW=true 启动 MSW worker，拦截 /api/* 请求返回模拟数据；

@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
-import { ElForm, ElMessage } from 'element-plus'
 import type { EditorModeId, TopicFormData } from '@/types/pageDesign/forumNewTopic'
 import {
   pageMeta,

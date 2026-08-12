@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue'
-import { ElButton, ElCalendar, ElTag } from 'element-plus'
 import IconRenderer from './ui/IconRenderer.vue'
 import { activities } from '../data/home'
 import type { ActivityItem } from '../types/home'

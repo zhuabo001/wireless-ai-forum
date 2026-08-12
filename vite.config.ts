@@ -1,6 +1,8 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import AutoImport from 'unplugin-auto-import/vite'
+import Components from 'unplugin-vue-components/vite'
+import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 import { viteStaticCopy } from 'vite-plugin-static-copy'
 import { fileURLToPath, URL } from 'node:url'
 
@@ -10,10 +12,19 @@ export default defineConfig({
     vue(),
     AutoImport({
       imports: ['vue'],
+      // ElementPlusResolver 让 ElMessage 等 JS API 自动导入，并附带对应样式
+      resolvers: [ElementPlusResolver()],
       dts: true,
       eslintrc: {
         enabled: true
       }
+    }),
+    // 模板中的 <el-*> 组件与 src/components 本地组件自动按需导入，
+    // Element Plus 组件样式随组件逐一带入，无需全量 index.css
+    Components({
+      dirs: ['src/components'],
+      resolvers: [ElementPlusResolver()],
+      dts: true
     }),
     // vditor 运行时资源（lute/i18n/icons/hljs/mermaid）由其自身在运行时按 cdn 基址
     // 动态加载，不走模块打包；这里构建期从 node_modules 拷贝到 dist/vditor，

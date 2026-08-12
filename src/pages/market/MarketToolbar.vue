@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ElInput, ElSelect, ElOption } from 'element-plus'
 import { Search } from 'lucide-vue-next'
 
 defineProps<{

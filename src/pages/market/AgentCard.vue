@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ElButton } from 'element-plus'
 import type { AgentItem } from '@/types/pageDesign/market'
 import IconRenderer from '@/components/ui/IconRenderer.vue'
 import TagBadge from '@/components/ui/TagBadge.vue'

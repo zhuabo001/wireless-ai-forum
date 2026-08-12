@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { ElButton } from 'element-plus'
 import type { AgentItem } from '@/types/pageDesign/market'
 import FeaturedAgents from './FeaturedAgents.vue'
 import MarketToolbar from './MarketToolbar.vue'

@@ -13,7 +13,6 @@
     "check": "npm run lint && npm run type-check && npm run build"
   },
   "dependencies": {
-    "@element-plus/icons-vue": "^2.3.2",
     "@wangeditor/editor": "^5.1.23",
     "@wangeditor/editor-for-vue": "^5.1.12",
     "element-plus": "^2.14.1",
@@ -43,6 +42,7 @@
     "typescript": "~6.0.0",
     "typescript-eslint": "^8.65.0",
     "unplugin-auto-import": "^21.0.0",
+    "unplugin-vue-components": "^32.1.0",
     "vite": "^8.0.8",
     "vite-plugin-static-copy": "^4.1.1",
     "vue-doctor": "^0.0.5",

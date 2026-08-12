@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ElSelect, ElOption } from 'element-plus'
 import type { TopicCategory } from '@/types/pageDesign/forumNewTopic'
 import { formLabels } from '@/data/pageDesign/forumNewTopic'
 
