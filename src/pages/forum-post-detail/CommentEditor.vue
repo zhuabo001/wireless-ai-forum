@@ -1,8 +1,20 @@
 <script setup lang="ts">
-import { ref, shallowRef, onBeforeUnmount, nextTick } from 'vue'
-import { Editor, Toolbar } from '@wangeditor/editor-for-vue'
-import '@wangeditor/editor/dist/css/style.css'
+import { ref, shallowRef, onBeforeUnmount, nextTick, defineAsyncComponent } from 'vue'
 import type { IDomEditor, IToolbarConfig } from '@wangeditor/editor'
+
+// wangeditor 本体约 780KB：用户有点击评论意图时才异步加载，
+// 未激活时渲染等样式占位框，保持只读浏览路径零编辑器成本。
+// 注意：CSS 也必须动态引入——静态 import 其 CSS 会让 rolldown 为样式加载顺序
+// 生成对 wangeditor JS chunk 的副作用静态边，异步化就白做了
+const Editor = defineAsyncComponent(() =>
+  Promise.all([
+    import('@wangeditor/editor-for-vue').then(m => m.Editor),
+    import('@wangeditor/editor/dist/css/style.css'),
+  ]).then(([component]) => component),
+)
+const Toolbar = defineAsyncComponent(() =>
+  import('@wangeditor/editor-for-vue').then(m => m.Toolbar),
+)
 
 const emit = defineEmits<{
   submit: [html: string]
@@ -10,6 +22,11 @@ const emit = defineEmits<{
 
 const editorRef = shallowRef<IDomEditor>()
 const hasContent = ref<boolean>(false)
+const activated = ref<boolean>(false)
+
+function activate(): void {
+  activated.value = true
+}
 
 const toolbarConfig: Partial<IToolbarConfig> = {
   excludeKeys: [
@@ -40,6 +57,10 @@ function handleChange(editor: IDomEditor): void {
 }
 
 function handleSubmit(): void {
+  if (!activated.value) {
+    activate()
+    return
+  }
   const editor = editorRef.value
   if (!editor) return
   const html = editor.getHtml()
@@ -69,19 +90,24 @@ onBeforeUnmount(() => {
       >
       <div class="flex-1 min-w-0">
         <div class="text-sm font-medium text-foreground mb-2">发表评论</div>
-        <Toolbar
-          :editor="editorRef"
-          :default-config="toolbarConfig"
-          mode="simple"
-          class="comment-toolbar border border-border rounded-lg bg-muted/30 mb-2"
-        />
-        <Editor
-          :default-config="editorConfig"
-          mode="simple"
-          class="comment-editor-wrapper"
-          @onCreated="handleCreated"
-          @onChange="handleChange"
-        />
+        <template v-if="activated">
+          <Toolbar
+            :editor="editorRef"
+            :default-config="toolbarConfig"
+            mode="simple"
+            class="comment-toolbar border border-border rounded-lg bg-muted/30 mb-2"
+          />
+          <Editor
+            :default-config="editorConfig"
+            mode="simple"
+            class="comment-editor-wrapper"
+            @onCreated="handleCreated"
+            @onChange="handleChange"
+          />
+        </template>
+        <div v-else class="comment-editor-facade" role="textbox" tabindex="0" @click="activate" @keydown.enter="activate">
+          分享你的观点、经验或疑问...
+        </div>
       </div>
     </div>
     <div class="flex justify-end">
@@ -96,6 +122,18 @@ onBeforeUnmount(() => {
 </template>
 
 <style>
+.comment-editor-facade {
+  border: 1px solid #e2e8f0;
+  border-radius: 0.5rem;
+  background: white;
+  min-height: 100px;
+  padding: 10px 12px;
+  line-height: 1.7;
+  font-size: 0.875rem;
+  color: #94a3b8;
+  cursor: text;
+}
+
 .comment-toolbar {
   padding: 4px 8px;
 }

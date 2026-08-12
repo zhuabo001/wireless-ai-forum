@@ -69,16 +69,12 @@ export default defineConfig({
             // 图表渲染（仅论坛详情页使用，Rolldown 自动包含其子依赖 cytoscape/dagre/d3）
             { name: 'vendor-mermaid', test: /node_modules[\\/]mermaid/, priority: 50 },
             { name: 'vendor-katex', test: /node_modules[\\/]katex/, priority: 50 },
-            // 富文本编辑器（仅论坛发帖页使用）
+            // 富文本编辑器（仅论坛发帖页与帖子详情评论使用）
             { name: 'vendor-wangeditor', test: /node_modules[\\/]@wangeditor/, priority: 50 },
-            // Markdown 编辑器
-            { name: 'vendor-md-editor', test: /node_modules[\\/]md-editor-v3/, priority: 40 },
-            // 动画库
-            { name: 'vendor-gsap', test: /node_modules[\\/]gsap/, priority: 40 },
             // 图标库
             { name: 'vendor-lucide', test: /node_modules[\\/]lucide-vue-next/, priority: 40 },
-            // 共享工具依赖（被多个包引用时避免重复打包）
-            { name: 'vendor-dagre', test: /node_modules[\\/](dagre|d3-|lodash-es)/, priority: 30 },
+            // vditor Markdown 编辑器（仅发帖页挂载时动态加载；不分组会混入 vendor-common 被静态加载）
+            { name: 'vendor-vditor', test: /node_modules[\\/]vditor/, priority: 50 },
             // 其余 node_modules 传递依赖（minSize=20KB 避免碎片化）
             { name: 'vendor-common', test: /node_modules/, priority: 20, minSize: 20000 },
           ],

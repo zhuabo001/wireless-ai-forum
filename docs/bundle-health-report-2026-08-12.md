@@ -94,12 +94,52 @@ rolldown 将其分配给了 mermaid 分组 chunk，任何动态 import 的 chunk
 | # | 动作 | 预期收益 | 风险 | 状态 |
 | --- | --- | --- | --- | --- |
 | 1 | 给 codeSplitting 增加高优先级分组，将 `vite/preload-helper` 固定到独立小 chunk | 首屏 -3.0MB（-87%） | 低 | ✅ 已完成（见 P0） |
-| 2 | 卸载 `gsap`；删除 `vendor-gsap` / `vendor-md-editor` 空分组；修正或删除 `vendor-dagre` 分组 | 配置与现实对齐，无体积变化 | 低 | ⬜ 待办 |
-| 3 | post-detail 的评论编辑器改为交互时动态 import | 帖子页 -781KB | 中，需处理编辑器加载态 | ⬜ 待办 |
-| 4 | new-topic 的 vditor 由模块级静态 import 改为挂载时动态 import | 发帖页按需加速（vendor-common 部分） | 中 | ⬜ 待办 |
-| 5 | 浏览器实测（Lighthouse / 网络瀑布）验证修复后首屏指标 | 实测确认，非体积变化 | 低 | ⬜ 待办 |
+| 2 | 卸载 `gsap`；删除 `vendor-gsap` / `vendor-md-editor` 空分组；修正或删除 `vendor-dagre` 分组 | 配置与现实对齐，无体积变化 | 低 | ✅ 已完成 |
+| 3 | post-detail 的评论编辑器改为交互时动态 import | 帖子页 -781KB | 中，需处理编辑器加载态 | ✅ 已完成 |
+| 4 | new-topic 的 vditor 由模块级静态 import 改为挂载时动态 import | 发帖页按需加速（vendor-common 部分） | 中 | ✅ 已完成 |
+| 5 | 浏览器实测（Lighthouse / 网络瀑布）验证修复后首屏指标 | 实测确认，非体积变化 | 低 | ✅ 已完成 |
 
-> 待办 #2–#5 的承载文档即本报告；完成后在状态列打勾并补充证据。
+## #2–#5 完成证据（2026-08-12，vite preview + chrome-devtools 实测）
+
+### #2 配置清理
+
+- `npm uninstall gsap`；删除 `vendor-gsap` / `vendor-md-editor` / `vendor-dagre` 三个空分组。
+- 重建后各 chunk hash 不变（vendor-common 541.65KB、vendor-mermaid 3067KB 同前），
+  确认 dagre/d3 仍内联在 mermaid chunk，未发生迁移。
+
+### #3 评论编辑器交互时加载
+
+- `CommentEditor.vue`：新增等样式占位框（facade），点击后激活；
+  `Editor`/`Toolbar` 改为 `defineAsyncComponent`。
+- `CommentItem.vue`：回复编辑器本有 `v-if` 门控，改为 `defineAsyncComponent` 后真正生效。
+- **关键陷阱**：静态 `import '@wangeditor/editor/dist/css/style.css'` 会让 rolldown 为样式加载顺序
+  生成对 wangeditor JS chunk 的**副作用静态边**（页面 chunk 内出现 `import"./vendor-wangeditor-*.js"`），
+  异步化被架空。CSS 已一并改为动态引入。
+- 实测（chrome-devtools）：帖子页初始加载无 wangeditor JS；点击占位框后 chunk 加载、
+  编辑器+工具栏正常挂载。
+
+### #4 vditor 动态加载 + vendor-vditor 分组
+
+- `MarkdownEditor.vue` 改为挂载时 `await import('vditor')`。
+- **关键陷阱**：仅改动态 import 无效——vditor 混在 vendor-common 里，而 vendor-common 被
+  post-detail/new-topic 静态需要，vditor 仍随之加载。补加 `vendor-vditor` 分组（priority 50）后：
+  vendor-common 541.65KB → 255.71KB，vendor-vditor 285.92KB 仅动态加载。
+
+### #5 浏览器实测（vite preview + chrome-devtools MCP）
+
+首页 `/` 实际请求 JS 仅 6 个：index / rolldown-runtime / vite-runtime / vendor-vue /
+vendor-element-plus / vendor-lucide（≈151KB 传输量）。无 mermaid / wangeditor / vditor。
+
+帖子页 `/forum/post/1`（SPA 导航）：增量加载页面 chunk 12KB + vendor-common 95KB；
+演示数据含 mermaid 代码块（`src/data/pageDesign/forumPostDetail.ts:97`），
+mermaid chunk（791KB 传输）按需加载且流程图成功渲染为 SVG；wangeditor 未加载，
+点击评论占位框后按需加载并正常挂载。
+
+### 实测中发现的顺带问题（未修，新待办）
+
+- **`base: './'` 导致深链接直开 404**：直接访问 `/forum/post/1` 时资源按相对路径解析为
+  `/forum/post/assets/*` 全部 404。SPA 内导航正常。此为既有部署约束（与本次改动无关），
+  如需支持深链接直开，需改 `base: '/'` 或服务端 rewrite，另行评估。
 
 ## 未验证项
 

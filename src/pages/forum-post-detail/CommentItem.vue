@@ -1,10 +1,21 @@
 <script setup lang="ts">
-import { ref, shallowRef, onBeforeUnmount, nextTick } from 'vue'
-import { Editor, Toolbar } from '@wangeditor/editor-for-vue'
-import '@wangeditor/editor/dist/css/style.css'
+import { ref, shallowRef, onBeforeUnmount, nextTick, defineAsyncComponent } from 'vue'
 import type { IDomEditor, IToolbarConfig } from '@wangeditor/editor'
 import type { Comment } from '@/types/pageDesign/forumPostDetail'
 import IconRenderer from '@/components/ui/IconRenderer.vue'
+
+// wangeditor 本体约 780KB：回复编辑器由 v-if 门控，
+// 异步组件保证用户首次点击“回复”时才加载编辑器 chunk；
+// CSS 一并动态引入（静态 CSS import 会生成对 JS chunk 的副作用静态边）
+const Editor = defineAsyncComponent(() =>
+  Promise.all([
+    import('@wangeditor/editor-for-vue').then(m => m.Editor),
+    import('@wangeditor/editor/dist/css/style.css'),
+  ]).then(([component]) => component),
+)
+const Toolbar = defineAsyncComponent(() =>
+  import('@wangeditor/editor-for-vue').then(m => m.Toolbar),
+)
 
 defineProps<{
   comment: Comment
