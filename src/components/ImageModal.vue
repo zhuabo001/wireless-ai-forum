@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ElDialog } from 'element-plus'
 import IconRenderer from './ui/IconRenderer.vue'
 
 withDefaults(defineProps<{

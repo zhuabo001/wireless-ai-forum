@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ElButton } from 'element-plus'
 import IconRenderer from '@/components/ui/IconRenderer.vue'
 
 defineProps<{

@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ref, watch, onUnmounted } from 'vue'
-import { ElUpload, ElMessage } from 'element-plus'
 import type { UploadFile } from 'element-plus'
 import IconRenderer from '@/components/ui/IconRenderer.vue'
 import { formLabels } from '@/data/pageDesign/forumNewTopic'

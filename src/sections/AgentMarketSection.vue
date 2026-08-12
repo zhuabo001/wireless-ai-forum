@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { ElButton } from 'element-plus'
 import SectionHeader from '../components/layout/SectionHeader.vue'
 import BaseCard from '../components/ui/BaseCard.vue'
 import IconRenderer from '../components/ui/IconRenderer.vue'
