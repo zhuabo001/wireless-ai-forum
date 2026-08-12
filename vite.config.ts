@@ -7,7 +7,9 @@ import { viteStaticCopy } from 'vite-plugin-static-copy'
 import { fileURLToPath, URL } from 'node:url'
 
 export default defineConfig({
-  base: './',
+  // 站点部署在域名根路径。绝对资源 URL 能确保 history 路由深链直开时，
+  // /forum/post/1 不会把 ./assets/* 错误解析为 /forum/post/assets/*。
+  base: '/',
   plugins: [
     vue(),
     AutoImport({
@@ -58,23 +60,24 @@ export default defineConfig({
       output: {
         codeSplitting: {
           groups: [
+            // Vite 运行时助手（__vitePreload 等虚拟模块，路径不含 node_modules）。
+            // 必须固定到独立小 chunk：否则会被并入某个 vendor 大 chunk，
+            // 任何动态 import 都静态依赖该 chunk（曾导致全站加载 3MB vendor-mermaid）
+            { name: 'vite-runtime', test: /vite\/preload-helper/, priority: 100 },
             // 框架核心（所有页面共用，最高优先级）
             { name: 'vendor-vue', test: /node_modules[\\/](vue|vue-router|@vue|pinia|@vueuse)/, priority: 60 },
             // UI 组件库
             { name: 'vendor-element-plus', test: /node_modules[\\/](element-plus|@element-plus)/, priority: 50 },
-            // 图表渲染（仅论坛详情页使用，Rolldown 自动包含其子依赖 cytoscape/dagre/d3）
-            { name: 'vendor-mermaid', test: /node_modules[\\/]mermaid/, priority: 50 },
+            // 图表渲染（仅论坛详情页使用）；@mermaid-js/parser 也必须归入本组，
+            // 否则 catch-all 会捕获 parser 后递归带入 mermaid，形成 common -> mermaid 静态边。
+            { name: 'vendor-mermaid', test: /node_modules[\\/](mermaid|@mermaid-js)/, priority: 50 },
             { name: 'vendor-katex', test: /node_modules[\\/]katex/, priority: 50 },
-            // 富文本编辑器（仅论坛发帖页使用）
+            // 富文本编辑器（仅论坛发帖页与帖子详情评论使用）
             { name: 'vendor-wangeditor', test: /node_modules[\\/]@wangeditor/, priority: 50 },
-            // Markdown 编辑器
-            { name: 'vendor-md-editor', test: /node_modules[\\/]md-editor-v3/, priority: 40 },
-            // 动画库
-            { name: 'vendor-gsap', test: /node_modules[\\/]gsap/, priority: 40 },
             // 图标库
             { name: 'vendor-lucide', test: /node_modules[\\/]lucide-vue-next/, priority: 40 },
-            // 共享工具依赖（被多个包引用时避免重复打包）
-            { name: 'vendor-dagre', test: /node_modules[\\/](dagre|d3-|lodash-es)/, priority: 30 },
+            // vditor Markdown 编辑器（仅发帖页挂载时动态加载；不分组会混入 vendor-common 被静态加载）
+            { name: 'vendor-vditor', test: /node_modules[\\/]vditor/, priority: 50 },
             // 其余 node_modules 传递依赖（minSize=20KB 避免碎片化）
             { name: 'vendor-common', test: /node_modules/, priority: 20, minSize: 20000 },
           ],

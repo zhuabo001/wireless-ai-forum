@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
-import Vditor from 'vditor'
-import 'vditor/dist/index.css'
+import type Vditor from 'vditor'
 
 const props = defineProps<{
   modelValue: string
@@ -38,24 +37,36 @@ const toolbar: string[] = [
   'preview',
 ]
 
-onMounted(() => {
+// vditor 本体体积大（含 lute 渲染引擎），挂载时动态加载：
+// 页面表单框架先渲染，编辑器 chunk 异步到达后再初始化
+onMounted(async () => {
   if (!editorRef.value) return
 
-  vditor = new Vditor(editorRef.value, {
-    height: 400,
-    mode: 'ir',
-    lang: 'zh_CN',
-    placeholder: '使用 Markdown 编写你的内容...',
-    cache: { enable: false },
-    toolbar,
-    // vditor 运行时资源（lute/i18n/icons/预览高亮与 mermaid）默认从 unpkg CDN 加载，
-    // 内网/离线环境会卡死初始化，这里指向 public 下本地化的 dist 资源
-    cdn: '/vditor',
-    input: (value: string) => emit('update:modelValue', value),
-    after: () => {
-      vditor?.setValue(props.modelValue)
-    },
-  })
+  try {
+    // JS 与 CSS 必须一起动态加载；顶层 CSS import 会让 Rolldown 为样式顺序
+    // 生成 vendor-vditor 的静态副作用边，从而架空这里的动态 import。
+    const [{ default: VditorClass }] = await Promise.all([
+      import('vditor'),
+      import('vditor/dist/index.css'),
+    ])
+    vditor = new VditorClass(editorRef.value, {
+      height: 400,
+      mode: 'ir',
+      lang: 'zh_CN',
+      placeholder: '使用 Markdown 编写你的内容...',
+      cache: { enable: false },
+      toolbar,
+      // vditor 运行时资源（lute/i18n/icons/预览高亮与 mermaid）默认从 unpkg CDN 加载，
+      // 内网/离线环境会卡死初始化，这里指向 public 下本地化的 dist 资源
+      cdn: '/vditor',
+      input: (value: string) => emit('update:modelValue', value),
+      after: () => {
+        vditor?.setValue(props.modelValue)
+      },
+    })
+  } catch (error) {
+    console.warn('[MarkdownEditor] vditor 加载失败:', error instanceof Error ? error.message : error)
+  }
 })
 
 // 外部（如发布后清空表单）修改 modelValue 时同步进编辑器
