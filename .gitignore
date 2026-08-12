@@ -10,3 +10,7 @@ test-results/
 blob-report/
 output/playwright/
 
+# Lighthouse 基线/复测的原始产物（trace 与报告体积大，仅本地留存；
+# 结论沉淀在 docs/reports/lighthouse-baseline-*.md）
+docs/reports/lighthouse-baseline/
+
