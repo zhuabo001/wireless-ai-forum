@@ -10,6 +10,7 @@ import { quickLinks } from '../data/navigation'
       v-for="link in quickLinks"
       :key="link.label"
       :href="link.href"
+      :aria-label="link.label"
       class="group relative flex items-center justify-center"
     >
       <!-- 圆形图标 -->

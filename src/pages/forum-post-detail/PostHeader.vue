@@ -15,10 +15,10 @@ defineProps<{
 
 const categoryColorMap: Record<number, string> = {
   0: 'bg-primary/10 text-primary',
-  1: 'bg-emerald-50 text-emerald-600',
+  1: 'bg-emerald-50 text-emerald-700',
   2: 'bg-violet-50 text-violet-600',
-  3: 'bg-amber-50 text-amber-600',
-  4: 'bg-rose-50 text-rose-600',
+  3: 'bg-amber-50 text-amber-700',
+  4: 'bg-rose-50 text-rose-700',
 }
 </script>
 

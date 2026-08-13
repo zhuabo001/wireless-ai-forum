@@ -16,19 +16,19 @@ import { brand, footerColumns, footerContacts, footerLegalLinks } from '../data/
           <p class="text-sm text-background/60 leading-relaxed">{{ brand.description }}</p>
         </div>
         <div v-for="column in footerColumns" :key="column.title">
-          <h4 class="font-semibold text-background text-sm mb-3">{{ column.title }}</h4>
+          <h3 class="font-semibold text-background text-sm mb-3">{{ column.title }}</h3>
           <ul class="space-y-2"><li v-for="item in column.items" :key="item.label"><a :href="item.href" class="text-sm text-background/60 hover:text-background transition-colors">{{ item.label }}</a></li></ul>
         </div>
         <div>
-          <h4 class="font-semibold text-background text-sm mb-3">联系我们</h4>
+          <h3 class="font-semibold text-background text-sm mb-3">联系我们</h3>
           <div class="space-y-2">
             <a v-for="contact in footerContacts" :key="contact.label" :href="contact.href" class="flex items-center gap-2 text-sm text-background/60 hover:text-background transition-colors"><IconRenderer :name="contact.icon" class-name="w-4 h-4" /> {{ contact.label }}</a>
           </div>
         </div>
       </div>
       <div class="border-t border-background/10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-2">
-        <p class="text-xs text-background/40">© 2026 无线AI社区. All rights reserved.</p>
-        <div class="flex gap-4 text-xs text-background/40">
+        <p class="text-xs text-background/50">© 2026 无线AI社区. All rights reserved.</p>
+        <div class="flex gap-4 text-xs text-background/50">
           <a v-for="link in footerLegalLinks" :key="link.label" :href="link.href" class="hover:text-background/60 transition-colors">{{ link.label }}</a>
         </div>
       </div>

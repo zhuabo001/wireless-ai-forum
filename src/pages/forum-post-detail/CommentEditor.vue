@@ -105,7 +105,7 @@ onBeforeUnmount(() => {
             @onChange="handleChange"
           />
         </template>
-        <div v-else class="comment-editor-facade" role="textbox" tabindex="0" @click="activate" @keydown.enter="activate">
+        <div v-else class="comment-editor-facade" role="textbox" aria-label="评论内容" aria-multiline="true" tabindex="0" @click="activate" @keydown.enter="activate">
           分享你的观点、经验或疑问...
         </div>
       </div>
@@ -130,7 +130,7 @@ onBeforeUnmount(() => {
   padding: 10px 12px;
   line-height: 1.7;
   font-size: 0.875rem;
-  color: #94a3b8;
+  color: #64748b;
   cursor: text;
 }
 
@@ -171,6 +171,6 @@ onBeforeUnmount(() => {
   top: 10px;
   left: 12px;
   font-size: 0.875rem;
-  color: #94a3b8;
+  color: #64748b;
 }
 </style>

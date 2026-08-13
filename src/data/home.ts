@@ -66,22 +66,22 @@ export const changelog: ChangelogItem[] = [
 
 export const tickerRows: TickerItem[][] = [
   [
-    { tag: 'HOT', tagColor: 'bg-red-50 text-red-600', text: 'GPT-4在协议分析中的应用心得', author: '张明远' },
-    { tag: 'NEW', tagColor: 'bg-green-50 text-green-600', text: 'Agent市场正式上线，欢迎体验', author: '社区公告' },
-    { tag: 'HOT', tagColor: 'bg-red-50 text-red-600', text: 'Agent调试常见问题和解决方案', author: '李思涵' },
+    { tag: 'HOT', tagColor: 'bg-red-50 text-red-700', text: 'GPT-4在协议分析中的应用心得', author: '张明远' },
+    { tag: 'NEW', tagColor: 'bg-green-50 text-green-700', text: 'Agent市场正式上线，欢迎体验', author: '社区公告' },
+    { tag: 'HOT', tagColor: 'bg-red-50 text-red-700', text: 'Agent调试常见问题和解决方案', author: '李思涵' },
     { tag: '活动', tagColor: 'bg-blue-50 text-blue-600', text: '本周五AI辅助无线研发技术分享会', author: '线下活动' },
     { tag: '分享', tagColor: 'bg-purple-50 text-purple-600', text: '自制代码审查Prompt模板分享', author: '王雪晴' },
-    { tag: 'HOT', tagColor: 'bg-red-50 text-red-600', text: '大模型微调 vs 提示工程如何选择', author: '陈志强' },
-    { tag: 'NEW', tagColor: 'bg-green-50 text-green-600', text: 'LangChain v0.2模块化架构解读', author: 'AI情报局' },
-    { tag: '实践', tagColor: 'bg-amber-50 text-amber-600', text: '多Agent协作在基站部署中的实践', author: '刘浩然' },
+    { tag: 'HOT', tagColor: 'bg-red-50 text-red-700', text: '大模型微调 vs 提示工程如何选择', author: '陈志强' },
+    { tag: 'NEW', tagColor: 'bg-green-50 text-green-700', text: 'LangChain v0.2模块化架构解读', author: 'AI情报局' },
+    { tag: '实践', tagColor: 'bg-amber-50 text-amber-700', text: '多Agent协作在基站部署中的实践', author: '刘浩然' },
   ],
   [
     { tag: '课程', tagColor: 'bg-violet-50 text-violet-600', text: '大模型驱动无线研发入门 - 新课上线', author: '无线研究院' },
-    { tag: 'HOT', tagColor: 'bg-red-50 text-red-600', text: 'AI生成代码安全性审查最佳实践', author: '赵敏华' },
-    { tag: '工具', tagColor: 'bg-cyan-50 text-cyan-600', text: 'CodeLens智能代码分析插件发布', author: 'Agent市场' },
+    { tag: 'HOT', tagColor: 'bg-red-50 text-red-700', text: 'AI生成代码安全性审查最佳实践', author: '赵敏华' },
+    { tag: '工具', tagColor: 'bg-cyan-50 text-cyan-700', text: 'CodeLens智能代码分析插件发布', author: 'Agent市场' },
     { tag: '活动', tagColor: 'bg-blue-50 text-blue-600', text: 'Q1季度AI技术圆桌讨论报名中', author: '氛围建设' },
-    { tag: 'HOT', tagColor: 'bg-red-50 text-red-600', text: '5G协议测试边界case处理求助', author: '求助区' },
-    { tag: 'NEW', tagColor: 'bg-green-50 text-green-600', text: 'OpenAI Assistant API开放使用', author: 'AI情报局' },
+    { tag: 'HOT', tagColor: 'bg-red-50 text-red-700', text: '5G协议测试边界case处理求助', author: '求助区' },
+    { tag: 'NEW', tagColor: 'bg-green-50 text-green-700', text: 'OpenAI Assistant API开放使用', author: 'AI情报局' },
     { tag: '课程', tagColor: 'bg-violet-50 text-violet-600', text: 'Agent开发与部署指南 - 热门推荐', author: '工程技术部' },
     { tag: '分享', tagColor: 'bg-purple-50 text-purple-600', text: '新手入门：快速搭建第一个AI Agent', author: '刘浩然' },
   ],
@@ -128,10 +128,10 @@ export const intelligenceNews: IntelligenceItem[] = [
 export const intelligenceCategoryColors: Record<string, string> = {
   大模型: 'bg-purple-50 text-purple-600',
   框架: 'bg-blue-50 text-blue-600',
-  行业: 'bg-emerald-50 text-emerald-600',
-  论文: 'bg-amber-50 text-amber-600',
-  工具: 'bg-cyan-50 text-cyan-600',
-  政策: 'bg-rose-50 text-rose-600',
+  行业: 'bg-emerald-50 text-emerald-700',
+  论文: 'bg-amber-50 text-amber-700',
+  工具: 'bg-cyan-50 text-cyan-700',
+  政策: 'bg-rose-50 text-rose-700',
 }
 
 export const courses: CourseItem[] = [
@@ -156,10 +156,10 @@ export const forumStats: ForumStat[] = [
 ]
 
 export const forumTopics: ForumTopic[] = [
-  { title: 'GPT-4在协议分析中的应用心得', author: '张明远', avatar: '/avatar-1.webp', tag: 'HOT', tagColor: 'bg-red-50 text-red-600', replies: 128, views: '1.2k', likes: 89 },
-  { title: 'Agent调试中遇到的常见问题和解决方案', author: '李思涵', avatar: '/avatar-2.webp', tag: 'HOT', tagColor: 'bg-red-50 text-red-600', replies: 96, views: '876', likes: 56 },
-  { title: '求助：Agent在5G协议测试中遇到的边界case处理', author: '陈志强', avatar: '/avatar-4.webp', tag: '求助', tagColor: 'bg-orange-50 text-orange-600', replies: 72, views: '654', likes: 23 },
-  { title: '分享一个自制的代码审查Prompt模板', author: '王雪晴', avatar: '/avatar-3.webp', tag: '分享', tagColor: 'bg-green-50 text-green-600', replies: 84, views: '2.1k', likes: 156 },
+  { title: 'GPT-4在协议分析中的应用心得', author: '张明远', avatar: '/avatar-1.webp', tag: 'HOT', tagColor: 'bg-red-50 text-red-700', replies: 128, views: '1.2k', likes: 89 },
+  { title: 'Agent调试中遇到的常见问题和解决方案', author: '李思涵', avatar: '/avatar-2.webp', tag: 'HOT', tagColor: 'bg-red-50 text-red-700', replies: 96, views: '876', likes: 56 },
+  { title: '求助：Agent在5G协议测试中遇到的边界case处理', author: '陈志强', avatar: '/avatar-4.webp', tag: '求助', tagColor: 'bg-orange-50 text-orange-700', replies: 72, views: '654', likes: 23 },
+  { title: '分享一个自制的代码审查Prompt模板', author: '王雪晴', avatar: '/avatar-3.webp', tag: '分享', tagColor: 'bg-green-50 text-green-700', replies: 84, views: '2.1k', likes: 156 },
   { title: '关于多Agent协作模式在基站部署项目中的实践总结', author: '刘浩然', avatar: '/avatar-5.webp', tag: '实践', tagColor: 'bg-blue-50 text-blue-600', replies: 65, views: '543', likes: 45 },
   { title: 'AI生成代码的安全性审查流程与最佳实践', author: '赵敏华', avatar: '/avatar-6.webp', tag: '讨论', tagColor: 'bg-purple-50 text-purple-600', replies: 58, views: '987', likes: 72 },
 ]
@@ -177,9 +177,9 @@ export const marketItems: MarketItem[] = [
 
 export const marketTypeColors: Record<string, string> = {
   Extension: 'bg-blue-50 text-blue-600',
-  Skill: 'bg-emerald-50 text-emerald-600',
+  Skill: 'bg-emerald-50 text-emerald-700',
   MCP: 'bg-purple-50 text-purple-600',
-  Subagent: 'bg-orange-50 text-orange-600',
+  Subagent: 'bg-orange-50 text-orange-700',
   Command: 'bg-gray-100 text-gray-600',
 }
 
@@ -240,12 +240,12 @@ export const roadmapItems: RoadmapItem[] = [
 
 export const activities: ActivityItem[] = [
   { date: '2026-06-02', title: 'AI辅助编码实战 Workshop', desc: '动手体验AI辅助编程工具，提升研发效率', location: '研发中心A栋3楼', time: '14:00-17:00', participants: 30, type: '线下', typeColor: 'bg-blue-50 text-blue-600' },
-  { date: '2026-06-05', title: '大模型在无线测试中的应用分享', desc: '测试部分享GPT-4在自动化测试中的最新实践', location: '线上会议室', time: '15:00-16:30', participants: 120, type: '线上', typeColor: 'bg-green-50 text-green-600' },
+  { date: '2026-06-05', title: '大模型在无线测试中的应用分享', desc: '测试部分享GPT-4在自动化测试中的最新实践', location: '线上会议室', time: '15:00-16:30', participants: 120, type: '线上', typeColor: 'bg-green-50 text-green-700' },
   { date: '2026-06-08', title: 'Agent开发入门培训', desc: '从零开始学习Agent开发与部署', location: '培训中心', time: '09:30-12:00', participants: 50, type: '线下', typeColor: 'bg-blue-50 text-blue-600' },
   { date: '2026-06-12', title: 'Q2 AI技术圆桌讨论', desc: '季度技术深度交流，聚焦多Agent协作', location: '总部会议中心', time: '14:00-18:00', participants: 25, type: '线下', typeColor: 'bg-blue-50 text-blue-600' },
-  { date: '2026-06-15', title: '代码审查最佳实践分享会', desc: '分享AI辅助代码审查的流程与工具', location: '线上', time: '19:00-20:30', participants: 200, type: '线上', typeColor: 'bg-green-50 text-green-600' },
+  { date: '2026-06-15', title: '代码审查最佳实践分享会', desc: '分享AI辅助代码审查的流程与工具', location: '线上', time: '19:00-20:30', participants: 200, type: '线上', typeColor: 'bg-green-50 text-green-700' },
   { date: '2026-06-18', title: '无线AI极客汇周年庆', desc: '社区一周年庆典，回顾与展望', location: '总部大礼堂', time: '13:30-17:00', participants: 300, type: '线下', typeColor: 'bg-purple-50 text-purple-600' },
-  { date: '2026-06-22', title: 'MCP协议深度解析', desc: '深入理解Model Context Protocol的设计与实现', location: '线上会议室', time: '20:00-21:30', participants: 80, type: '线上', typeColor: 'bg-green-50 text-green-600' },
+  { date: '2026-06-22', title: 'MCP协议深度解析', desc: '深入理解Model Context Protocol的设计与实现', location: '线上会议室', time: '20:00-21:30', participants: 80, type: '线上', typeColor: 'bg-green-50 text-green-700' },
   { date: '2026-06-25', title: 'Prompt Engineering 进阶课程', desc: '高级提示词工程技巧与实战案例', location: '研发中心B栋', time: '14:00-17:00', participants: 40, type: '线下', typeColor: 'bg-blue-50 text-blue-600' },
-  { date: '2026-06-28', title: '月度优秀Agent评选颁奖', desc: '评选本月最佳Agent扩展，颁发荣誉证书', location: '线上', time: '16:00-17:00', participants: 500, type: '线上', typeColor: 'bg-amber-50 text-amber-600' },
+  { date: '2026-06-28', title: '月度优秀Agent评选颁奖', desc: '评选本月最佳Agent扩展，颁发荣誉证书', location: '线上', time: '16:00-17:00', participants: 500, type: '线上', typeColor: 'bg-amber-50 text-amber-700' },
 ]

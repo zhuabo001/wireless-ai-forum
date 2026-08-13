@@ -77,7 +77,7 @@ function handleLoadMore(): void {
 
 <template>
   <div class="pt-16 lg:pt-20 pb-20 lg:pb-12">
-    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+    <main class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
       <PostFloatingActions
         :like-count="likeCount"
         :comment-count="postDetail.commentCount"
@@ -125,6 +125,6 @@ function handleLoadMore(): void {
         @submit-reply="handleSubmitReply"
         @load-more="handleLoadMore"
       />
-    </div>
+    </main>
   </div>
 </template>

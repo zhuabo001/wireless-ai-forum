@@ -18,12 +18,12 @@ export const navLinks: NavLink[] = [
 
 export const quickLinks: QuickLink[] = [
   { icon: 'cpu', label: '工程能力', href: '#engineering', color: 'bg-blue-50 text-blue-600', desc: '构建与部署核心工程能力' },
-  { icon: 'award', label: '优秀实践', href: '#practices', color: 'bg-emerald-50 text-emerald-600', desc: '精选行业最佳实践案例' },
-  { icon: 'briefcase', label: '百宝箱', href: '#toolbox', color: 'bg-amber-50 text-amber-600', desc: '高效工具与资源集合' },
-  { icon: 'newspaper', label: '情报局', href: '#intelligence', color: 'bg-rose-50 text-rose-600', desc: '最新技术情报速递' },
+  { icon: 'award', label: '优秀实践', href: '#practices', color: 'bg-emerald-50 text-emerald-700', desc: '精选行业最佳实践案例' },
+  { icon: 'briefcase', label: '百宝箱', href: '#toolbox', color: 'bg-amber-50 text-amber-700', desc: '高效工具与资源集合' },
+  { icon: 'newspaper', label: '情报局', href: '#intelligence', color: 'bg-rose-50 text-rose-700', desc: '最新技术情报速递' },
   { icon: 'book-open', label: '热门课程', href: '#courses', color: 'bg-violet-50 text-violet-600', desc: '前沿技术体系化课程' },
-  { icon: 'message-square', label: 'AI论坛', href: '#forum', color: 'bg-cyan-50 text-cyan-600', desc: '技术交流与观点碰撞' },
-  { icon: 'layers', label: 'Agent市场', href: '#market', color: 'bg-orange-50 text-orange-600', desc: '智能体应用与服务市场' },
+  { icon: 'message-square', label: 'AI论坛', href: '#forum', color: 'bg-cyan-50 text-cyan-700', desc: '技术交流与观点碰撞' },
+  { icon: 'layers', label: 'Agent市场', href: '#market', color: 'bg-orange-50 text-orange-700', desc: '智能体应用与服务市场' },
 ]
 
 export const footerColumns: FooterColumn[] = [

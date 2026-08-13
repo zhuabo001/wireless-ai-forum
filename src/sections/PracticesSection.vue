@@ -15,7 +15,7 @@ import { practices } from '../data/home'
           <div class="flex items-center gap-2 mb-3"><TagBadge :label="p.dept" class-name="bg-primary/10 text-primary px-2 py-1 rounded-md" /></div>
           <h3 class="text-base font-semibold text-foreground mb-2 flex items-center gap-2"><IconRenderer name="zap" class-name="w-4 h-4 text-amber-500" /> {{ p.title }}</h3>
           <p class="text-sm text-muted-foreground mb-3">{{ p.desc }}</p>
-          <div class="flex flex-wrap gap-1.5"><TagBadge v-for="tag in p.tags" :key="tag" :label="tag" class-name="bg-gray-100 text-gray-500 rounded-full" /></div>
+          <div class="flex flex-wrap gap-1.5"><TagBadge v-for="tag in p.tags" :key="tag" :label="tag" class-name="bg-gray-100 text-gray-600 rounded-full" /></div>
         </BaseCard>
       </div>
     </div>

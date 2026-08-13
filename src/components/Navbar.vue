@@ -40,13 +40,13 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
 
         <!-- Right Actions -->
         <div class="flex items-center gap-2">
-          <button class="p-2 text-muted-foreground hover:text-foreground rounded-full hover:bg-accent transition-colors">
+          <button aria-label="搜索" class="p-2 text-muted-foreground hover:text-foreground rounded-full hover:bg-accent transition-colors">
             <IconRenderer name="search" class-name="w-4 h-4" />
           </button>
-          <button class="hidden sm:flex p-2 text-muted-foreground hover:text-foreground rounded-full hover:bg-accent transition-colors">
+          <button aria-label="用户" class="hidden sm:flex p-2 text-muted-foreground hover:text-foreground rounded-full hover:bg-accent transition-colors">
             <IconRenderer name="user" class-name="w-4 h-4" />
           </button>
-          <button class="md:hidden p-2 text-muted-foreground hover:text-foreground rounded-full hover:bg-accent transition-colors" @click="mobileOpen = !mobileOpen">
+          <button aria-label="菜单" :aria-expanded="mobileOpen" class="md:hidden p-2 text-muted-foreground hover:text-foreground rounded-full hover:bg-accent transition-colors" @click="mobileOpen = !mobileOpen">
             <IconRenderer v-if="mobileOpen" name="x" class-name="w-5 h-5" /><IconRenderer v-else name="menu" class-name="w-5 h-5" />
           </button>
         </div>

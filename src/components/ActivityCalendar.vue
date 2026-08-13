@@ -83,7 +83,7 @@ watch([currentYear, currentMonth], () => {
             <span>{{ selectedActivity.participants }}人已报名</span>
           </div>
         </div>
-        <ElButton type="primary" class="mt-4 w-full">
+        <ElButton type="primary" class="a11y-primary-button mt-4 w-full">
           立即报名
         </ElButton>
       </div>
@@ -100,13 +100,13 @@ watch([currentYear, currentMonth], () => {
       <!-- Header -->
       <div class="flex items-center justify-between mb-4">
         <div class="flex items-center gap-1">
-          <button @click="prevMonth" class="p-1.5 rounded-lg hover:bg-gray-100 transition-colors">
+          <button aria-label="上个月" @click="prevMonth" class="p-1.5 rounded-lg hover:bg-gray-100 transition-colors">
             <IconRenderer name="chevron-left" class-name="w-4 h-4 text-muted-foreground" />
           </button>
           <span class="text-base font-semibold text-foreground min-w-[100px] text-center">
             {{ currentYear }}年{{ monthNames[currentMonth] }}
           </span>
-          <button @click="nextMonth" class="p-1.5 rounded-lg hover:bg-gray-100 transition-colors">
+          <button aria-label="下个月" @click="nextMonth" class="p-1.5 rounded-lg hover:bg-gray-100 transition-colors">
             <IconRenderer name="chevron-right" class-name="w-4 h-4 text-muted-foreground" />
           </button>
         </div>
@@ -127,7 +127,7 @@ watch([currentYear, currentMonth], () => {
               data.type !== 'current-month' ? 'invisible' : '',
               data.day === selectedDate ? 'bg-primary text-white shadow-sm' : '',
               data.day !== selectedDate && activityMap[data.day] ? 'text-foreground font-medium hover:bg-gray-100 cursor-pointer' : '',
-              data.day !== selectedDate && !activityMap[data.day] ? 'text-gray-300 cursor-not-allowed' : '',
+              data.day !== selectedDate && !activityMap[data.day] ? 'text-gray-500 cursor-not-allowed' : '',
             ]"
           >
             <span>{{ Number(data.day.slice(-2)) }}</span>
@@ -138,3 +138,18 @@ watch([currentYear, currentMonth], () => {
     </div>
   </div>
 </template>
+
+<style scoped>
+/* 色比审计（4.5:1）：EP 默认主色 #409eff 作为浅底 tag 文字与按钮背景（白字）均不足，
+ * 覆盖为更深的同色系；hover/active 用再深一档保持可读。视觉为最小增量。 */
+.el-tag--primary {
+  color: #1d4ed8;
+}
+.el-tag--success {
+  color: #15803d;
+}
+.el-tag--info {
+  color: #4b5563;
+}
+/* EP primary 按钮色比修复用全局工具类 .a11y-primary-button（见 element-overrides.css） */
+</style>
