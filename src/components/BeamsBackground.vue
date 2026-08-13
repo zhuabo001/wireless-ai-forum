@@ -14,11 +14,16 @@ onMounted(() => {
   let W = 0, H = 0, dpr = 1
   let animId = 0, running = true
 
+  // The canvas sits inside a fixed inset-0 container, so its CSS box is the
+  // viewport; size the backing store from window geometry instead of
+  // getBoundingClientRect, which would force a sync layout (ForcedReflow)
+  // mid-mount. innerWidth includes the scrollbar slot while the fixed box
+  // excludes it, so the backing store may run a scrollbar-width wider — a
+  // sub-1% stretch, imperceptible for a decorative backdrop.
   const resize = () => {
     dpr = Math.min(window.devicePixelRatio || 1, 2)
-    const rect = canvas.getBoundingClientRect()
-    W = canvas.width = rect.width * dpr
-    H = canvas.height = rect.height * dpr
+    W = canvas.width = window.innerWidth * dpr
+    H = canvas.height = window.innerHeight * dpr
   }
   resize()
   window.addEventListener('resize', resize, { passive: true })
@@ -235,7 +240,10 @@ onMounted(() => {
     animId = requestAnimationFrame(draw)
   }
 
-  draw()
+  // Defer the first frame to rAF: don't paint the whole canvas synchronously
+  // inside the mount task. The backdrop sits behind content (z-0), so
+  // appearing one frame late is invisible.
+  animId = requestAnimationFrame(draw)
 
   cleanup = () => {
     running = false
