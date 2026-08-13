@@ -16,6 +16,7 @@ defineEmits<{
     <span>排序：</span>
     <ElSelect
       :model-value="modelValue"
+      aria-label="排序方式"
       class="sort-select-inline"
       :teleported="false"
       @update:model-value="$emit('update:modelValue', $event)"

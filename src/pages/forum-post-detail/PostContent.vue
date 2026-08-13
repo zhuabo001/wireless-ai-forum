@@ -170,8 +170,10 @@ onBeforeUnmount(() => {
 
 /* 代码块（markdown 转换期生成 .code-block 结构） */
 .article-body .code-block { margin: 1.25rem 0; border-radius: 0.625rem; overflow: hidden; border: 1px solid #e2e8f0; }
-.article-body .code-block .code-header { display: flex; justify-content: space-between; align-items: center; padding: 0.375rem 0.875rem; background: #e2e8f0; font-size: 0.75rem; color: #64748b; }
+.article-body .code-block .code-header { display: flex; justify-content: space-between; align-items: center; padding: 0.375rem 0.875rem; background: #e2e8f0; font-size: 0.75rem; color: #475569; }
 .article-body .code-block .code-lang { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; text-transform: lowercase; }
+/* github.css 主题的注释灰 #6a737d 对比不足 4.5:1，按 github.com 现行注释色加深 */
+.article-body .hljs-comment { color: #57606a; }
 .article-body .code-block .code-copy-btn { color: #475569; cursor: pointer; padding: 0.125rem 0.5rem; border-radius: 0.25rem; transition: background-color 0.15s ease, color 0.15s ease; }
 .article-body .code-block .code-copy-btn:hover { background: #cbd5e1; color: #0f172a; }
 .article-body .code-block .code-copy-btn.copied { color: #15803d; }

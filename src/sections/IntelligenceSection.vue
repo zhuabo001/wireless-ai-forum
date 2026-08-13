@@ -20,7 +20,7 @@ const categoryColors = intelligenceCategoryColors
               <TagBadge :label="item.category" :class-name="categoryColors[item.category]" />
               <span class="text-xs text-muted-foreground">{{ item.time }}</span>
             </div>
-            <h4 class="text-sm font-medium text-foreground group-hover:text-primary transition-colors leading-snug mb-1">{{ item.title }}</h4>
+            <h3 class="text-sm font-medium text-foreground group-hover:text-primary transition-colors leading-snug mb-1">{{ item.title }}</h3>
             <span class="text-xs text-muted-foreground flex items-center gap-1"><IconRenderer name="external-link" class-name="w-3 h-3" />{{ item.source }}</span>
           </div>
         </BaseCard>

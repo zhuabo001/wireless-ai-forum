@@ -21,7 +21,7 @@ const filtered = computed(() => active.value === '全部' ? marketItems : market
           v-for="cat in categories"
           :key="cat"
           :type="active === cat ? 'primary' : 'default'"
-          class="market-filter-button"
+          class="market-filter-button a11y-primary-button"
           @click="active = cat"
         >
           {{ cat }}

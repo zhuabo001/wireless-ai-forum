@@ -12,6 +12,18 @@
   --el-button-active-border-color: var(--home-primary-active);
 }
 
+/* a11y 色比（M4）：EP primary 按钮白字 on #409eff 仅 2.78。上面的全局 token 映射
+   因 EP 样式在组件挂载时运行时注入（晚于本文件）而失效，故提供显式工具类按需
+   挂载；双类选择器提高特异性，不受注入顺序影响 */
+.el-button--primary.a11y-primary-button {
+  --el-button-bg-color: #2563eb;
+  --el-button-border-color: #2563eb;
+  --el-button-hover-bg-color: #1d4ed8;
+  --el-button-hover-border-color: #1d4ed8;
+  --el-button-active-bg-color: #1d4ed8;
+  --el-button-active-border-color: #1d4ed8;
+}
+
 .el-tag {
   border-radius: var(--home-radius-sm);
   font-weight: 500;

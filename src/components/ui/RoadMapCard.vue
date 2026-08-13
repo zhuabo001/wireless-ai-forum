@@ -29,7 +29,7 @@ withDefaults(defineProps<{
           'inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs font-medium',
           item.status === 'in-progress'
             ? 'bg-primary/10 text-primary'
-            : 'bg-emerald-50 text-emerald-600',
+            : 'bg-emerald-50 text-emerald-700',
         ]"
       >
         <IconRenderer
@@ -55,7 +55,7 @@ withDefaults(defineProps<{
             'mt-0.5 w-5 h-5 rounded-md flex items-center justify-center shrink-0',
             item.status === 'in-progress'
               ? 'bg-primary/10 text-primary'
-              : 'bg-gray-100 text-gray-500',
+              : 'bg-gray-100 text-gray-600',
           ]"
         >
           <IconRenderer :name="feature.icon" class-name="w-3 h-3" />

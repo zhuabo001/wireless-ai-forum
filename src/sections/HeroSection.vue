@@ -72,7 +72,7 @@ const sectionRef = ref<HTMLElement | null>(null)
                 <span class="text-xs font-medium px-1.5 py-0.5 rounded bg-blue-50 text-blue-600">{{ item.version }}</span>
                 <span class="text-xs text-muted-foreground">{{ item.date }}</span>
               </div>
-              <h4 class="text-sm font-semibold text-foreground mb-2">{{ item.title }}</h4>
+              <h3 class="text-sm font-semibold text-foreground mb-2">{{ item.title }}</h3>
               <div class="space-y-1">
                 <div v-for="(change, j) in item.changes" :key="j" class="flex items-start gap-1.5 text-xs text-muted-foreground">
                   <IconRenderer name="git-commit" class-name="w-3 h-3 text-blue-500 mt-0.5 flex-shrink-0" />
