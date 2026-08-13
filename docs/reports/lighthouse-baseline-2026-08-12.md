@@ -98,3 +98,30 @@ ElButton/ElTag/ElCalendar/ElDialog（约 15KB），select/upload/form/async-vali
 深链与懒加载边界校验），滚动冒烟 9 区块均正常挂载，控制台零告警。
 
 **注**：无节流 lab 的绝对差值偏小，4x CPU 节流下相对收益预计放大 3–4 倍。
+
+---
+
+## 优化记录 2：highlight.js 按需注册瘦身（2026-08-12）
+
+**归因**：vendor-common 248KB 中约 150KB 为 `highlight.js/lib/common`（37 种语言全量
+注册），而论坛围栏语言实际只需 python/text/plantuml/mermaid 等少量。
+
+**改动**：`src/utils/markdown.ts` 改为 `lib/core` + 精选 14 种语言按需注册
+（python/javascript/typescript/java/c/cpp/bash/sql/json/xml/yaml/go/rust/matlab），
+未注册语言走已有纯转义降级；别名（js/ts/c++/sh/html）由 registerLanguage 自动注册。
+
+**效果**：
+
+| 项 | 优化前 | 优化后 |
+| --- | --- | --- |
+| vendor-common JS | 248 KB | 170.9 KB（**-77KB/-31%**） |
+| gzip | ~87 KB | 67.9 KB |
+
+功能验证全绿：python 高亮、text/plantuml 降级转义、mermaid SVG 正常渲染、控制台零告警。
+`npm run check` 通过。
+
+**诚实结论**：帖子页 3 轮复测 FCP 中位数 335.8ms（范围 218.7–472.4ms），与基线单跑
+319.7ms 在无节流 lab 下无法区分——噪声带 ±120ms 量级，远超 77KB minified 的桌面解析
+成本（~2–5ms）。本步的可度量收益是确定性的传输与解析削减，真实网络/低端设备上兑现。
+节流下的严格对比留待里程碑 5 统一执行。
+实施记录：`docs/perf-imprv-records/lighthouse-perf-milestone2-hljs-slim-2026-08-12.md`

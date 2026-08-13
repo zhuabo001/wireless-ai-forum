@@ -1,5 +1,38 @@
 import MarkdownIt from 'markdown-it'
-import hljs from 'highlight.js/lib/common'
+import hljs from 'highlight.js/lib/core'
+// lib/common 全量 37 种语言约 150KB（含 swift/php/less/scss 等论坛场景低频语言），
+// 按无线 AI 论坛的高频语言按需注册；未注册语言在 highlightCode 中回退纯转义输出。
+// v11 各语言定义自包含（typescript 内置 js 语法、cpp 内置 c 语法），注册顺序无依赖；
+// 语言自带别名（js/ts/c++/sh 等）由 registerLanguage 一并注册。
+import bash from 'highlight.js/lib/languages/bash'
+import c from 'highlight.js/lib/languages/c'
+import cpp from 'highlight.js/lib/languages/cpp'
+import go from 'highlight.js/lib/languages/go'
+import java from 'highlight.js/lib/languages/java'
+import javascript from 'highlight.js/lib/languages/javascript'
+import json from 'highlight.js/lib/languages/json'
+import matlab from 'highlight.js/lib/languages/matlab'
+import python from 'highlight.js/lib/languages/python'
+import rust from 'highlight.js/lib/languages/rust'
+import sql from 'highlight.js/lib/languages/sql'
+import typescript from 'highlight.js/lib/languages/typescript'
+import xml from 'highlight.js/lib/languages/xml'
+import yaml from 'highlight.js/lib/languages/yaml'
+
+hljs.registerLanguage('bash', bash)
+hljs.registerLanguage('c', c)
+hljs.registerLanguage('cpp', cpp)
+hljs.registerLanguage('go', go)
+hljs.registerLanguage('java', java)
+hljs.registerLanguage('javascript', javascript)
+hljs.registerLanguage('json', json)
+hljs.registerLanguage('matlab', matlab)
+hljs.registerLanguage('python', python)
+hljs.registerLanguage('rust', rust)
+hljs.registerLanguage('sql', sql)
+hljs.registerLanguage('typescript', typescript)
+hljs.registerLanguage('xml', xml)
+hljs.registerLanguage('yaml', yaml)
 
 /**
  * markdown -> HTML 转换工具
