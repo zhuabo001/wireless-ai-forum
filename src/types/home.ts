@@ -192,6 +192,8 @@ export interface HomeSectionMeta {
   id: string
   component: string
   className?: string
+  /** 懒加载区块占位高度（px），取各区间的实测渲染高度，用于避免加载前后的布局抖动 */
+  minHeight?: number
 }
 
 export type RoadmapStatus = 'completed' | 'in-progress'
