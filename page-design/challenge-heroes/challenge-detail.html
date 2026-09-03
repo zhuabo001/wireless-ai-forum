@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>地铁场景弱覆盖下的掉线率优化 — 难题英雄榜 — 无线AI极客汇</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: { DEFAULT: '#0d55c9', foreground: '#ffffff' },
+            border: '#e2e8f0',
+            background: '#f8fafc',
+            foreground: '#0f172a',
+            muted: { DEFAULT: '#f1f5f9', foreground: '#64748b' },
+          },
+          borderRadius: { lg: '0.625rem', xl: '0.75rem' },
+        }
+      }
+    }
+  </script>
+  <style>
+    body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f8fafc; color: #0f172a; -webkit-font-smoothing: antialiased; }
+
+    /* Article prose */
+    .article-body { line-height: 1.8; color: #334155; }
+    .article-body h2 { font-size: 1.375rem; font-weight: 700; color: #0f172a; margin-top: 2.5rem; margin-bottom: 1rem; line-height: 1.35; }
+    .article-body h3 { font-size: 1.125rem; font-weight: 600; color: #0f172a; margin-top: 2rem; margin-bottom: 0.75rem; }
+    .article-body p { margin-bottom: 1.25rem; }
+    .article-body ul { list-style: disc; padding-left: 1.75rem; margin-bottom: 1.25rem; }
+    .article-body ol { list-style: decimal; padding-left: 1.75rem; margin-bottom: 1.25rem; }
+    .article-body li { margin-bottom: 0.375rem; }
+    .article-body blockquote { border-left: 3px solid #cbd5e1; padding-left: 1.25rem; color: #475569; margin: 1.5rem 0; font-style: italic; }
+    .article-body pre { background: #f1f5f9; padding: 1rem 1.25rem; border-radius: 0.625rem; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 0.875rem; overflow-x: auto; line-height: 1.65; margin: 1.25rem 0; }
+    .article-body code { background: #f1f5f9; padding: 0.15rem 0.4rem; border-radius: 0.25rem; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 0.875em; color: #0f172a; }
+    .article-body pre code { background: none; padding: 0; }
+
+    /* Comment editor */
+    .comment-editor:empty:before { content: attr(placeholder); color: #94a3b8; }
+    .comment-editor { min-height: 100px; outline: none; line-height: 1.7; }
+    .comment-editor p { margin-bottom: 0.5rem; }
+    .comment-editor pre { background: #f1f5f9; padding: 0.5rem 0.75rem; border-radius: 0.375rem; font-family: ui-monospace, monospace; font-size: 0.875rem; }
+    .comment-editor code { background: #f1f5f9; padding: 0.125rem 0.375rem; border-radius: 0.25rem; font-family: ui-monospace, monospace; font-size: 0.875em; }
+
+    /* Right action bar */
+    .action-bar-btn { transition: all 150ms ease-out; }
+    .action-bar-btn:hover { transform: translateY(-2px); }
+    .action-bar-btn.active { color: #0d55c9; background: #eff6ff; }
+
+    /* Timeline current node pulse */
+    @keyframes node-pulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(13, 85, 201, 0.35); }
+      50% { box-shadow: 0 0 0 5px rgba(13, 85, 201, 0); }
+    }
+    .timeline-current-dot { animation: node-pulse 1.8s ease-out infinite; }
+
+    /* Toast */
+    #toast { transition: opacity 200ms ease-out, transform 200ms ease-out; }
+
+    @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+  </style>
+</head>
+<body class="min-h-screen">
+
+  <!-- Navbar -->
+  <nav class="fixed top-0 left-0 right-0 z-50 bg-white/85 backdrop-blur-md border-b border-border/50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <a href="index.html" class="flex items-center gap-2.5 font-bold text-lg text-foreground">
+          <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-sm">
+            <i data-lucide="zap" class="w-5 h-5 text-white"></i>
+          </div>
+          <span>无线AI极客汇</span>
+        </a>
+        <div class="hidden md:flex items-center gap-1">
+          <a href="index.html" class="px-2 py-2 text-sm font-medium text-muted-foreground hover:text-foreground rounded-md hover:bg-muted transition-colors">首页</a>
+          <a href="intelligence.html" class="px-2 py-2 text-sm font-medium text-muted-foreground hover:text-foreground rounded-md hover:bg-muted transition-colors">情报局</a>
+          <a href="courses.html" class="px-2 py-2 text-sm font-medium text-muted-foreground hover:text-foreground rounded-md hover:bg-muted transition-colors">课程</a>
+          <a href="forum.html" class="px-2 py-2 text-sm font-medium text-muted-foreground hover:text-foreground rounded-md hover:bg-muted transition-colors">论坛</a>
+          <a href="challenge-heroes.html" class="px-2 py-2 text-sm font-medium text-foreground bg-muted rounded-md">难题英雄榜</a>
+          <a href="market.html" class="px-2 py-2 text-sm font-medium text-muted-foreground hover:text-foreground rounded-md hover:bg-muted transition-colors">Agent市场</a>
+        </div>
+        <div class="flex items-center gap-2">
+          <button class="p-2 text-muted-foreground hover:text-foreground rounded-full hover:bg-muted transition-colors">
+            <i data-lucide="search" class="w-4 h-4"></i>
+          </button>
+          <button class="hidden sm:flex p-2 text-muted-foreground hover:text-foreground rounded-full hover:bg-muted transition-colors">
+            <i data-lucide="user" class="w-4 h-4"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Right Floating Action Bar (Desktop) -->
+  <div class="hidden lg:flex fixed right-6 top-1/2 -translate-y-1/2 z-40 flex-col items-center gap-3">
+    <div class="bg-white rounded-2xl shadow-lg border border-border/60 p-2 flex flex-col items-center gap-1">
+      <!-- 发布者 / 超管专属：置顶、删除、编辑 -->
+      <div data-roles="publisher admin" class="hidden flex-col items-center gap-1 role-block">
+        <button class="action-bar-btn w-12 h-12 rounded-xl flex flex-col items-center justify-center text-muted-foreground hover:text-primary hover:bg-primary/5" onclick="demoAlert('已将本难题置顶（演示）')" title="置顶">
+          <i data-lucide="pin" class="w-5 h-5"></i>
+          <span class="text-[10px] font-medium mt-0.5">置顶</span>
+        </button>
+        <button class="action-bar-btn w-12 h-12 rounded-xl flex flex-col items-center justify-center text-muted-foreground hover:text-red-500 hover:bg-red-50" onclick="demoConfirm('确认删除该难题？删除后不可恢复（演示）')" title="删除">
+          <i data-lucide="trash-2" class="w-5 h-5"></i>
+          <span class="text-[10px] font-medium mt-0.5">删除</span>
+        </button>
+        <button class="action-bar-btn w-12 h-12 rounded-xl flex flex-col items-center justify-center text-muted-foreground hover:text-primary hover:bg-primary/5" onclick="demoAlert('进入文本编辑模式（演示）。发布者与超管可修改难题文本；分值调整请使用「评分」入口')" title="编辑">
+          <i data-lucide="pencil" class="w-5 h-5"></i>
+          <span class="text-[10px] font-medium mt-0.5">编辑</span>
+        </button>
+        <div class="w-8 h-px bg-border/60"></div>
+      </div>
+      <!-- 揭榜人专属：更新进度（与左侧进度组件联动） -->
+      <div data-roles="claimant" class="hidden flex-col items-center gap-1 role-block">
+        <button class="action-bar-btn w-12 h-12 rounded-xl flex flex-col items-center justify-center text-muted-foreground hover:text-primary hover:bg-primary/5" onclick="openProgressModal()" title="更新进度">
+          <i data-lucide="flag" class="w-5 h-5"></i>
+          <span class="text-[10px] font-medium mt-0.5">进度</span>
+        </button>
+        <div class="w-8 h-px bg-border/60"></div>
+      </div>
+      <!-- 全员可用 -->
+      <button id="btn-like" class="action-bar-btn w-12 h-12 rounded-xl flex flex-col items-center justify-center text-muted-foreground hover:text-rose-500 hover:bg-rose-50" onclick="toggleLike()" title="认为有用">
+        <i data-lucide="thumbs-up" class="w-5 h-5"></i>
+        <span id="like-count" class="text-[10px] font-medium mt-0.5">132</span>
+      </button>
+      <div class="w-8 h-px bg-border/60"></div>
+      <button class="action-bar-btn w-12 h-12 rounded-xl flex flex-col items-center justify-center text-muted-foreground hover:text-primary hover:bg-primary/5" onclick="scrollToTop()" title="回到顶部">
+        <i data-lucide="arrow-up" class="w-5 h-5"></i>
+        <span class="text-[10px] font-medium mt-0.5">顶部</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile Bottom Action Bar -->
+  <div class="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-border/60 px-4 py-2 flex items-center justify-around">
+    <button id="btn-like-mobile" class="action-bar-btn flex items-center gap-2 px-4 py-2 rounded-xl text-muted-foreground hover:text-rose-500" onclick="toggleLike()">
+      <i data-lucide="thumbs-up" class="w-5 h-5"></i>
+      <span id="like-count-mobile" class="text-sm font-medium">132</span>
+    </button>
+    <button class="action-bar-btn flex items-center gap-2 px-4 py-2 rounded-xl text-muted-foreground hover:text-primary" onclick="scrollToComments()">
+      <i data-lucide="message-square" class="w-5 h-5"></i>
+      <span class="text-sm font-medium">28</span>
+    </button>
+    <button class="action-bar-btn flex items-center gap-2 px-4 py-2 rounded-xl text-muted-foreground hover:text-primary" onclick="scrollToTop()">
+      <i data-lucide="arrow-up" class="w-5 h-5"></i>
+      <span class="text-sm font-medium">顶部</span>
+    </button>
+  </div>
+
+  <!-- Role Switcher (demo only) -->
+  <div class="hidden lg:block fixed left-6 bottom-6 z-40">
+    <div class="bg-white rounded-xl shadow-lg border border-border/60 p-3">
+      <p class="text-[11px] text-muted-foreground mb-2 flex items-center gap-1">
+        <i data-lucide="users" class="w-3 h-3"></i>演示：切换角色查看权限差异
+      </p>
+      <div class="flex gap-1.5">
+        <button class="role-chip px-2.5 py-1 text-xs font-medium rounded-md bg-primary text-white transition-colors" data-role="visitor" onclick="setRole('visitor')">普通用户</button>
+        <button class="role-chip px-2.5 py-1 text-xs font-medium rounded-md text-muted-foreground hover:text-foreground transition-colors" data-role="publisher" onclick="setRole('publisher')">发布者</button>
+        <button class="role-chip px-2.5 py-1 text-xs font-medium rounded-md text-muted-foreground hover:text-foreground transition-colors" data-role="claimant" onclick="setRole('claimant')">揭榜人</button>
+        <button class="role-chip px-2.5 py-1 text-xs font-medium rounded-md text-muted-foreground hover:text-foreground transition-colors" data-role="admin" onclick="setRole('admin')">超管</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="pt-16 lg:pt-20 pb-24 lg:pb-12">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+
+      <!-- Back Navigation -->
+      <div class="mb-6">
+        <a href="challenge-heroes.html" class="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors">
+          <i data-lucide="arrow-left" class="w-4 h-4"></i>
+          <span>返回难题英雄榜</span>
+        </a>
+      </div>
+
+      <!-- Article Header -->
+      <header class="mb-8">
+        <div class="flex flex-wrap items-center gap-2 mb-4">
+          <span id="score-badge" class="px-2.5 py-1 text-xs font-medium bg-amber-50 text-amber-600 rounded-md">悬赏 800 分</span>
+          <span class="px-2.5 py-1 text-xs font-medium bg-gray-100 text-gray-600 rounded-md">网络优化</span>
+          <span id="status-badge" class="px-2.5 py-1 text-xs font-medium bg-blue-50 text-blue-600 rounded-md">解题中</span>
+          <!-- 右侧操作按钮：我要揭榜（非发布者）/ 评分（超管） -->
+          <div class="ml-auto flex items-center gap-2">
+            <button id="btn-claim" class="inline-flex items-center gap-1.5 px-4 py-2 bg-primary text-white text-sm font-medium rounded-lg hover:bg-primary/90 transition-colors shadow-sm" onclick="claimChallenge()">
+              <i data-lucide="swords" class="w-4 h-4"></i>我要揭榜
+            </button>
+            <button id="btn-claimed" class="hidden inline-flex items-center gap-1.5 px-4 py-2 bg-emerald-50 text-emerald-600 text-sm font-medium rounded-lg cursor-default">
+              <i data-lucide="check-circle" class="w-4 h-4"></i>已揭榜
+            </button>
+            <button data-roles="admin" class="hidden role-block inline-flex items-center gap-1.5 px-4 py-2 border border-border bg-white text-sm font-medium text-foreground rounded-lg hover:border-amber-400 hover:text-amber-600 transition-colors" onclick="openScoreModal()">
+              <i data-lucide="coins" class="w-4 h-4"></i>评分
+            </button>
+          </div>
+        </div>
+
+        <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground leading-tight mb-6">
+          地铁场景弱覆盖下的掉线率优化，现有参数调整已到瓶颈
+        </h1>
+
+        <div class="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
+          <div class="flex items-center gap-2.5">
+            <div class="w-9 h-9 rounded-full bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-white text-sm font-bold flex-shrink-0">陈</div>
+            <div>
+              <div class="font-medium text-foreground text-sm">陈志强</div>
+              <div class="text-xs">核心网软件部</div>
+            </div>
+          </div>
+          <div class="hidden sm:block w-px h-6 bg-border"></div>
+          <div class="flex items-center gap-1.5">
+            <i data-lucide="calendar-clock" class="w-3.5 h-3.5"></i>
+            <span>2026年8月26日</span>
+          </div>
+          <div class="flex items-center gap-1.5">
+            <i data-lucide="eye" class="w-3.5 h-3.5"></i>
+            <span>2,418 浏览</span>
+          </div>
+          <div class="flex items-center gap-1.5">
+            <i data-lucide="message-square" class="w-3.5 h-3.5"></i>
+            <span>28 评论</span>
+          </div>
+        </div>
+
+        <!-- 揭榜人信息（已有人揭榜时展示） -->
+        <div class="mt-5 flex flex-wrap items-center gap-3 bg-white border border-border rounded-xl px-4 py-3">
+          <span class="text-xs font-medium px-1.5 py-0.5 rounded bg-blue-50 text-blue-600 flex-shrink-0">揭榜人</span>
+          <div class="w-9 h-9 rounded-full bg-gradient-to-br from-violet-400 to-purple-500 flex items-center justify-center text-white text-sm font-bold flex-shrink-0">王</div>
+          <div class="min-w-0">
+            <p class="text-sm font-medium text-foreground">王雪晴</p>
+            <p class="text-xs text-muted-foreground">测试与验证部 · 8月27日 揭榜</p>
+          </div>
+          <div class="ml-auto text-right flex-shrink-0">
+            <p class="text-xs text-muted-foreground">历史战绩</p>
+            <p class="text-xs font-medium text-foreground">揭榜 4 题 · 累计 +1,650 分</p>
+          </div>
+        </div>
+      </header>
+
+      <div class="lg:grid lg:grid-cols-[260px_minmax(0,1fr)] lg:gap-10">
+
+        <!-- 左侧：揭榜进度（桌面端吸附） -->
+        <aside class="hidden lg:block">
+          <div class="sticky top-24" id="progress-card-desktop"></div>
+        </aside>
+
+        <div class="min-w-0">
+          <!-- 移动端揭榜进度 -->
+          <div class="lg:hidden mb-8" id="progress-card-mobile"></div>
+
+          <!-- Article Body -->
+          <article class="article-body text-base sm:text-[0.9375rem] mb-16">
+            <h2>一、背景与场景</h2>
+            <p>
+              某市地铁 2 号线全线 38 个站点的室分系统开通已超 5 年，覆盖采用传统 DAS 方案。近三个月，早晚高峰时段的 VoLTE 掉线率持续攀升，从 0.8% 升至 2.3%，用户投诉集中在换乘通道和站台两端。该线路日均客流量超过 80 万人次，属于典型的高价值、高敏感度场景。
+            </p>
+
+            <h2>二、现状与痛点</h2>
+            <p>我们已经完成的优化动作和遇到的瓶颈：</p>
+            <ul>
+              <li><strong>功率与切换参数调整</strong>：对 23 个弱覆盖栅格完成两轮 A3/A5 门限和下倾角优化，掉线率仅下降 0.2 个百分点，收益已不明显</li>
+              <li><strong>扩容</strong>：高峰时段 PRB 利用率未超过 65%，排除容量瓶颈</li>
+              <li><strong>告警排查</strong>：无硬件告警，排除了设备故障因素</li>
+              <li><strong>核心矛盾</strong>：弱覆盖区域分散且随客流潮汐移动，基于固定栅格的参数配置无法匹配动态的人流分布；人工分析 MR 数据周期长（单轮约 2 周），等优化方案上线时场景已变化</li>
+            </ul>
+
+            <h2>三、期望目标与验收标准</h2>
+            <p>希望社区的专家提供可落地的方案，目标：</p>
+            <ol>
+              <li>高峰时段 VoLTE 掉线率降至 <strong>1.0% 以下</strong>，且不影响数据业务吞吐量</li>
+              <li>弱覆盖区域的识别周期从 2 周缩短到 <strong>3 天以内</strong></li>
+              <li>方案需能在现有运维体系内落地，不依赖大规模硬件改造</li>
+            </ol>
+            <p>
+              验收方式：方案在 2 个试点站点运行 4 周，以网管 counter 和 MR 报告为准进行前后对比，达到上述指标即为揭榜成功。
+            </p>
+
+            <h2>四、已有材料</h2>
+            <ul>
+              <li>近 90 天的 MR 采样数据（已脱敏，约 40GB）与网管 counter 导出</li>
+              <li>线路室分拓扑图与天线点位勘察记录</li>
+              <li>前两轮参数优化的完整操作记录与效果对比</li>
+              <li>客流分时数据（来自运营方公开年报口径）</li>
+            </ul>
+
+            <blockquote>
+              "这个问题卡了我们一个季度。参数调整的常规武器已经打完了，期待 AI 或数据驱动的新思路——尤其是能把'动态弱覆盖识别'做快的方案。"
+            </blockquote>
+          </article>
+
+          <!-- Comments Section -->
+          <section id="comments" class="border-t border-border pt-10">
+            <div class="flex items-center justify-between mb-8">
+              <h2 class="text-xl font-bold text-foreground">评论 <span class="text-muted-foreground font-normal text-base">(28)</span></h2>
+              <div class="flex items-center gap-1 text-sm text-muted-foreground">
+                <span>排序：</span>
+                <select class="bg-transparent text-foreground font-medium outline-none cursor-pointer">
+                  <option>最热</option>
+                  <option>最新</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Main Comment Form -->
+            <div class="bg-white rounded-xl border border-border p-4 mb-10">
+              <div class="flex items-start gap-3 mb-3">
+                <div class="w-9 h-9 rounded-full bg-gradient-to-br from-slate-400 to-slate-500 flex items-center justify-center text-white text-sm font-bold flex-shrink-0">我</div>
+                <div class="flex-1 min-w-0">
+                  <div class="text-sm font-medium text-foreground mb-2">发表评论</div>
+                  <div class="flex items-center gap-1 px-2 py-1.5 border border-border rounded-lg bg-muted/30 mb-2">
+                    <button type="button" class="p-1.5 rounded hover:bg-muted transition-colors text-muted-foreground hover:text-foreground" onclick="execCmd('bold', 'main-editor')">
+                      <i data-lucide="bold" class="w-3.5 h-3.5"></i>
+                    </button>
+                    <button type="button" class="p-1.5 rounded hover:bg-muted transition-colors text-muted-foreground hover:text-foreground" onclick="execCmd('italic', 'main-editor')">
+                      <i data-lucide="italic" class="w-3.5 h-3.5"></i>
+                    </button>
+                    <button type="button" class="p-1.5 rounded hover:bg-muted transition-colors text-muted-foreground hover:text-foreground" onclick="execCmd('underline', 'main-editor')">
+                      <i data-lucide="underline" class="w-3.5 h-3.5"></i>
+                    </button>
+                    <div class="w-px h-3.5 bg-border mx-0.5"></div>
+                    <button type="button" class="p-1.5 rounded hover:bg-muted transition-colors text-muted-foreground hover:text-foreground" onclick="execCmd('insertUnorderedList', 'main-editor')">
+                      <i data-lucide="list" class="w-3.5 h-3.5"></i>
+                    </button>
+                    <button type="button" class="p-1.5 rounded hover:bg-muted transition-colors text-muted-foreground hover:text-foreground" onclick="execCmd('formatBlock', 'main-editor', 'BLOCKQUOTE')">
+                      <i data-lucide="quote" class="w-3.5 h-3.5"></i>
+                    </button>
+                    <button type="button" class="p-1.5 rounded hover:bg-muted transition-colors text-muted-foreground hover:text-foreground" onclick="insertCode('main-editor')">
+                      <i data-lucide="code-2" class="w-3.5 h-3.5"></i>
+                    </button>
+                    <button type="button" class="p-1.5 rounded hover:bg-muted transition-colors text-muted-foreground hover:text-foreground" onclick="execCmd('createLink', 'main-editor')">
+                      <i data-lucide="link" class="w-3.5 h-3.5"></i>
+                    </button>
+                  </div>
+                  <div id="main-editor" contenteditable="true" placeholder="分享你的思路、类似案例或疑问..." class="comment-editor w-full px-3 py-2.5 text-sm border border-border rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-primary/15 focus:border-primary transition-colors"></div>
+                </div>
+              </div>
+              <div class="flex justify-end">
+                <button class="px-5 py-2 text-sm font-medium text-white bg-primary rounded-lg hover:bg-primary/90 transition-colors shadow-sm" onclick="submitMainComment()">
+                  发表评论
+                </button>
+              </div>
+            </div>
+
+            <!-- Comments List -->
+            <div id="comments-list" class="space-y-6">
+
+              <!-- Comment 1 -->
+              <div class="comment-item" data-comment-id="1">
+                <div class="flex items-start gap-3">
+                  <div class="w-9 h-9 rounded-full bg-gradient-to-br from-blue-400 to-indigo-500 flex items-center justify-center text-white text-sm font-bold flex-shrink-0">刘</div>
+                  <div class="flex-1 min-w-0">
+                    <div class="flex items-center gap-2 mb-1">
+                      <span class="text-sm font-semibold text-foreground">刘浩然</span>
+                      <span class="text-xs text-muted-foreground">基站平台部</span>
+                      <span class="text-xs text-muted-foreground">· 3小时前</span>
+                    </div>
+                    <div class="text-sm text-foreground leading-relaxed mb-2">
+                      动态弱覆盖识别这条，我们部门做过一个类似的试点：用 MR 的 RSRP 采样叠加闸机客流数据做时空栅格聚类，识别周期从人工 2 周压到了 2 天。关键点是栅格粒度不要贪细，50m × 15min 的粒度在地铁场景已经足够。可以给揭榜人参考。
+                    </div>
+                    <div class="flex items-center gap-4">
+                      <button class="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-rose-500 transition-colors" onclick="toggleCommentLike(this)">
+                        <i data-lucide="thumbs-up" class="w-3.5 h-3.5"></i>
+                        <span>24</span>
+                      </button>
+                      <button class="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-primary transition-colors" onclick="toggleReply('1')">
+                        <i data-lucide="message-circle" class="w-3.5 h-3.5"></i>
+                        <span>回复</span>
+                      </button>
+                    </div>
+
+                    <div id="reply-editor-1" class="hidden mt-3">
+                      <div class="bg-muted/40 rounded-xl p-3">
+                        <div class="flex items-start gap-2.5">
+                          <div class="w-7 h-7 rounded-full bg-gradient-to-br from-slate-400 to-slate-500 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">我</div>
+                          <div class="flex-1">
+                            <div class="text-xs text-muted-foreground mb-1.5">回复 <span class="text-primary font-medium">刘浩然</span></div>
+                            <div contenteditable="true" placeholder="写下你的回复..." class="comment-editor w-full px-3 py-2 text-sm border border-border rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-primary/15 focus:border-primary transition-colors" style="min-height: 80px;"></div>
+                            <div class="flex justify-end gap-2 mt-2">
+                              <button class="px-3 py-1.5 text-xs text-muted-foreground hover:text-foreground rounded-lg hover:bg-muted transition-colors" onclick="toggleReply('1')">取消</button>
+                              <button class="px-4 py-1.5 text-xs font-medium text-white bg-primary rounded-lg hover:bg-primary/90 transition-colors" onclick="submitReply('1')">回复</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Replies -->
+                    <div class="mt-4 space-y-4 pl-4 border-l-2 border-border/60">
+                      <div class="reply-item">
+                        <div class="flex items-start gap-2.5">
+                          <div class="w-7 h-7 rounded-full bg-gradient-to-br from-violet-400 to-purple-500 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">王</div>
+                          <div class="flex-1 min-w-0">
+                            <div class="flex items-center gap-2 mb-1">
+                              <span class="text-sm font-semibold text-foreground">王雪晴</span>
+                              <span class="text-xs font-medium text-blue-600">揭榜人</span>
+                              <span class="text-xs text-muted-foreground">· 2小时前</span>
+                            </div>
+                            <div class="text-sm text-foreground leading-relaxed mb-1.5">
+                              感谢！我的方案里正好采用了类似的时空栅格思路，粒度定在 50m × 30min（考虑到客流数据更新频率）。已在验证环境跑通，详见我提交的方案文档。
+                            </div>
+                            <div class="flex items-center gap-4">
+                              <button class="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-rose-500 transition-colors" onclick="toggleCommentLike(this)">
+                                <i data-lucide="thumbs-up" class="w-3.5 h-3.5"></i>
+                                <span>12</span>
+                              </button>
+                              <button class="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-primary transition-colors" onclick="toggleReply('1')">
+                                <i data-lucide="message-circle" class="w-3.5 h-3.5"></i>
+                                <span>回复</span>
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Comment 2 -->
+              <div class="comment-item" data-comment-id="2">
+                <div class="flex items-start gap-3">
+                  <div class="w-9 h-9 rounded-full bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center text-white text-sm font-bold flex-shrink-0">李</div>
+                  <div class="flex-1 min-w-0">
+                    <div class="flex items-center gap-2 mb-1">
+                      <span class="text-sm font-semibold text-foreground">李思涵</span>
+                      <span class="text-xs text-muted-foreground">终端协议栈部</span>
+                      <span class="text-xs text-muted-foreground">· 昨天</span>
+                    </div>
+                    <div class="text-sm text-foreground leading-relaxed mb-2">
+                      提醒一个容易忽视的点：地铁场景的掉线有相当一部分发生在站台→车厢的切换带上，这段的覆盖来自隧道泄漏电缆而不是站台天线，优化参数时建议把这两类覆盖源分开评估，否则指标会互相掩盖。
+                    </div>
+                    <div class="flex items-center gap-4">
+                      <button class="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-rose-500 transition-colors" onclick="toggleCommentLike(this)">
+                        <i data-lucide="thumbs-up" class="w-3.5 h-3.5"></i>
+                        <span>18</span>
+                      </button>
+                      <button class="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-primary transition-colors" onclick="toggleReply('2')">
+                        <i data-lucide="message-circle" class="w-3.5 h-3.5"></i>
+                        <span>回复</span>
+                      </button>
+                    </div>
+
+                    <div id="reply-editor-2" class="hidden mt-3">
+                      <div class="bg-muted/40 rounded-xl p-3">
+                        <div class="flex items-start gap-2.5">
+                          <div class="w-7 h-7 rounded-full bg-gradient-to-br from-slate-400 to-slate-500 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">我</div>
+                          <div class="flex-1">
+                            <div class="text-xs text-muted-foreground mb-1.5">回复 <span class="text-primary font-medium">李思涵</span></div>
+                            <div contenteditable="true" placeholder="写下你的回复..." class="comment-editor w-full px-3 py-2 text-sm border border-border rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-primary/15 focus:border-primary transition-colors" style="min-height: 80px;"></div>
+                            <div class="flex justify-end gap-2 mt-2">
+                              <button class="px-3 py-1.5 text-xs text-muted-foreground hover:text-foreground rounded-lg hover:bg-muted transition-colors" onclick="toggleReply('2')">取消</button>
+                              <button class="px-4 py-1.5 text-xs font-medium text-white bg-primary rounded-lg hover:bg-primary/90 transition-colors" onclick="submitReply('2')">回复</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Comment 3 -->
+              <div class="comment-item" data-comment-id="3">
+                <div class="flex items-start gap-3">
+                  <div class="w-9 h-9 rounded-full bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-white text-sm font-bold flex-shrink-0">陈</div>
+                  <div class="flex-1 min-w-0">
+                    <div class="flex items-center gap-2 mb-1">
+                      <span class="text-sm font-semibold text-foreground">陈志强</span>
+                      <span class="text-xs font-medium text-amber-600">发布者</span>
+                      <span class="text-xs text-muted-foreground">· 昨天</span>
+                    </div>
+                    <div class="text-sm text-foreground leading-relaxed mb-2">
+                      统一回复大家：脱敏后的 MR 数据集和前两轮优化记录已经打包，揭榜后可以在方案工作区直接获取。目前王雪晴同学的方案已进入试点验证阶段，第一周数据显示掉线率从 2.3% 降至 1.4%，趋势乐观，欢迎继续围观和补充思路。
+                    </div>
+                    <div class="flex items-center gap-4">
+                      <button class="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-rose-500 transition-colors" onclick="toggleCommentLike(this)">
+                        <i data-lucide="thumbs-up" class="w-3.5 h-3.5"></i>
+                        <span>31</span>
+                      </button>
+                      <button class="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-primary transition-colors" onclick="toggleReply('3')">
+                        <i data-lucide="message-circle" class="w-3.5 h-3.5"></i>
+                        <span>回复</span>
+                      </button>
+                    </div>
+
+                    <div id="reply-editor-3" class="hidden mt-3">
+                      <div class="bg-muted/40 rounded-xl p-3">
+                        <div class="flex items-start gap-2.5">
+                          <div class="w-7 h-7 rounded-full bg-gradient-to-br from-slate-400 to-slate-500 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">我</div>
+                          <div class="flex-1">
+                            <div class="text-xs text-muted-foreground mb-1.5">回复 <span class="text-primary font-medium">陈志强</span></div>
+                            <div contenteditable="true" placeholder="写下你的回复..." class="comment-editor w-full px-3 py-2 text-sm border border-border rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-primary/15 focus:border-primary transition-colors" style="min-height: 80px;"></div>
+                            <div class="flex justify-end gap-2 mt-2">
+                              <button class="px-3 py-1.5 text-xs text-muted-foreground hover:text-foreground rounded-lg hover:bg-muted transition-colors" onclick="toggleReply('3')">取消</button>
+                              <button class="px-4 py-1.5 text-xs font-medium text-white bg-primary rounded-lg hover:bg-primary/90 transition-colors" onclick="submitReply('3')">回复</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Load More -->
+            <div class="text-center mt-8">
+              <button class="px-5 py-2.5 text-sm text-muted-foreground hover:text-foreground bg-white border border-border rounded-xl hover:bg-muted transition-colors">
+                加载更多评论
+              </button>
+            </div>
+          </section>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 评分弹窗（超管） -->
+  <div id="score-modal" class="hidden fixed inset-0 z-[60] flex items-center justify-center p-4">
+    <div class="absolute inset-0 bg-slate-900/40" onclick="closeScoreModal()"></div>
+    <div class="relative bg-white rounded-2xl shadow-xl w-full max-w-md p-6 max-h-[90vh] overflow-y-auto">
+      <div class="flex items-start justify-between mb-4">
+        <div>
+          <h3 class="text-lg font-bold text-foreground">调整悬赏分值</h3>
+          <p class="text-xs text-muted-foreground mt-1">当前分值 <span id="modal-current-score" class="font-semibold text-amber-600">800 分</span> · 已于 08-26 评定</p>
+        </div>
+        <button class="p-1.5 text-muted-foreground hover:text-foreground rounded-lg hover:bg-muted transition-colors" onclick="closeScoreModal()">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <!-- 定分参考 -->
+      <div class="bg-muted/50 rounded-xl px-4 py-3 mb-4">
+        <p class="text-xs font-medium text-foreground mb-1.5">定分参考</p>
+        <div class="space-y-1 text-xs text-muted-foreground">
+          <p class="flex items-center gap-1.5"><i data-lucide="gauge" class="w-3.5 h-3.5 flex-shrink-0"></i>发布者难度自评：复杂 · 跨模块协同</p>
+          <p class="flex items-center gap-1.5"><i data-lucide="lightbulb" class="w-3.5 h-3.5 flex-shrink-0"></i>系统建议区间：500 – 800 分</p>
+        </div>
+      </div>
+
+      <!-- 分值选择 -->
+      <label class="block text-sm font-medium text-foreground mb-2">评定分值 <span class="text-red-500">*</span></label>
+      <div class="flex flex-wrap gap-2 mb-2">
+        <button type="button" class="modal-score-chip px-2.5 py-1 text-xs font-medium border border-border rounded-md text-muted-foreground hover:border-primary/40 hover:text-primary transition-colors" onclick="setModalScore(100, this)">100</button>
+        <button type="button" class="modal-score-chip px-2.5 py-1 text-xs font-medium border border-border rounded-md text-muted-foreground hover:border-primary/40 hover:text-primary transition-colors" onclick="setModalScore(200, this)">200</button>
+        <button type="button" class="modal-score-chip px-2.5 py-1 text-xs font-medium border border-border rounded-md text-muted-foreground hover:border-primary/40 hover:text-primary transition-colors" onclick="setModalScore(300, this)">300</button>
+        <button type="button" class="modal-score-chip px-2.5 py-1 text-xs font-medium border border-border rounded-md text-muted-foreground hover:border-primary/40 hover:text-primary transition-colors" onclick="setModalScore(500, this)">500</button>
+        <button type="button" class="modal-score-chip px-2.5 py-1 text-xs font-medium border border-border rounded-md text-muted-foreground hover:border-primary/40 hover:text-primary transition-colors" onclick="setModalScore(800, this)">800</button>
+      </div>
+      <input type="number" id="modal-score-input" placeholder="或输入自定义分值（50–2000）" min="50" max="2000" step="50"
+        class="w-full px-3 py-2 text-sm border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors mb-4"
+        oninput="syncModalScore(this.value)">
+
+      <!-- 评定理由 -->
+      <label class="block text-sm font-medium text-foreground mb-2">评定理由 <span class="text-red-500">*</span></label>
+      <textarea id="modal-score-reason" rows="3" placeholder="说明定分或调分依据，将记录到揭榜进度并通知相关人"
+        class="w-full px-3 py-2 text-sm border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors resize-none mb-3"></textarea>
+
+      <!-- 已揭榜警告 -->
+      <div class="flex items-start gap-2 text-xs text-amber-700 bg-amber-50 rounded-lg px-3 py-2.5 mb-4">
+        <i data-lucide="alert-triangle" class="w-3.5 h-3.5 mt-0.5 flex-shrink-0"></i>
+        <span>该题已有人揭榜，调整分值将通知发布者与揭榜人，并作为操作记录写入揭榜进度。结题后分值不可再调整。</span>
+      </div>
+
+      <div class="flex justify-end gap-3">
+        <button class="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground rounded-lg hover:bg-muted transition-colors" onclick="closeScoreModal()">取消</button>
+        <button class="px-5 py-2 text-sm font-medium text-white bg-primary rounded-lg hover:bg-primary/90 transition-colors shadow-sm" onclick="confirmScore()">确认调整</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 更新进度弹窗（揭榜人） -->
+  <div id="progress-modal" class="hidden fixed inset-0 z-[60] flex items-center justify-center p-4">
+    <div class="absolute inset-0 bg-slate-900/40" onclick="closeProgressModal()"></div>
+    <div class="relative bg-white rounded-2xl shadow-xl w-full max-w-md p-6">
+      <div class="flex items-start justify-between mb-4">
+        <div>
+          <h3 class="text-lg font-bold text-foreground">更新揭榜进度</h3>
+          <p class="text-xs text-muted-foreground mt-1">进度将对发布者与围观者可见，请按实际阶段更新</p>
+        </div>
+        <button class="p-1.5 text-muted-foreground hover:text-foreground rounded-lg hover:bg-muted transition-colors" onclick="closeProgressModal()">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <label class="block text-sm font-medium text-foreground mb-2">当前阶段 <span class="text-red-500">*</span></label>
+      <div class="space-y-2 mb-4">
+        <label class="flex items-center gap-2.5 px-3 py-2.5 border border-border rounded-lg cursor-pointer hover:border-primary/40 transition-colors">
+          <input type="radio" name="stage" value="方案设计中" data-percent="20" class="accent-primary">
+          <span class="text-sm text-foreground flex-1">方案设计中</span>
+          <span class="text-xs text-muted-foreground">20%</span>
+        </label>
+        <label class="flex items-center gap-2.5 px-3 py-2.5 border border-border rounded-lg cursor-pointer hover:border-primary/40 transition-colors">
+          <input type="radio" name="stage" value="方案已提交" data-percent="50" class="accent-primary">
+          <span class="text-sm text-foreground flex-1">方案已提交，待发布者确认</span>
+          <span class="text-xs text-muted-foreground">50%</span>
+        </label>
+        <label class="flex items-center gap-2.5 px-3 py-2.5 border border-border rounded-lg cursor-pointer hover:border-primary/40 transition-colors">
+          <input type="radio" name="stage" value="验证中" data-percent="75" class="accent-primary" checked>
+          <span class="text-sm text-foreground flex-1">试点验证中</span>
+          <span class="text-xs text-muted-foreground">75%</span>
+        </label>
+        <label class="flex items-center gap-2.5 px-3 py-2.5 border border-border rounded-lg cursor-pointer hover:border-primary/40 transition-colors">
+          <input type="radio" name="stage" value="申请验收" data-percent="90" class="accent-primary">
+          <span class="text-sm text-foreground flex-1">申请验收，待发布者结题</span>
+          <span class="text-xs text-muted-foreground">90%</span>
+        </label>
+      </div>
+
+      <label class="block text-sm font-medium text-foreground mb-2">进度说明 <span class="text-red-500">*</span></label>
+      <textarea id="progress-note" rows="3" placeholder="简要说明本阶段进展，例如：试点第一周掉线率降至 1.4%"
+        class="w-full px-3 py-2 text-sm border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors resize-none mb-4"></textarea>
+
+      <div class="flex justify-end gap-3">
+        <button class="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground rounded-lg hover:bg-muted transition-colors" onclick="closeProgressModal()">取消</button>
+        <button class="px-5 py-2 text-sm font-medium text-white bg-primary rounded-lg hover:bg-primary/90 transition-colors shadow-sm" onclick="confirmProgress()">更新进度</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast" class="hidden fixed bottom-8 left-1/2 -translate-x-1/2 z-[70] px-4 py-2.5 bg-slate-800 text-white text-sm rounded-lg shadow-lg opacity-0"></div>
+
+  <script>
+    // Initialize icons
+    lucide.createIcons();
+
+    /* ---------------- 揭榜进度组件（桌面/移动双份渲染） ---------------- */
+    const progressState = {
+      percent: 70,
+      status: '解题中',
+      entries: [
+        { type: 'done', title: '陈志强 发布难题', time: '08-26 10:24' },
+        { type: 'done', title: '平台管理员 评定分值 800 分', time: '08-26 15:02', note: '依据难度自评「复杂 · 跨模块协同」与业务影响面评定' },
+        { type: 'done', title: '王雪晴 揭榜', time: '08-27 09:15' },
+        { type: 'done', title: '王雪晴 提交解决方案', time: '08-30 17:40', note: '《基于 MR 时空栅格聚类的动态弱覆盖识别与参数寻优》' },
+        { type: 'current', title: '试点验证中', time: '进行中', note: '第一周：掉线率 2.3% → 1.4%' },
+        { type: 'pending', title: '验收结题 · 悬赏积分划转', time: '待完成' },
+      ],
+    };
+
+    const DOT_STYLE = {
+      done: 'bg-emerald-500',
+      current: 'bg-primary timeline-current-dot',
+      pending: 'bg-gray-300',
+    };
+    const TITLE_STYLE = {
+      done: 'text-foreground',
+      current: 'text-primary font-semibold',
+      pending: 'text-muted-foreground',
+    };
+
+    function renderProgressCard() {
+      const entriesHtml = progressState.entries.map(function(entry, index) {
+        const isLast = index === progressState.entries.length - 1;
+        const connector = isLast ? '' : '<span class="absolute left-[4.5px] top-4 bottom-0 w-px bg-border"></span>';
+        const note = entry.note
+          ? '<p class="text-[11px] text-muted-foreground leading-relaxed mt-1 bg-muted/60 rounded-md px-2 py-1.5">' + entry.note + '</p>'
+          : '';
+        return (
+          '<li class="relative pl-6 ' + (isLast ? '' : 'pb-5') + '">' +
+            '<span class="absolute left-0 top-1 w-2.5 h-2.5 rounded-full ' + DOT_STYLE[entry.type] + '"></span>' +
+            connector +
+            '<p class="text-xs font-medium ' + TITLE_STYLE[entry.type] + '">' + entry.title + '</p>' +
+            '<p class="text-[11px] text-muted-foreground mt-0.5">' + entry.time + '</p>' +
+            note +
+          '</li>'
+        );
+      }).join('');
+
+      const card =
+        '<div class="bg-white rounded-xl border border-border p-5">' +
+          '<h3 class="text-sm font-semibold text-foreground mb-3 flex items-center gap-2">' +
+            '<i data-lucide="flag" class="w-4 h-4 text-primary"></i>揭榜进度' +
+          '</h3>' +
+          '<div class="flex items-center justify-between text-xs mb-1.5">' +
+            '<span class="font-medium text-foreground">解决进度</span>' +
+            '<span class="font-semibold text-primary" id="progress-percent">' + progressState.percent + '%</span>' +
+          '</div>' +
+          '<div class="w-full h-1.5 bg-muted rounded-full overflow-hidden mb-5">' +
+            '<div id="progress-bar" class="h-full bg-primary rounded-full transition-all duration-500" style="width: ' + progressState.percent + '%"></div>' +
+          '</div>' +
+          '<ol id="progress-timeline">' + entriesHtml + '</ol>' +
+        '</div>';
+
+      document.getElementById('progress-card-desktop').innerHTML = card;
+      document.getElementById('progress-card-mobile').innerHTML = card;
+      lucide.createIcons();
+    }
+    renderProgressCard();
+
+    /* ---------------- 角色切换（演示权限） ---------------- */
+    let currentRole = 'visitor';
+    function setRole(role) {
+      currentRole = role;
+      document.querySelectorAll('[data-roles]').forEach(function(el) {
+        const roles = el.dataset.roles.split(' ');
+        const visible = roles.indexOf(role) !== -1;
+        el.classList.toggle('hidden', !visible);
+        if (visible && el.classList.contains('role-block')) {
+          el.classList.add('flex');
+          el.classList.add('inline-flex');
+        } else {
+          el.classList.remove('flex');
+          el.classList.remove('inline-flex');
+        }
+      });
+      // 头部揭榜按钮状态
+      document.getElementById('btn-claim').classList.toggle('hidden', role !== 'visitor');
+      document.getElementById('btn-claimed').classList.toggle('hidden', role !== 'claimant');
+      // 角色 chip 高亮
+      document.querySelectorAll('.role-chip').forEach(function(chip) {
+        const active = chip.dataset.role === role;
+        chip.classList.toggle('bg-primary', active);
+        chip.classList.toggle('text-white', active);
+        chip.classList.toggle('text-muted-foreground', !active);
+      });
+      lucide.createIcons();
+    }
+    setRole('visitor');
+
+    /* ---------------- 我要揭榜 ---------------- */
+    function claimChallenge() {
+      document.getElementById('btn-claim').classList.add('hidden');
+      document.getElementById('btn-claimed').classList.remove('hidden');
+      progressState.entries.splice(progressState.entries.length - 1, 0, {
+        type: 'done', title: '我 揭榜', time: '刚刚',
+      });
+      renderProgressCard();
+      showToast('揭榜成功！难题材料包已开放，可在方案工作区获取');
+    }
+
+    /* ---------------- 评分弹窗（超管） ---------------- */
+    function openScoreModal() {
+      document.getElementById('score-modal').classList.remove('hidden');
+      lucide.createIcons();
+    }
+    function closeScoreModal() {
+      document.getElementById('score-modal').classList.add('hidden');
+    }
+    function setModalScore(value, chip) {
+      document.getElementById('modal-score-input').value = value;
+      highlightModalChip(value);
+    }
+    function syncModalScore(value) {
+      highlightModalChip(Number(value));
+    }
+    function highlightModalChip(value) {
+      document.querySelectorAll('.modal-score-chip').forEach(function(chip) {
+        const active = parseInt(chip.textContent) === value;
+        chip.classList.toggle('bg-primary/10', active);
+        chip.classList.toggle('text-primary', active);
+        chip.classList.toggle('border-primary/40', active);
+        chip.classList.toggle('text-muted-foreground', !active);
+      });
+    }
+    function confirmScore() {
+      const score = document.getElementById('modal-score-input').value;
+      const reason = document.getElementById('modal-score-reason').value.trim();
+      if (!score || Number(score) < 50) {
+        document.getElementById('modal-score-input').focus();
+        showToast('请填写有效分值（最低 50 分）');
+        return;
+      }
+      if (!reason) {
+        document.getElementById('modal-score-reason').focus();
+        showToast('请填写评定理由');
+        return;
+      }
+      const oldScore = document.getElementById('score-badge').textContent.replace(/[^\d]/g, '');
+      document.getElementById('score-badge').textContent = '悬赏 ' + score + ' 分';
+      document.getElementById('modal-current-score').textContent = score + ' 分';
+      progressState.entries.splice(progressState.entries.length - 1, 0, {
+        type: 'done',
+        title: '平台管理员 调整分值 ' + oldScore + ' → ' + score + ' 分',
+        time: '刚刚',
+        note: reason,
+      });
+      renderProgressCard();
+      closeScoreModal();
+      showToast('分值已调整，已通知发布者与揭榜人');
+    }
+
+    /* ---------------- 更新进度弹窗（揭榜人） ---------------- */
+    function openProgressModal() {
+      document.getElementById('progress-modal').classList.remove('hidden');
+      lucide.createIcons();
+    }
+    function closeProgressModal() {
+      document.getElementById('progress-modal').classList.add('hidden');
+    }
+    function confirmProgress() {
+      const stage = document.querySelector('input[name="stage"]:checked');
+      const note = document.getElementById('progress-note').value.trim();
+      if (!note) {
+        document.getElementById('progress-note').focus();
+        showToast('请填写进度说明');
+        return;
+      }
+      progressState.percent = Number(stage.dataset.percent);
+      // 将原 current 节点标记为 done，追加新的 current
+      progressState.entries.forEach(function(entry) {
+        if (entry.type === 'current') entry.type = 'done';
+      });
+      progressState.entries.splice(progressState.entries.length - 1, 0, {
+        type: 'current', title: stage.value, time: '进行中', note: note,
+      });
+      renderProgressCard();
+      closeProgressModal();
+      document.getElementById('progress-note').value = '';
+      showToast('进度已更新，发布者已收到通知');
+    }
+
+    /* ---------------- 通用交互 ---------------- */
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.classList.remove('hidden');
+      requestAnimationFrame(function() {
+        toast.style.opacity = '1';
+        toast.style.transform = 'translate(-50%, -4px)';
+      });
+      setTimeout(function() {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translate(-50%, 0)';
+        setTimeout(function() { toast.classList.add('hidden'); }, 200);
+      }, 2600);
+    }
+
+    function demoAlert(message) { showToast(message); }
+    function demoConfirm(message) {
+      if (window.confirm(message)) showToast('难题已删除（演示）');
+    }
+
+    let liked = false;
+    let likeCount = 132;
+    function toggleLike() {
+      liked = !liked;
+      likeCount += liked ? 1 : -1;
+      const desktopBtn = document.getElementById('btn-like');
+      const mobileBtn = document.getElementById('btn-like-mobile');
+      if (liked) {
+        desktopBtn.classList.add('active', 'text-rose-500', 'bg-rose-50');
+        desktopBtn.classList.remove('text-muted-foreground');
+        mobileBtn.classList.add('text-rose-500');
+        mobileBtn.classList.remove('text-muted-foreground');
+      } else {
+        desktopBtn.classList.remove('active', 'text-rose-500', 'bg-rose-50');
+        desktopBtn.classList.add('text-muted-foreground');
+        mobileBtn.classList.remove('text-rose-500');
+        mobileBtn.classList.add('text-muted-foreground');
+      }
+      document.getElementById('like-count').textContent = likeCount;
+      document.getElementById('like-count-mobile').textContent = likeCount;
+    }
+
+    function scrollToTop() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    function scrollToComments() {
+      document.getElementById('comments').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function toggleCommentLike(btn) {
+      const countSpan = btn.querySelector('span');
+      const isLiked = btn.classList.contains('text-rose-500');
+      let count = parseInt(countSpan.textContent);
+      if (isLiked) {
+        btn.classList.remove('text-rose-500');
+        btn.classList.add('text-muted-foreground');
+        countSpan.textContent = count - 1;
+      } else {
+        btn.classList.remove('text-muted-foreground');
+        btn.classList.add('text-rose-500');
+        countSpan.textContent = count + 1;
+      }
+    }
+
+    function toggleReply(commentId) {
+      const editor = document.getElementById('reply-editor-' + commentId);
+      editor.classList.toggle('hidden');
+      if (!editor.classList.contains('hidden')) {
+        editor.querySelector('[contenteditable]').focus();
+      }
+    }
+
+    function execCmd(command, editorId, value = null) {
+      const editor = document.getElementById(editorId);
+      editor.focus();
+      document.execCommand(command, false, value);
+    }
+
+    function insertCode(editorId) {
+      const editor = document.getElementById(editorId);
+      editor.focus();
+      const sel = window.getSelection();
+      const range = sel.getRangeAt(0);
+      const code = document.createElement('code');
+      code.textContent = 'code';
+      range.deleteContents();
+      range.insertNode(code);
+      range.selectNodeContents(code);
+      sel.removeAllRanges();
+      sel.addRange(range);
+    }
+
+    function submitMainComment() {
+      const editor = document.getElementById('main-editor');
+      if (!editor.textContent.trim()) { editor.focus(); return; }
+      alert('评论已发表（演示）');
+      editor.innerHTML = '';
+    }
+
+    function submitReply(commentId) {
+      const editor = document.getElementById('reply-editor-' + commentId);
+      const contentEditable = editor.querySelector('[contenteditable]');
+      if (!contentEditable.textContent.trim()) { contentEditable.focus(); return; }
+      alert('回复已发表（演示）');
+      contentEditable.innerHTML = '';
+      toggleReply(commentId);
+    }
+  </script>
+</body>
+</html>
