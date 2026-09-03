@@ -14,7 +14,7 @@ import {
 } from '@/data/pageDesign/forum'
 import ForumToolbar from './ForumToolbar.vue'
 import ForumTopicList from './ForumTopicList.vue'
-import ForumPagination from './ForumPagination.vue'
+import ForumPagination from '@/components/Pagination.vue'
 import ForumSidebar from './ForumSidebar.vue'
 
 const PAGE_SIZE = paginationConfig.pageSize

@@ -4,9 +4,12 @@ import { Editor, Toolbar } from '@wangeditor/editor-for-vue'
 import type { IDomEditor, IToolbarConfig, IEditorConfig } from '@wangeditor/editor'
 import '@wangeditor/editor/dist/css/style.css'
 
-const props = defineProps<{
+const props = withDefaults(defineProps<{
   modelValue: string
-}>()
+  placeholder?: string
+}>(), {
+  placeholder: '在这里详细描述你的问题、经验或想法...',
+})
 
 const emit = defineEmits<{
   'update:modelValue': [value: string]
@@ -34,7 +37,7 @@ const toolbarConfig: Partial<IToolbarConfig> = {
 }
 
 const editorConfig: Partial<IEditorConfig> = {
-  placeholder: '在这里详细描述你的问题、经验或想法...',
+  placeholder: props.placeholder,
 }
 
 function handleCreated(editor: IDomEditor): void {

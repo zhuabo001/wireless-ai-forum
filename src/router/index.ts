@@ -47,6 +47,21 @@ const routes = [
     name: 'forum-post-detail',
     component: () => import('@/pages/forum-post-detail/Index.vue'),
   },
+  {
+    path: '/challenges',
+    name: 'challenges',
+    component: () => import('@/pages/challenges/Index.vue'),
+  },
+  {
+    path: '/challenges/new',
+    name: 'challenge-new',
+    component: () => import('@/pages/challenge-new/Index.vue'),
+  },
+  {
+    path: '/challenges/:id',
+    name: 'challenge-detail',
+    component: () => import('@/pages/challenge-detail/Index.vue'),
+  },
 ]
 
 const router = createRouter({
