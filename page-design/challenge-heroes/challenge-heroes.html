@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>难题英雄榜 — 无线AI极客汇</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: { DEFAULT: '#0d55c9', foreground: '#ffffff' },
+            border: '#e2e8f0',
+            background: '#f8fafc',
+            foreground: '#0f172a',
+            muted: { DEFAULT: '#f1f5f9', foreground: '#64748b' },
+          },
+          borderRadius: { lg: '0.625rem', xl: '0.75rem' },
+        }
+      }
+    }
+  </script>
+  <style>
+    body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f8fafc; color: #0f172a; -webkit-font-smoothing: antialiased; }
+    @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+  </style>
+</head>
+<body class="min-h-screen">
+
+  <!-- Navbar -->
+  <nav class="fixed top-0 left-0 right-0 z-50 bg-white/85 backdrop-blur-md border-b border-border/50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <a href="index.html" class="flex items-center gap-2.5 font-bold text-lg text-foreground">
+          <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-sm">
+            <i data-lucide="zap" class="w-5 h-5 text-white"></i>
+          </div>
+          <span>无线AI极客汇</span>
+        </a>
+        <div class="hidden md:flex items-center gap-1">
+          <a href="index.html" class="px-2 py-2 text-sm font-medium text-muted-foreground hover:text-foreground rounded-md hover:bg-muted transition-colors">首页</a>
+          <a href="intelligence.html" class="px-2 py-2 text-sm font-medium text-muted-foreground hover:text-foreground rounded-md hover:bg-muted transition-colors">情报局</a>
+          <a href="courses.html" class="px-2 py-2 text-sm font-medium text-muted-foreground hover:text-foreground rounded-md hover:bg-muted transition-colors">课程</a>
+          <a href="forum.html" class="px-2 py-2 text-sm font-medium text-muted-foreground hover:text-foreground rounded-md hover:bg-muted transition-colors">论坛</a>
+          <a href="challenge-heroes.html" class="px-2 py-2 text-sm font-medium text-foreground bg-muted rounded-md">难题英雄榜</a>
+          <a href="market.html" class="px-2 py-2 text-sm font-medium text-muted-foreground hover:text-foreground rounded-md hover:bg-muted transition-colors">Agent市场</a>
+        </div>
+        <div class="flex items-center gap-2">
+          <button class="p-2 text-muted-foreground hover:text-foreground rounded-full hover:bg-muted transition-colors">
+            <i data-lucide="search" class="w-4 h-4"></i>
+          </button>
+          <button class="hidden sm:flex p-2 text-muted-foreground hover:text-foreground rounded-full hover:bg-muted transition-colors">
+            <i data-lucide="user" class="w-4 h-4"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="pt-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+      <!-- Page Header -->
+      <div class="flex items-end justify-between mb-8">
+        <div>
+          <h1 class="text-3xl font-bold text-foreground mb-2">难题英雄榜</h1>
+          <p class="text-muted-foreground">张榜发布实际业务难题，揭榜解题赢取积分，让真正的解题英雄脱颖而出</p>
+        </div>
+        <a href="challenge-new.html" class="inline-flex items-center gap-2 px-5 py-2.5 bg-primary text-white text-sm font-medium rounded-lg hover:bg-primary/90 transition-colors shadow-sm">
+          <i data-lucide="plus" class="w-4 h-4"></i>发起难题
+        </a>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+        <!-- Main Content -->
+        <main class="lg:col-span-8">
+          <!-- Tab Navigation -->
+          <div class="flex items-center gap-1 mb-3 bg-white border border-border rounded-xl p-1 overflow-x-auto">
+            <button class="px-4 py-2 text-sm font-medium text-white bg-primary rounded-lg whitespace-nowrap">全部</button>
+            <button class="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground rounded-lg hover:bg-muted transition-colors whitespace-nowrap">我的发布</button>
+            <button class="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground rounded-lg hover:bg-muted transition-colors whitespace-nowrap">我的揭榜</button>
+          </div>
+
+          <!-- Filter Row -->
+          <div class="flex items-center gap-3 mb-6 flex-wrap">
+            <select class="px-3 py-2 text-sm border border-border rounded-lg bg-white text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors cursor-pointer appearance-none">
+              <option>全部部门</option>
+              <option>无线网络研究部</option>
+              <option>基站平台部</option>
+              <option>核心网软件部</option>
+              <option>终端协议栈部</option>
+              <option>测试与验证部</option>
+            </select>
+            <select class="px-3 py-2 text-sm border border-border rounded-lg bg-white text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors cursor-pointer appearance-none">
+              <option>最新发布</option>
+              <option>悬赏最高</option>
+              <option>最多揭榜</option>
+            </select>
+            <div class="relative">
+              <i data-lucide="calendar" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none"></i>
+              <input type="date" class="pl-10 pr-3 py-2 text-sm border border-border rounded-lg bg-white text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors cursor-pointer">
+            </div>
+            <div class="relative flex-1 min-w-[180px]">
+              <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground"></i>
+              <input type="text" placeholder="搜索难题..." class="w-full pl-10 pr-4 py-2 text-sm border border-border rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors">
+            </div>
+          </div>
+
+          <!-- Challenge List -->
+          <div class="bg-white rounded-xl border border-border overflow-hidden">
+            <div class="flex items-center gap-4 px-5 py-4 hover:bg-gray-50 transition-colors cursor-pointer border-b border-border/50">
+              <div class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-indigo-500 flex items-center justify-center text-white text-sm font-bold flex-shrink-0">张</div>
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center gap-2 mb-1 flex-wrap">
+                  <span class="text-xs font-medium px-1.5 py-0.5 rounded bg-gray-100 text-gray-500">评分中</span>
+                  <span class="text-xs font-medium px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-600">揭榜中</span>
+                  <span class="text-xs font-medium px-1.5 py-0.5 rounded bg-gray-100 text-gray-600">基站节能</span>
+                  <span class="text-sm font-medium text-foreground truncate hover:text-primary transition-colors">高话务场景下基站节能策略与体验保障如何兼得？</span>
+                </div>
+                <span class="text-xs text-muted-foreground">张明远 · 无线网络研究部 · 2小时前</span>
+              </div>
+              <div class="hidden sm:flex items-center gap-4 text-xs text-muted-foreground flex-shrink-0">
+                <span class="flex items-center gap-1"><i data-lucide="swords" class="w-3.5 h-3.5"></i>12</span>
+                <span class="flex items-center gap-1"><i data-lucide="eye" class="w-3.5 h-3.5"></i>1.2k</span>
+                <span class="flex items-center gap-1"><i data-lucide="thumbs-up" class="w-3.5 h-3.5"></i>89</span>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-4 px-5 py-4 hover:bg-gray-50 transition-colors cursor-pointer border-b border-border/50">
+              <div class="w-10 h-10 rounded-full bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center text-white text-sm font-bold flex-shrink-0">李</div>
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center gap-2 mb-1 flex-wrap">
+                  <span class="text-xs font-medium px-1.5 py-0.5 rounded bg-gray-100 text-gray-500">评分中</span>
+                  <span class="text-xs font-medium px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-600">揭榜中</span>
+                  <span class="text-xs font-medium px-1.5 py-0.5 rounded bg-gray-100 text-gray-600">协议分析</span>
+                  <span class="text-sm font-medium text-foreground truncate hover:text-primary transition-colors">5G NR 切换失败日志量大，如何自动聚类定位根因？</span>
+                </div>
+                <span class="text-xs text-muted-foreground">李思涵 · 终端协议栈部 · 4小时前</span>
+              </div>
+              <div class="hidden sm:flex items-center gap-4 text-xs text-muted-foreground flex-shrink-0">
+                <span class="flex items-center gap-1"><i data-lucide="swords" class="w-3.5 h-3.5"></i>8</span>
+                <span class="flex items-center gap-1"><i data-lucide="eye" class="w-3.5 h-3.5"></i>876</span>
+                <span class="flex items-center gap-1"><i data-lucide="thumbs-up" class="w-3.5 h-3.5"></i>56</span>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-4 px-5 py-4 hover:bg-gray-50 transition-colors cursor-pointer border-b border-border/50">
+              <div class="w-10 h-10 rounded-full bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-white text-sm font-bold flex-shrink-0">陈</div>
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center gap-2 mb-1 flex-wrap">
+                  <span class="text-xs font-medium px-1.5 py-0.5 rounded bg-amber-50 text-amber-600">悬赏 800 分</span>
+                  <span class="text-xs font-medium px-1.5 py-0.5 rounded bg-blue-50 text-blue-600">已揭榜</span>
+                  <span class="text-xs font-medium px-1.5 py-0.5 rounded bg-gray-100 text-gray-600">网络优化</span>
+                  <a href="challenge-detail.html" class="text-sm font-medium text-foreground truncate hover:text-primary transition-colors">地铁场景弱覆盖下的掉线率优化，现有参数调整已到瓶颈</a>
+                </div>
+                <span class="text-xs text-muted-foreground">陈志强 · 核心网软件部 · 5小时前 · 已被 王雪晴 揭榜</span>
+              </div>
+              <div class="hidden sm:flex items-center gap-4 text-xs text-muted-foreground flex-shrink-0">
+                <span class="flex items-center gap-1"><i data-lucide="swords" class="w-3.5 h-3.5"></i>15</span>
+                <span class="flex items-center gap-1"><i data-lucide="eye" class="w-3.5 h-3.5"></i>2.4k</span>
+                <span class="flex items-center gap-1"><i data-lucide="thumbs-up" class="w-3.5 h-3.5"></i>132</span>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-4 px-5 py-4 hover:bg-gray-50 transition-colors cursor-pointer border-b border-border/50">
+              <div class="w-10 h-10 rounded-full bg-gradient-to-br from-violet-400 to-purple-500 flex items-center justify-center text-white text-sm font-bold flex-shrink-0">王</div>
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center gap-2 mb-1 flex-wrap">
+                  <span class="text-xs font-medium px-1.5 py-0.5 rounded bg-amber-50 text-amber-600">悬赏 200 分</span>
+                  <span class="text-xs font-medium px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-600">揭榜中</span>
+                  <span class="text-xs font-medium px-1.5 py-0.5 rounded bg-gray-100 text-gray-600">AI运维</span>
+                  <span class="text-sm font-medium text-foreground truncate hover:text-primary transition-colors">告警风暴压缩：如何用 LLM 将千级告警收敛为可行动的工单？</span>
+                </div>
+                <span class="text-xs text-muted-foreground">王雪晴 · 测试与验证部 · 昨天</span>
+              </div>
+              <div class="hidden sm:flex items-center gap-4 text-xs text-muted-foreground flex-shrink-0">
+                <span class="flex items-center gap-1"><i data-lucide="swords" class="w-3.5 h-3.5"></i>6</span>
+                <span class="flex items-center gap-1"><i data-lucide="eye" class="w-3.5 h-3.5"></i>654</span>
+                <span class="flex items-center gap-1"><i data-lucide="thumbs-up" class="w-3.5 h-3.5"></i>43</span>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-4 px-5 py-4 hover:bg-gray-50 transition-colors cursor-pointer border-b border-border/50">
+              <div class="w-10 h-10 rounded-full bg-gradient-to-br from-rose-400 to-pink-500 flex items-center justify-center text-white text-sm font-bold flex-shrink-0">刘</div>
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center gap-2 mb-1 flex-wrap">
+                  <span class="text-xs font-medium px-1.5 py-0.5 rounded bg-amber-50 text-amber-600">悬赏 600 分</span>
+                  <span class="text-xs font-medium px-1.5 py-0.5 rounded bg-blue-50 text-blue-600">已揭榜</span>
+                  <span class="text-xs font-medium px-1.5 py-0.5 rounded bg-gray-100 text-gray-600">大规模测试</span>
+                  <span class="text-sm font-medium text-foreground truncate hover:text-primary transition-colors">千站规模参数批量核查，人工巡检周期长且易漏检，求自动化方案</span>
+                </div>
+                <span class="text-xs text-muted-foreground">刘浩然 · 基站平台部 · 昨天 · 已被 赵敏华 揭榜</span>
+              </div>
+              <div class="hidden sm:flex items-center gap-4 text-xs text-muted-foreground flex-shrink-0">
+                <span class="flex items-center gap-1"><i data-lucide="swords" class="w-3.5 h-3.5"></i>11</span>
+                <span class="flex items-center gap-1"><i data-lucide="eye" class="w-3.5 h-3.5"></i>1.8k</span>
+                <span class="flex items-center gap-1"><i data-lucide="thumbs-up" class="w-3.5 h-3.5"></i>97</span>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-4 px-5 py-4 hover:bg-gray-50 transition-colors cursor-pointer">
+              <div class="w-10 h-10 rounded-full bg-gradient-to-br from-cyan-400 to-sky-500 flex items-center justify-center text-white text-sm font-bold flex-shrink-0">赵</div>
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center gap-2 mb-1 flex-wrap">
+                  <span class="text-xs font-medium px-1.5 py-0.5 rounded bg-amber-50 text-amber-600">悬赏 400 分</span>
+                  <span class="text-xs font-medium px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-600">揭榜中</span>
+                  <span class="text-xs font-medium px-1.5 py-0.5 rounded bg-gray-100 text-gray-600">信道建模</span>
+                  <span class="text-sm font-medium text-foreground truncate hover:text-primary transition-colors">室内毫米波信道数据稀缺，仿真模型与实测偏差大怎么破？</span>
+                </div>
+                <span class="text-xs text-muted-foreground">赵敏华 · 无线网络研究部 · 2天前</span>
+              </div>
+              <div class="hidden sm:flex items-center gap-4 text-xs text-muted-foreground flex-shrink-0">
+                <span class="flex items-center gap-1"><i data-lucide="swords" class="w-3.5 h-3.5"></i>4</span>
+                <span class="flex items-center gap-1"><i data-lucide="eye" class="w-3.5 h-3.5"></i>543</span>
+                <span class="flex items-center gap-1"><i data-lucide="thumbs-up" class="w-3.5 h-3.5"></i>31</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pagination -->
+          <div class="flex items-center justify-center gap-2 mt-6">
+            <button class="p-2 text-muted-foreground hover:text-foreground rounded-lg hover:bg-muted transition-colors"><i data-lucide="chevron-left" class="w-4 h-4"></i></button>
+            <button class="px-3 py-1.5 text-sm font-medium text-white bg-primary rounded-lg">1</button>
+            <button class="px-3 py-1.5 text-sm font-medium text-muted-foreground hover:text-foreground rounded-lg hover:bg-muted transition-colors">2</button>
+            <button class="px-3 py-1.5 text-sm font-medium text-muted-foreground hover:text-foreground rounded-lg hover:bg-muted transition-colors">3</button>
+            <span class="text-muted-foreground">...</span>
+            <button class="px-3 py-1.5 text-sm font-medium text-muted-foreground hover:text-foreground rounded-lg hover:bg-muted transition-colors">12</button>
+            <button class="p-2 text-muted-foreground hover:text-foreground rounded-lg hover:bg-muted transition-colors"><i data-lucide="chevron-right" class="w-4 h-4"></i></button>
+          </div>
+        </main>
+
+        <!-- Right Sidebar -->
+        <aside class="lg:col-span-4 space-y-6">
+          <div class="sticky top-24 space-y-6">
+            <!-- 浏览榜 -->
+            <div class="bg-white rounded-xl border border-border p-5">
+              <h3 class="text-sm font-semibold text-foreground mb-4 flex items-center gap-2">
+                <i data-lucide="eye" class="w-4 h-4 text-blue-500"></i>浏览榜
+              </h3>
+              <div class="space-y-3">
+                <a href="#" class="flex items-start gap-2.5 group">
+                  <span class="text-xs font-bold text-red-500 w-4 flex-shrink-0">1</span>
+                  <span class="flex-1 text-xs text-foreground group-hover:text-primary transition-colors line-clamp-2 leading-relaxed">地铁场景弱覆盖下的掉线率优化，现有参数调整已到瓶颈</span>
+                  <span class="text-xs text-muted-foreground flex-shrink-0">2.4k</span>
+                </a>
+                <a href="#" class="flex items-start gap-2.5 group">
+                  <span class="text-xs font-bold text-orange-500 w-4 flex-shrink-0">2</span>
+                  <span class="flex-1 text-xs text-foreground group-hover:text-primary transition-colors line-clamp-2 leading-relaxed">千站规模参数批量核查，人工巡检周期长且易漏检，求自动化方案</span>
+                  <span class="text-xs text-muted-foreground flex-shrink-0">1.8k</span>
+                </a>
+                <a href="#" class="flex items-start gap-2.5 group">
+                  <span class="text-xs font-bold text-amber-500 w-4 flex-shrink-0">3</span>
+                  <span class="flex-1 text-xs text-foreground group-hover:text-primary transition-colors line-clamp-2 leading-relaxed">高话务场景下基站节能策略与体验保障如何兼得？</span>
+                  <span class="text-xs text-muted-foreground flex-shrink-0">1.2k</span>
+                </a>
+                <a href="#" class="flex items-start gap-2.5 group">
+                  <span class="text-xs font-bold text-gray-400 w-4 flex-shrink-0">4</span>
+                  <span class="flex-1 text-xs text-foreground group-hover:text-primary transition-colors line-clamp-2 leading-relaxed">5G NR 切换失败日志量大，如何自动聚类定位根因？</span>
+                  <span class="text-xs text-muted-foreground flex-shrink-0">876</span>
+                </a>
+                <a href="#" class="flex items-start gap-2.5 group">
+                  <span class="text-xs font-bold text-gray-400 w-4 flex-shrink-0">5</span>
+                  <span class="flex-1 text-xs text-foreground group-hover:text-primary transition-colors line-clamp-2 leading-relaxed">告警风暴压缩：如何用 LLM 将千级告警收敛为可行动的工单？</span>
+                  <span class="text-xs text-muted-foreground flex-shrink-0">654</span>
+                </a>
+              </div>
+            </div>
+
+            <!-- 有用榜 -->
+            <div class="bg-white rounded-xl border border-border p-5">
+              <h3 class="text-sm font-semibold text-foreground mb-4 flex items-center gap-2">
+                <i data-lucide="thumbs-up" class="w-4 h-4 text-emerald-500"></i>有用榜
+              </h3>
+              <div class="space-y-3">
+                <a href="#" class="flex items-start gap-2.5 group">
+                  <span class="text-xs font-bold text-red-500 w-4 flex-shrink-0">1</span>
+                  <span class="flex-1 text-xs text-foreground group-hover:text-primary transition-colors line-clamp-2 leading-relaxed">地铁场景弱覆盖下的掉线率优化，现有参数调整已到瓶颈</span>
+                  <span class="text-xs text-muted-foreground flex-shrink-0">132</span>
+                </a>
+                <a href="#" class="flex items-start gap-2.5 group">
+                  <span class="text-xs font-bold text-orange-500 w-4 flex-shrink-0">2</span>
+                  <span class="flex-1 text-xs text-foreground group-hover:text-primary transition-colors line-clamp-2 leading-relaxed">千站规模参数批量核查，人工巡检周期长且易漏检，求自动化方案</span>
+                  <span class="text-xs text-muted-foreground flex-shrink-0">97</span>
+                </a>
+                <a href="#" class="flex items-start gap-2.5 group">
+                  <span class="text-xs font-bold text-amber-500 w-4 flex-shrink-0">3</span>
+                  <span class="flex-1 text-xs text-foreground group-hover:text-primary transition-colors line-clamp-2 leading-relaxed">高话务场景下基站节能策略与体验保障如何兼得？</span>
+                  <span class="text-xs text-muted-foreground flex-shrink-0">89</span>
+                </a>
+                <a href="#" class="flex items-start gap-2.5 group">
+                  <span class="text-xs font-bold text-gray-400 w-4 flex-shrink-0">4</span>
+                  <span class="flex-1 text-xs text-foreground group-hover:text-primary transition-colors line-clamp-2 leading-relaxed">5G NR 切换失败日志量大，如何自动聚类定位根因？</span>
+                  <span class="text-xs text-muted-foreground flex-shrink-0">56</span>
+                </a>
+                <a href="#" class="flex items-start gap-2.5 group">
+                  <span class="text-xs font-bold text-gray-400 w-4 flex-shrink-0">5</span>
+                  <span class="flex-1 text-xs text-foreground group-hover:text-primary transition-colors line-clamp-2 leading-relaxed">告警风暴压缩：如何用 LLM 将千级告警收敛为可行动的工单？</span>
+                  <span class="text-xs text-muted-foreground flex-shrink-0">43</span>
+                </a>
+              </div>
+            </div>
+
+            <!-- 近期分数榜 -->
+            <div class="bg-white rounded-xl border border-border p-5">
+              <h3 class="text-sm font-semibold text-foreground mb-4 flex items-center gap-2">
+                <i data-lucide="trophy" class="w-4 h-4 text-amber-500"></i>近期分数榜
+              </h3>
+              <div class="space-y-3">
+                <div class="flex items-center gap-3">
+                  <span class="text-xs font-bold text-amber-500 w-4 flex-shrink-0">1</span>
+                  <div class="w-8 h-8 rounded-full bg-gradient-to-br from-yellow-400 to-amber-500 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">王</div>
+                  <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium text-foreground truncate">王雪晴</p>
+                    <p class="text-xs text-muted-foreground">测试与验证部</p>
+                  </div>
+                  <span class="text-xs font-semibold text-amber-600 flex-shrink-0">+800 分</span>
+                </div>
+                <div class="flex items-center gap-3">
+                  <span class="text-xs font-bold text-gray-400 w-4 flex-shrink-0">2</span>
+                  <div class="w-8 h-8 rounded-full bg-gradient-to-br from-gray-300 to-gray-400 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">赵</div>
+                  <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium text-foreground truncate">赵敏华</p>
+                    <p class="text-xs text-muted-foreground">无线网络研究部</p>
+                  </div>
+                  <span class="text-xs font-semibold text-amber-600 flex-shrink-0">+600 分</span>
+                </div>
+                <div class="flex items-center gap-3">
+                  <span class="text-xs font-bold text-orange-400 w-4 flex-shrink-0">3</span>
+                  <div class="w-8 h-8 rounded-full bg-gradient-to-br from-orange-300 to-amber-400 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">李</div>
+                  <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium text-foreground truncate">李思涵</p>
+                    <p class="text-xs text-muted-foreground">终端协议栈部</p>
+                  </div>
+                  <span class="text-xs font-semibold text-amber-600 flex-shrink-0">+450 分</span>
+                </div>
+                <div class="flex items-center gap-3">
+                  <span class="text-xs font-bold text-gray-300 w-4 flex-shrink-0">4</span>
+                  <div class="w-8 h-8 rounded-full bg-gradient-to-br from-blue-400 to-indigo-500 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">张</div>
+                  <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium text-foreground truncate">张明远</p>
+                    <p class="text-xs text-muted-foreground">无线网络研究部</p>
+                  </div>
+                  <span class="text-xs font-semibold text-amber-600 flex-shrink-0">+320 分</span>
+                </div>
+                <div class="flex items-center gap-3">
+                  <span class="text-xs font-bold text-gray-300 w-4 flex-shrink-0">5</span>
+                  <div class="w-8 h-8 rounded-full bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">刘</div>
+                  <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium text-foreground truncate">刘浩然</p>
+                    <p class="text-xs text-muted-foreground">基站平台部</p>
+                  </div>
+                  <span class="text-xs font-semibold text-amber-600 flex-shrink-0">+280 分</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </aside>
+
+      </div>
+    </div>
+  </div>
+
+  <script>lucide.createIcons();</script>
+</body>
+</html>
