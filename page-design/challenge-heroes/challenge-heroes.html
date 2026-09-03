@@ -303,12 +303,19 @@
               </div>
             </div>
 
-            <!-- 近期分数榜 -->
+            <!-- 分数榜（近期 / 总榜切换） -->
             <div class="bg-white rounded-xl border border-border p-5">
-              <h3 class="text-sm font-semibold text-foreground mb-4 flex items-center gap-2">
-                <i data-lucide="trophy" class="w-4 h-4 text-amber-500"></i>近期分数榜
-              </h3>
-              <div class="space-y-3">
+              <div class="flex items-center justify-between mb-4">
+                <h3 class="text-sm font-semibold text-foreground flex items-center gap-2">
+                  <i data-lucide="trophy" class="w-4 h-4 text-amber-500"></i>分数榜
+                </h3>
+                <div class="flex bg-muted rounded-lg p-0.5">
+                  <button id="score-tab-recent" class="px-2.5 py-1 text-xs font-medium rounded-md bg-white text-foreground shadow-sm transition-colors" onclick="switchScoreRank('recent')">近期</button>
+                  <button id="score-tab-total" class="px-2.5 py-1 text-xs font-medium rounded-md text-muted-foreground hover:text-foreground transition-colors" onclick="switchScoreRank('total')">总榜</button>
+                </div>
+              </div>
+              <!-- 近期分数榜 -->
+              <div id="score-rank-recent" class="space-y-3">
                 <div class="flex items-center gap-3">
                   <span class="text-xs font-bold text-amber-500 w-4 flex-shrink-0">1</span>
                   <div class="w-8 h-8 rounded-full bg-gradient-to-br from-yellow-400 to-amber-500 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">王</div>
@@ -355,6 +362,54 @@
                   <span class="text-xs font-semibold text-amber-600 flex-shrink-0">+280 分</span>
                 </div>
               </div>
+              <!-- 得分总榜 -->
+              <div id="score-rank-total" class="hidden space-y-3">
+                <div class="flex items-center gap-3">
+                  <span class="text-xs font-bold text-amber-500 w-4 flex-shrink-0">1</span>
+                  <div class="w-8 h-8 rounded-full bg-gradient-to-br from-yellow-400 to-amber-500 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">王</div>
+                  <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium text-foreground truncate">王雪晴</p>
+                    <p class="text-xs text-muted-foreground">测试与验证部 · 揭榜 4 题</p>
+                  </div>
+                  <span class="text-xs font-semibold text-amber-600 flex-shrink-0">2,450 分</span>
+                </div>
+                <div class="flex items-center gap-3">
+                  <span class="text-xs font-bold text-gray-400 w-4 flex-shrink-0">2</span>
+                  <div class="w-8 h-8 rounded-full bg-gradient-to-br from-gray-300 to-gray-400 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">张</div>
+                  <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium text-foreground truncate">张明远</p>
+                    <p class="text-xs text-muted-foreground">无线网络研究部 · 揭榜 6 题</p>
+                  </div>
+                  <span class="text-xs font-semibold text-amber-600 flex-shrink-0">1,890 分</span>
+                </div>
+                <div class="flex items-center gap-3">
+                  <span class="text-xs font-bold text-orange-400 w-4 flex-shrink-0">3</span>
+                  <div class="w-8 h-8 rounded-full bg-gradient-to-br from-orange-300 to-amber-400 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">李</div>
+                  <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium text-foreground truncate">李思涵</p>
+                    <p class="text-xs text-muted-foreground">终端协议栈部 · 揭榜 5 题</p>
+                  </div>
+                  <span class="text-xs font-semibold text-amber-600 flex-shrink-0">1,620 分</span>
+                </div>
+                <div class="flex items-center gap-3">
+                  <span class="text-xs font-bold text-gray-300 w-4 flex-shrink-0">4</span>
+                  <div class="w-8 h-8 rounded-full bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">陈</div>
+                  <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium text-foreground truncate">陈志强</p>
+                    <p class="text-xs text-muted-foreground">核心网软件部 · 揭榜 3 题</p>
+                  </div>
+                  <span class="text-xs font-semibold text-amber-600 flex-shrink-0">1,380 分</span>
+                </div>
+                <div class="flex items-center gap-3">
+                  <span class="text-xs font-bold text-gray-300 w-4 flex-shrink-0">5</span>
+                  <div class="w-8 h-8 rounded-full bg-gradient-to-br from-cyan-400 to-sky-500 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">赵</div>
+                  <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium text-foreground truncate">赵敏华</p>
+                    <p class="text-xs text-muted-foreground">无线网络研究部 · 揭榜 3 题</p>
+                  </div>
+                  <span class="text-xs font-semibold text-amber-600 flex-shrink-0">1,120 分</span>
+                </div>
+              </div>
             </div>
           </div>
         </aside>
@@ -363,6 +418,23 @@
     </div>
   </div>
 
-  <script>lucide.createIcons();</script>
+  <script>
+    lucide.createIcons();
+
+    /* 分数榜：近期 / 总榜切换 */
+    function switchScoreRank(tab) {
+      const isRecent = tab === 'recent';
+      document.getElementById('score-rank-recent').classList.toggle('hidden', !isRecent);
+      document.getElementById('score-rank-total').classList.toggle('hidden', isRecent);
+      ['recent', 'total'].forEach(function(key) {
+        const btn = document.getElementById('score-tab-' + key);
+        const active = (key === 'recent') === isRecent;
+        btn.classList.toggle('bg-white', active);
+        btn.classList.toggle('text-foreground', active);
+        btn.classList.toggle('shadow-sm', active);
+        btn.classList.toggle('text-muted-foreground', !active);
+      });
+    }
+  </script>
 </body>
 </html>
