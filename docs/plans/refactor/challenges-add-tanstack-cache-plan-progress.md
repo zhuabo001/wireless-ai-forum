@@ -13,7 +13,7 @@
 | 里程碑 | 状态 | 预期输出 | 验证证据 | 备注 / 阻塞项 |
 | --- | --- | --- | --- | --- |
 | M1 测试基建 + 契约测试钉死现状 | 完成 | vitest.config.ts、src/test/*、查询 20 例 + 状态机 25 例（共 45 例，覆盖计划约 32 例的全部场景）针对未改动现状全绿；scripts 加 test 并入 check | `npx vitest run` → 45 passed；`npm run lint` 通过；`npm run type-check` 通过；`npm run check` 全绿（含 build + verify-build）；零业务代码改动（仅新增 vitest.config.ts / src/test/** / src/api/__tests__/** / package.json script） | msw 内部用裸标识符 `location` 归一化 handler 相对路径，仅 stub `window.location` 不够，需同时 stub `globalThis.location`（见 src/test/setup.ts 注释），此为本里程碑排查得到的环境事实，已记录 |
-| M2 接入插件 | 待处理 | queryClient/challengeKeys/main.ts 接线，页面未改、行为不变 | `npm run dev`（VITE_ENABLE_MSW=true）功能回归正常；`npm run check` 通过 | |
+| M2 接入插件 | 完成 | 新增 `src/api/queryClient.ts`（staleTime 30s/gcTime 5min/refetchOnWindowFocus:false/4xx 短路重试）、`src/api/challengeKeys.ts`（role 入 detail key）、`src/composables/useChallenges.ts`（4 查询 hook + 5 变更 hook）；`main.ts` 挂 `VueQueryPlugin`；三页 Index.vue 未改、仍走裸 fetch | dev 手测（VITE_ENABLE_MSW=true）：列表页/详情页(ch-3)/发布页均正常渲染，MSW 日志显示请求照常发出（页面未接入 useQuery，行为不变，符合里程碑预期）；`npm run check` 全绿（45 例测试 + lint + type-check + build + verify-build） | |
 | M3 列表页 + 发布页改造 | 待处理 | 双页 useQuery/useMutation 改造完成 | dev 手测筛选/翻页/防抖；列表→发布页 meta 零请求；发布后回列表自动重取；vitest 全绿 | |
 | M4 详情页改造 | 待处理 | 详情/评论 useQuery + 4 个 useMutation + 删除硬编码状态机 | dev 手测揭榜/取消/评分/进度/角色切换；vitest 全绿 | |
 | M5 集成测试补齐 + 收尾 | 待处理 | challengesVueQuery.spec.ts 约 8 例全绿；最终 record | 全部约 40 例 `npx vitest run` 绿；`npm run check`（含 test）通过；缓存命中证据 | |
