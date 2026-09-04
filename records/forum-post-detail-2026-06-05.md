@@ -1,7 +1,7 @@
 # 论坛帖子详情页 Vue 工程化转换 — 摘要
 
 **日期**: 2026-06-05  
-**开发计划**: `docs/plans/forum-post-detail-plan.md`  
+**开发计划**: `docs/plans/features/forum-post-detail-plan.md`  
 **Commits**: `412ffc3`, `655e5cd`, `ae98c11`, `4b396d4`
 
 ## 功能概述

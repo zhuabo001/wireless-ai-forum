@@ -1,7 +1,7 @@
 # 三页面按钮路由至 forum-new-topic + 返回键支持 — 摘要
 
 **日期**: 2026-06-05  
-**开发计划**: `docs/plans/button-route-to-forum-new-topic-plan.md`  
+**开发计划**: `docs/plans/features/button-route-to-forum-new-topic-plan.md`  
 **Commit**: `78be9ef`
 
 ## 功能概述

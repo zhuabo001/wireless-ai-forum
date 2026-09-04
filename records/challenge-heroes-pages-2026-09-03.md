@@ -2,9 +2,9 @@
 
 日期：`2026-09-03`
 
-计划：`docs/plans/challenge-heroes-pages-plan.md`
+计划：`docs/plans/features/challenge-heroes-pages-plan.md`
 
-进度：`docs/plans/challenge-heroes-pages-plan-progress.md`
+进度：`docs/plans/features/challenge-heroes-pages-plan-progress.md`
 
 任务等级：`L2`
 

@@ -1,7 +1,7 @@
 # 里程碑 4：无障碍与 SEO 合规修复（2026-08-13）
 
 > 分支：`feat/lighthouse-perf-optimization`。前序：M3b（BeamsBackground INP 修复）。
-> 级别：L2，计划与进度见 `docs/plans/lighthouse-milestone4-a11y-seo-*.md`。
+> 级别：L2，计划与进度见 `docs/plans/bug-fix/lighthouse-milestone4-a11y-seo-*.md`。
 
 ## 1. 背景与目标
 
@@ -113,5 +113,5 @@ snapshot**（滚动挂载全部 10 区块后审计——覆盖懒加载时序脆
 
 - `docs/reports/lighthouse-baseline/m4/`、`m4-post/`（起测）、`m4-fixed*/`（迭代）、
   `m4-final-home/`、`m4-final-post/`（终测）——Lighthouse 完整报告
-- 计划与进度：`docs/plans/lighthouse-milestone4-a11y-seo-*.md`
+- 计划与进度：`docs/plans/bug-fix/lighthouse-milestone4-a11y-seo-*.md`
 - 独立审查代理会话记录（`m4-review`，本会话 subagent 转录）
