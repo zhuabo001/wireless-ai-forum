@@ -66,6 +66,19 @@ claimCount 不同步、commentCount 与评论数不一致。
 - 评论提交/回复/加载更多为 toast 演示（验收未要求）。
 - 根目录 `Bn`、`Bn@endumln`、`refactor-chat.txt` 疑似垃圾文件，未删除（用户文件，需用户确认）。
 
+## 设计迭代（Vue 同步）
+
+设计稿先改后 Vue 同步（`page-design/challenge-heroes/` 两处设计 + 本实现）：
+
+| 迭代 | 内容 | 验证 |
+| --- | --- | --- |
+| 分数总榜切换 | 列表页分数榜卡片：近期（+N 分）↔ 总榜（累计分 · 揭榜 N 题）分段切换 | 浏览器端到端：总榜行内容与激活态正确 |
+| 取消揭榜 | 详情页揭榜人右侧操作栏新增「取消揭榜」（确认弹窗 + 必填原因留痕）；取消后状态退回揭榜中、进度清零、current→done 追加时间线记录、隐藏揭榜人卡片、开放「我要揭榜」 | 浏览器端到端：空原因拦截、取消联动、重新揭榜可再次认领均通过；控制台无 error/warn |
+
+接口与数据变更：`totalScoreRank` 并入 meta 响应；新增 `POST /api/challenges/:id/cancel-claim`
+（reason 必填；无揭榜人 / 已结题 409；claimCount 减一并联动列表）。API 文档已同步
+（`docs/api/challenges-api.md`）。`npm run check` 通过。
+
 ## 人工验收
 
 验收人：`<待用户>`

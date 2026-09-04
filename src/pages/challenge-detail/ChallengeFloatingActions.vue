@@ -14,6 +14,7 @@ const emit = defineEmits<{
   remove: []
   edit: []
   updateProgress: []
+  cancelClaim: []
   scrollTop: []
 }>()
 </script>
@@ -38,11 +39,15 @@ const emit = defineEmits<{
         </button>
         <div class="w-8 h-px bg-border/60"></div>
       </template>
-      <!-- 揭榜人：更新进度 -->
+      <!-- 揭榜人：更新进度 / 取消揭榜 -->
       <template v-else-if="viewerRole === 'claimant'">
         <button class="action-bar-btn w-12 h-12 rounded-xl flex flex-col items-center justify-center text-muted-foreground hover:text-primary hover:bg-primary/5" title="更新进度" @click="emit('updateProgress')">
           <IconRenderer name="flag" class="w-5 h-5" />
           <span class="text-[10px] font-medium mt-0.5">进度</span>
+        </button>
+        <button class="action-bar-btn w-12 h-12 rounded-xl flex flex-col items-center justify-center text-muted-foreground hover:text-red-500 hover:bg-red-50" title="取消揭榜" @click="emit('cancelClaim')">
+          <IconRenderer name="flag-off" class="w-5 h-5" />
+          <span class="text-[10px] font-medium mt-0.5">取消揭榜</span>
         </button>
         <div class="w-8 h-px bg-border/60"></div>
       </template>

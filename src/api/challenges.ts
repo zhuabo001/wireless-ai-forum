@@ -11,6 +11,7 @@ import type {
   ChallengePageMeta,
   ChallengeSidebarData,
   ChallengeSortOption,
+  ChallengeStatus,
   ChallengeTab,
   ChallengeTimelineEntry,
   ChallengeViewerRole,
@@ -103,6 +104,22 @@ export interface ClaimChallengeResponse {
   timeline: ChallengeTimelineEntry[]
 }
 
+/** 揭榜人取消揭榜请求体 */
+export interface CancelClaimPayload {
+  /** 取消原因，必填，将写入揭榜进度留痕 */
+  reason: string
+}
+
+export interface CancelClaimResponse {
+  /** 取消后已无揭榜人 */
+  claimant: null
+  /** 取消后的状态：分值已定时为 open（揭榜中），仍未评分时为 scoring（评分中） */
+  status: ChallengeStatus
+  /** 清零后的解决进度，恒为 0 */
+  progressPercent: number
+  timeline: ChallengeTimelineEntry[]
+}
+
 /**
  * 分页查询难题列表。
  *
@@ -168,6 +185,21 @@ export function createChallenge(payload: CreateChallengePayload): Promise<Create
  */
 export function claimChallenge(id: string): Promise<ClaimChallengeResponse> {
   return post(`/api/challenges/${id}/claim`)
+}
+
+/**
+ * 揭榜人取消揭榜：难题退回「揭榜中」并重新开放揭榜，解决进度清零，
+ * 取消原因写入时间线留痕（历史操作记录保留）。
+ *
+ * @param id - 难题 id
+ * @param payload - 取消原因，见 {@link CancelClaimPayload}
+ * @returns 取消后的状态与时间线（claimant 恒为 null）；无揭榜人或已结题时抛出 409 ApiError
+ */
+export function cancelChallengeClaim(
+  id: string,
+  payload: CancelClaimPayload,
+): Promise<CancelClaimResponse> {
+  return post(`/api/challenges/${id}/cancel-claim`, payload)
 }
 
 /**

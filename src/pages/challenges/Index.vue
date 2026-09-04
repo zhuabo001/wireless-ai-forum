@@ -19,7 +19,7 @@ const PAGE_SIZE = 10
 
 const pageMeta = ref<ChallengePageMeta>({ title: '', description: '', createButtonText: '' })
 const meta = ref<ChallengeMetaResponse | null>(null)
-const sidebarData = ref<ChallengeSidebarData>({ viewRank: [], usefulRank: [], scoreRank: [] })
+const sidebarData = ref<ChallengeSidebarData>({ viewRank: [], usefulRank: [], scoreRank: [], totalScoreRank: [] })
 
 const activeTab = ref<string>('all')
 const selectedDepartment = ref<string>('')

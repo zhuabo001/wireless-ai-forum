@@ -24,6 +24,7 @@
 | M6 详情页 | 完成 | /challenges/:id 可用 | 浏览器端到端：评分调分、揭榜、进度更新均联动 | |
 | M7 路由与导航 | 完成 | 3 条路由 + 导航项 | 浏览器快照导航栏含「难题英雄榜」且激活 | |
 | M8 验证与收尾 | 完成 | `npm run check` 通过 | 已通过；独立复核完成（无 Critical），8 条 Minor 已修复并复跑门禁通过 | record：`records/challenge-heroes-pages-2026-09-03.md` |
+| M9 设计迭代（分数总榜切换 + 取消揭榜） | 完成 | 设计稿与 Vue 页面同步 | 浏览器端到端：近期/总榜切换、取消揭榜→状态退回揭榜中、进度清零、重新揭榜均联动 | 新增 `POST /api/challenges/:id/cancel-claim` 与 `totalScoreRank` |
 
 允许的状态：`待处理`、`进行中`、`受阻`、`完成`。
 

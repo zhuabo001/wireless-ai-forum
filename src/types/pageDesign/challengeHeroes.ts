@@ -71,16 +71,22 @@ export interface ChallengeRankEntry {
   value: string
 }
 
-/** 人物类榜单条目（近期分数榜） */
+/** 人物类榜单条目（近期分数榜 / 得分总榜共用） */
 export interface ChallengeScoreRankEntry {
   user: ChallengeUser
+  /** 右侧数值文案，如「+800 分」（近期榜）或「2,450 分」（总榜） */
   scoreGain: string
+  /** 副标题文案（总榜为「部门 · 揭榜 N 题」）；缺省时展示 user.department（近期榜） */
+  subText?: string
 }
 
 export interface ChallengeSidebarData {
   viewRank: ChallengeRankEntry[]
   usefulRank: ChallengeRankEntry[]
+  /** 近期得分榜（展示单次 +N 分） */
   scoreRank: ChallengeScoreRankEntry[]
+  /** 得分总榜（展示累计总分） */
+  totalScoreRank: ChallengeScoreRankEntry[]
 }
 
 /** 揭榜进度时间线条目 */

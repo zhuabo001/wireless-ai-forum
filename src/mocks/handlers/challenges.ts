@@ -282,6 +282,48 @@ export const challengeHandlers = [
     return HttpResponse.json({ claimant, timeline: stored.challenge.timeline })
   }),
 
+  http.post('/api/challenges/:id/cancel-claim', async ({ params, request }) => {
+    const stored = getOrCreateDetail(String(params.id))
+    if (!stored) {
+      return HttpResponse.json({ message: 'Challenge not found' }, { status: 404 })
+    }
+    const { challenge } = stored
+    if (!challenge.claimant) {
+      return HttpResponse.json({ message: '该难题暂无揭榜人，无需取消' }, { status: 409 })
+    }
+    if (challenge.status === 'closed') {
+      return HttpResponse.json({ message: '已结题，揭榜关系不可取消' }, { status: 409 })
+    }
+    const body = (await request.json()) as Record<string, unknown>
+    const reason = typeof body.reason === 'string' ? body.reason.trim() : ''
+    if (!reason) return badRequest('请填写取消原因')
+
+    // 进行中的进度记录结束（current → done），再追加取消记录（历史操作保留）
+    const claimantName = challenge.claimant.user.name
+    for (const entry of challenge.timeline) {
+      if (entry.type === 'current') entry.type = 'done'
+    }
+    appendTimelineEntry(challenge.timeline, {
+      id: nextId('tl'),
+      type: 'done',
+      title: `${claimantName} 取消揭榜`,
+      time: '刚刚',
+      note: `取消原因：${reason}`,
+    })
+    challenge.claimant = undefined
+    challenge.status = challenge.score === null ? 'scoring' : 'open'
+    challenge.progressPercent = 0
+    const listItem = items.find(i => i.id === challenge.id)
+    if (listItem) listItem.claimCount = Math.max(0, listItem.claimCount - 1)
+    syncListItem(challenge)
+    return HttpResponse.json({
+      claimant: null,
+      status: challenge.status,
+      progressPercent: 0,
+      timeline: challenge.timeline,
+    })
+  }),
+
   http.post('/api/challenges/:id/score', async ({ params, request }) => {
     const stored = getOrCreateDetail(String(params.id))
     if (!stored) {

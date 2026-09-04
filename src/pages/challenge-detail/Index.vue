@@ -2,6 +2,7 @@
 import { computed, onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import {
+  cancelChallengeClaim,
   claimChallenge,
   fetchChallengeComments,
   fetchChallengeDetail,
@@ -21,6 +22,7 @@ import ChallengeHeader from './ChallengeHeader.vue'
 import ProgressPanel from './ProgressPanel.vue'
 import ScoreDialog from './ScoreDialog.vue'
 import ProgressDialog from './ProgressDialog.vue'
+import CancelClaimDialog from './CancelClaimDialog.vue'
 import ChallengeFloatingActions from './ChallengeFloatingActions.vue'
 import RoleSwitcher from './RoleSwitcher.vue'
 
@@ -44,6 +46,8 @@ const scoreDialogVisible = ref<boolean>(false)
 const scoreSubmitting = ref<boolean>(false)
 const progressDialogVisible = ref<boolean>(false)
 const progressSubmitting = ref<boolean>(false)
+const cancelDialogVisible = ref<boolean>(false)
+const cancelSubmitting = ref<boolean>(false)
 
 const difficultyText = computed<string>(() => {
   if (!challenge.value) return ''
@@ -110,6 +114,29 @@ async function handleClaim(): Promise<void> {
     ElMessage.success('揭榜成功！难题材料包已开放，可在方案工作区获取')
   } catch (error) {
     ElMessage.error(error instanceof ApiError ? error.message : '揭榜失败，请稍后重试')
+  }
+}
+
+async function handleCancelClaimConfirm(reason: string): Promise<void> {
+  cancelSubmitting.value = true
+  try {
+    const response = await cancelChallengeClaim(challengeId, { reason })
+    if (challenge.value) {
+      challenge.value.claimant = undefined
+      challenge.value.status = response.status
+      challenge.value.progressPercent = response.progressPercent
+      challenge.value.timeline = response.timeline
+    }
+    // 揭榜关系解除后，当前访问者不再是揭榜人：退回普通用户视角，重新开放「我要揭榜」
+    if (viewerRole.value === 'claimant') {
+      viewerRole.value = 'visitor'
+    }
+    cancelDialogVisible.value = false
+    ElMessage.success('已取消揭榜，难题重新开放揭榜，已通知发布者与超管')
+  } catch (error) {
+    ElMessage.error(error instanceof ApiError ? error.message : '取消揭榜失败，请稍后重试')
+  } finally {
+    cancelSubmitting.value = false
   }
 }
 
@@ -211,6 +238,7 @@ function handleLoadMore(): void {
           @remove="handleRemove"
           @edit="handleEdit"
           @update-progress="progressDialogVisible = true"
+          @cancel-claim="cancelDialogVisible = true"
           @scroll-top="scrollToTop"
         />
 
@@ -270,6 +298,13 @@ function handleLoadMore(): void {
           :submitting="progressSubmitting"
           @close="progressDialogVisible = false"
           @confirm="handleProgressConfirm"
+        />
+
+        <CancelClaimDialog
+          :visible="cancelDialogVisible"
+          :submitting="cancelSubmitting"
+          @close="cancelDialogVisible = false"
+          @confirm="handleCancelClaimConfirm"
         />
       </template>
 

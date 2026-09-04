@@ -283,6 +283,15 @@ export const challengeItems: ChallengeItem[] = [
   },
 ]
 
+/** 分数榜人物（近期榜与总榜共用，避免头像渐变漂移） */
+const rankUserWang = { name: '王雪晴', initials: '王', department: '测试与验证部', gradientFrom: 'from-yellow-400', gradientTo: 'to-amber-500' }
+const rankUserZhao = { name: '赵敏华', initials: '赵', department: '无线网络研究部', gradientFrom: 'from-gray-300', gradientTo: 'to-gray-400' }
+const rankUserZhaoCyan = { name: '赵敏华', initials: '赵', department: '无线网络研究部', gradientFrom: 'from-cyan-400', gradientTo: 'to-sky-500' }
+const rankUserLi = { name: '李思涵', initials: '李', department: '终端协议栈部', gradientFrom: 'from-orange-300', gradientTo: 'to-amber-400' }
+const rankUserZhang = { name: '张明远', initials: '张', department: '无线网络研究部', gradientFrom: 'from-blue-400', gradientTo: 'to-indigo-500' }
+const rankUserLiu = { name: '刘浩然', initials: '刘', department: '基站平台部', gradientFrom: 'from-emerald-400', gradientTo: 'to-teal-500' }
+const rankUserChen = { name: '陈志强', initials: '陈', department: '核心网软件部', gradientFrom: 'from-amber-400', gradientTo: 'to-orange-500' }
+
 export const challengeSidebarData: ChallengeSidebarData = {
   viewRank: [
     { id: 'ch-3', title: '地铁场景弱覆盖下的掉线率优化，现有参数调整已到瓶颈', value: '2.4k' },
@@ -299,26 +308,18 @@ export const challengeSidebarData: ChallengeSidebarData = {
     { id: 'ch-11', title: '功耗建模：如何仅用网管 counter 预估单站能耗趋势？', value: '58' },
   ],
   scoreRank: [
-    {
-      user: { name: '王雪晴', initials: '王', department: '测试与验证部', gradientFrom: 'from-yellow-400', gradientTo: 'to-amber-500' },
-      scoreGain: '+800 分',
-    },
-    {
-      user: { name: '赵敏华', initials: '赵', department: '无线网络研究部', gradientFrom: 'from-gray-300', gradientTo: 'to-gray-400' },
-      scoreGain: '+600 分',
-    },
-    {
-      user: { name: '李思涵', initials: '李', department: '终端协议栈部', gradientFrom: 'from-orange-300', gradientTo: 'to-amber-400' },
-      scoreGain: '+450 分',
-    },
-    {
-      user: { name: '张明远', initials: '张', department: '无线网络研究部', gradientFrom: 'from-blue-400', gradientTo: 'to-indigo-500' },
-      scoreGain: '+320 分',
-    },
-    {
-      user: { name: '刘浩然', initials: '刘', department: '基站平台部', gradientFrom: 'from-emerald-400', gradientTo: 'to-teal-500' },
-      scoreGain: '+280 分',
-    },
+    { user: rankUserWang, scoreGain: '+800 分' },
+    { user: rankUserZhao, scoreGain: '+600 分' },
+    { user: rankUserLi, scoreGain: '+450 分' },
+    { user: rankUserZhang, scoreGain: '+320 分' },
+    { user: rankUserLiu, scoreGain: '+280 分' },
+  ],
+  totalScoreRank: [
+    { user: rankUserWang, scoreGain: '2,450 分', subText: '测试与验证部 · 揭榜 4 题' },
+    { user: rankUserZhang, scoreGain: '1,890 分', subText: '无线网络研究部 · 揭榜 6 题' },
+    { user: rankUserLi, scoreGain: '1,620 分', subText: '终端协议栈部 · 揭榜 5 题' },
+    { user: rankUserChen, scoreGain: '1,380 分', subText: '核心网软件部 · 揭榜 3 题' },
+    { user: rankUserZhaoCyan, scoreGain: '1,120 分', subText: '无线网络研究部 · 揭榜 3 题' },
   ],
 }
 

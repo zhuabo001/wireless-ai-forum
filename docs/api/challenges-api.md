@@ -45,6 +45,7 @@
 | GET | `/api/challenges/:id/comments` | 分页评论 |
 | POST | `/api/challenges` | 发布难题 |
 | POST | `/api/challenges/:id/claim` | 揭榜 |
+| POST | `/api/challenges/:id/cancel-claim` | 揭榜人取消揭榜 |
 | POST | `/api/challenges/:id/score` | 超管评分 |
 | POST | `/api/challenges/:id/progress` | 揭榜人更新进度 |
 
@@ -68,7 +69,7 @@
 
 ## 2. GET /api/challenges/meta
 
-返回：`{ meta, tabs, categoryOptions, departmentOptions, difficultyOptions, sortOptions, sidebar }`，其中 sidebar 含三榜单。
+返回：`{ meta, tabs, categoryOptions, departmentOptions, difficultyOptions, sortOptions, sidebar }`，其中 sidebar 含三个榜单卡位：浏览榜 `viewRank`、有用榜 `usefulRank`、分数榜（`scoreRank` 近期 + `totalScoreRank` 总榜，双榜数据同时下发，由前端切换展示）。
 
 ## 3. GET /api/challenges/:id
 
@@ -89,6 +90,15 @@
 ## 6. POST /api/challenges/:id/claim
 
 无请求体。已揭榜返回 409；成功返回 `{ claimant, timeline }`，状态变 `solving`。
+
+## 6.1 POST /api/challenges/:id/cancel-claim
+
+请求体 `{ reason }`（原因必填，写入时间线留痕）。仅揭榜人可取消；无揭榜人（409）或已结题（409）拒绝。
+成功返回 `{ claimant: null, status, progressPercent: 0, timeline }`，联动：
+
+- 状态退回 `open`（揭榜中；仍未评分时退回 `scoring`），「我要揭榜」重新开放；
+- 解决进度清零为 0；时间线中 `current` 记录转为 `done`，并追加一条「取消揭榜 + 原因」记录（历史操作保留）；
+- 列表揭榜数 `claimCount` 减 1。
 
 ## 7. POST /api/challenges/:id/score
 
