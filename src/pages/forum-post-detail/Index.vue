@@ -13,11 +13,11 @@ import {
   currentUser,
 } from '@/data/pageDesign/forumPostDetail'
 import PostHeader from './PostHeader.vue'
-import PostContent from './PostContent.vue'
+import PostContent from '@/components/PostContent.vue'
 import PostResourceLinks from './PostResourceLinks.vue'
 import PostFloatingActions from './PostFloatingActions.vue'
 import PostMobileActions from './PostMobileActions.vue'
-import CommentSection from './CommentSection.vue'
+import CommentSection from '@/components/comments/CommentSection.vue'
 
 const isLiked = ref<boolean>(false)
 const isBookmarked = ref<boolean>(false)

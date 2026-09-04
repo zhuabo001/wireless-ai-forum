@@ -19,7 +19,7 @@ import TopicCategorySelect from './TopicCategorySelect.vue'
 import TopicTagPicker from './TopicTagPicker.vue'
 import CoverUploader from './CoverUploader.vue'
 import EditorModeSwitch from './EditorModeSwitch.vue'
-import RichTextEditor from './RichTextEditor.vue'
+import RichTextEditor from '@/components/RichTextEditor.vue'
 import MarkdownEditor from './MarkdownEditor.vue'
 import PublishActions from './PublishActions.vue'
 

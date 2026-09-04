@@ -13,6 +13,7 @@ export const navLinks: NavLink[] = [
   { label: '情报局', href: '/intelligence' },
   { label: '课程', href: '/courses' },
   { label: '论坛', href: '/forum' },
+  { label: '难题英雄榜', href: '/challenges' },
   { label: 'Agent市场', href: '/market' },
 ]
 
