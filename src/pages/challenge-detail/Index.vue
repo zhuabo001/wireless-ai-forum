@@ -30,14 +30,15 @@ const challengeId = String(route.params.id)
 // 切换后自动重取对应角色视角的详情
 const roleOverride = ref<ChallengeViewerRole | undefined>(undefined)
 
-const { data: detailData, isPending, isError, refetch } = useChallengeDetail(challengeId, roleOverride)
+const { data: detailData, isPending, isError, error: detailError, refetch } = useChallengeDetail(challengeId, roleOverride)
 const challenge = computed(() => detailData.value?.challenge ?? null)
 const contentHtml = computed(() => detailData.value?.contentHtml ?? '')
 const viewerRole = computed<ChallengeViewerRole>(() => detailData.value?.viewerRole ?? 'visitor')
 const currentUser = computed(() => detailData.value?.currentUser ?? null)
 
 const currentSort = ref<string>('latest')
-const { data: commentsData } = useChallengeComments(challengeId, currentSort)
+// 详情加载失败（如 404）时评论查询注定失败，禁用避免多余请求
+const { data: commentsData } = useChallengeComments(challengeId, currentSort, { enabled: () => !isError.value })
 const comments = computed(() => commentsData.value?.list ?? [])
 const commentSortOptions = computed(() => commentsData.value?.sortOptions ?? [])
 
@@ -249,7 +250,7 @@ function handleLoadMore(): void {
       </template>
 
       <div v-else-if="isError" class="py-24 text-center">
-        <p class="text-sm text-muted-foreground mb-4">难题加载失败</p>
+        <p class="text-sm text-muted-foreground mb-4">{{ detailError instanceof ApiError ? detailError.message : '难题加载失败' }}</p>
         <button
           class="px-5 py-2.5 text-sm font-medium text-white bg-primary rounded-lg hover:bg-primary/90 transition-colors shadow-sm"
           @click="refetch()"

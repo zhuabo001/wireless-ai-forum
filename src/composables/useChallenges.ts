@@ -1,6 +1,6 @@
 import type { MaybeRefOrGetter } from 'vue'
 import { computed, toValue } from 'vue'
-import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query'
+import { keepPreviousData, useMutation, useQuery, useQueryClient, type QueryClient } from '@tanstack/vue-query'
 import { challengeKeys } from '@/api/challengeKeys'
 import {
   cancelChallengeClaim,
@@ -45,14 +45,27 @@ export function useChallengeDetail(
   return useQuery({
     queryKey: computed(() => challengeKeys.detail(id, role)),
     queryFn: () => fetchChallengeDetail(toValue(id), toValue(role)),
+    // 角色切换/揭榜导致 key 变化时保留旧数据直到新数据到达，避免整页折叠成「加载中」
+    placeholderData: keepPreviousData,
   })
 }
 
-export function useChallengeComments(id: MaybeRefOrGetter<string>, sort: MaybeRefOrGetter<string>) {
+export function useChallengeComments(
+  id: MaybeRefOrGetter<string>,
+  sort: MaybeRefOrGetter<string>,
+  options: { enabled?: MaybeRefOrGetter<boolean> } = {},
+) {
   return useQuery({
     queryKey: computed(() => challengeKeys.comments(id, sort)),
     queryFn: () => fetchChallengeComments(toValue(id), { sort: toValue(sort) }),
+    enabled: options.enabled,
   })
+}
+
+/** 变更成功后统一失效：该难题全部 role 变体 + 列表（claim/cancel/score/progress 共用） */
+function invalidateChallengeAfterMutation(queryClient: QueryClient, id: string): void {
+  void queryClient.invalidateQueries({ queryKey: challengeKeys.detailPrefix(id) })
+  void queryClient.invalidateQueries({ queryKey: challengeKeys.lists() })
 }
 
 export function useCreateChallenge() {
@@ -70,8 +83,7 @@ export function useClaimChallenge() {
   return useMutation({
     mutationFn: (id: string) => claimChallenge(id),
     onSuccess: (_data, id) => {
-      void queryClient.invalidateQueries({ queryKey: challengeKeys.detailPrefix(id) })
-      void queryClient.invalidateQueries({ queryKey: challengeKeys.lists() })
+      invalidateChallengeAfterMutation(queryClient, id)
     },
   })
 }
@@ -82,8 +94,7 @@ export function useCancelChallengeClaim() {
     mutationFn: ({ id, payload }: { id: string; payload: CancelClaimPayload }) =>
       cancelChallengeClaim(id, payload),
     onSuccess: (_data, { id }) => {
-      void queryClient.invalidateQueries({ queryKey: challengeKeys.detailPrefix(id) })
-      void queryClient.invalidateQueries({ queryKey: challengeKeys.lists() })
+      invalidateChallengeAfterMutation(queryClient, id)
     },
   })
 }
@@ -94,8 +105,7 @@ export function useScoreChallenge() {
     mutationFn: ({ id, payload }: { id: string; payload: ScoreChallengePayload }) =>
       scoreChallenge(id, payload),
     onSuccess: (_data, { id }) => {
-      void queryClient.invalidateQueries({ queryKey: challengeKeys.detailPrefix(id) })
-      void queryClient.invalidateQueries({ queryKey: challengeKeys.lists() })
+      invalidateChallengeAfterMutation(queryClient, id)
     },
   })
 }
@@ -106,8 +116,7 @@ export function useUpdateChallengeProgress() {
     mutationFn: ({ id, payload }: { id: string; payload: UpdateProgressPayload }) =>
       updateChallengeProgress(id, payload),
     onSuccess: (_data, { id }) => {
-      void queryClient.invalidateQueries({ queryKey: challengeKeys.detailPrefix(id) })
-      void queryClient.invalidateQueries({ queryKey: challengeKeys.lists() })
+      invalidateChallengeAfterMutation(queryClient, id)
     },
   })
 }

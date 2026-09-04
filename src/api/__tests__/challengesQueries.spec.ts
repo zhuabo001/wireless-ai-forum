@@ -108,7 +108,9 @@ describe('GET /api/challenges/:id', () => {
   it('synthesizes a detail for non-seeded ids', async () => {
     const response = await fetchChallengeDetail('ch-7')
     expect(response.challenge.id).toBe('ch-7')
-    expect(response.contentHtml).toContain('ch-7'.length > 0 ? '' : '')
+    // 合成详情应带出列表项标题作为正文与时间线起点
+    expect(response.contentHtml).toContain('Massive MIMO 权值寻优')
+    expect(response.challenge.timeline.some(entry => entry.title.includes('发布难题'))).toBe(true)
   })
 
   it('throws a 404 ApiError for unknown id', async () => {

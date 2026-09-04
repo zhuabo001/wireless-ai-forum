@@ -42,7 +42,9 @@ const total = computed(() => listResult.value?.total ?? 0)
 const totalPages = computed<number>(() => Math.ceil(total.value / PAGE_SIZE))
 
 // 关键词输入做 300ms 防抖后写入 debouncedKeyword，其余过滤条件变化立即生效；
-// 过滤变化都回到第一页——page 是 queryKey 的一部分，改它就会自动触发重取
+// 过滤变化都回到第一页——page 是 queryKey 的一部分，改它就会自动触发重取。
+// flush: 'sync' 保证归页先于 queryKey 的 watcher 重算执行：若在 page>1 时改过滤，
+// 先同步归页再让 key 迁移，避免发出「(新过滤, 旧页码)」的中间请求
 let keywordTimer: ReturnType<typeof setTimeout> | undefined
 watch(keyword, () => {
   clearTimeout(keywordTimer)
@@ -50,9 +52,13 @@ watch(keyword, () => {
     debouncedKeyword.value = keyword.value
   }, 300)
 })
-watch([activeTab, selectedDepartment, selectedSort, selectedDate, debouncedKeyword], () => {
-  currentPage.value = 1
-})
+watch(
+  [activeTab, selectedDepartment, selectedSort, selectedDate, debouncedKeyword],
+  () => {
+    currentPage.value = 1
+  },
+  { flush: 'sync' },
+)
 
 const router = useRouter()
 

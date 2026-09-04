@@ -1,6 +1,8 @@
 import { describe, it, expect, vi } from 'vitest'
 import { createApp, effectScope, nextTick, ref, type EffectScope } from 'vue'
 import { QueryClient, VueQueryPlugin } from '@tanstack/vue-query'
+import { queryClient as productionClient } from '@/api/queryClient'
+import { ApiError } from '@/api/http'
 import {
   useCancelChallengeClaim,
   useChallengeDetail,
@@ -208,6 +210,29 @@ describe('vue-query 缓存行为（集成）', () => {
 })
 
 // cancel 变更 hook 走与 claim 相同的 invalidate 路径，此处仅做一次冒烟确保可用
+describe('生产 queryClient 默认配置', () => {
+  it('retry 对 4xx ApiError 短路（不重试）', () => {
+    const retry = productionClient.getDefaultOptions().queries?.retry as
+      | ((failureCount: number, error: unknown) => boolean)
+      | boolean
+      | undefined
+    expect(typeof retry).toBe('function')
+    const retryFn = retry as (failureCount: number, error: unknown) => boolean
+    expect(retryFn(0, new ApiError(404, 'not found'))).toBe(false)
+    expect(retryFn(0, new ApiError(409, 'conflict'))).toBe(false)
+    expect(retryFn(0, new ApiError(500, 'server error'))).toBe(true)
+    expect(retryFn(2, new ApiError(500, 'server error'))).toBe(true)
+    expect(retryFn(3, new ApiError(500, 'server error'))).toBe(false)
+  })
+
+  it('默认 queries 选项含预期 staleTime/gcTime/refetchOnWindowFocus', () => {
+    const queries = productionClient.getDefaultOptions().queries ?? {}
+    expect(queries.staleTime).toBe(30_000)
+    expect(queries.gcTime).toBe(5 * 60_000)
+    expect(queries.refetchOnWindowFocus).toBe(false)
+  })
+})
+
 describe('取消揭榜变更 hook 冒烟', () => {
   it('cancel 成功后详情自动重取为开放状态', async () => {
     const id = await createTestChallenge()
