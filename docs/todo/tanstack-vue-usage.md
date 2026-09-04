@@ -2,7 +2,9 @@
 
 日期：`2026-09-04`
 
-状态：评估结论待确认 —— 确认后可立项实施（约一个 L2 里程碑）。
+状态：✅ 已完成 —— 评估结论经挑战英雄榜试点落地验证（2026-09-04，L2 闭环）。试点计划/进度/记录见
+`docs/plans/refactor/challenges-add-tanstack-cache-plan*.md` 与 `records/challenges-add-tanstack-cache-2026-09-04.md`；
+后续事项（其余模块推广、真实后端外部变更探测）见 `docs/todo/vue-query-real-backend-roadmap.md`。
 
 ## 背景
 
@@ -64,9 +66,18 @@ axios、fetch、ky 甚至 SDK 方法都可以。axios 用户常见分工：
 即把现有 axios 封装的请求函数直接塞进 `queryFn` 即可，两层职责不重叠。
 对本工程的意义：将来从 MSW 切真实后端时，无论后端走 fetch 还是 axios，vue-query 层都不受影响。
 
-## 落地建议（待确认后立项）
+## 落地建议
 
 1. 安装 `@tanstack/vue-query` + `@tanstack/vue-query-devtools`，`main.ts` 挂 `VueQueryPlugin`
 2. 挑战英雄榜模块试点：列表/详情/评论换 `useQuery`，写操作换 `useMutation` + 失效联动
 3. 验证缓存效果（MSW 日志 + devtools）
 4. 通过后推广至其余模块（forum、courses、practices、intelligence、market 等）
+
+## 落地验证记录（2026-09-04）
+
+- ✅ 1~3 已在挑战英雄榜试点全部落地（L2 闭环，56 例测试全绿 + `npm run check` 门禁通过），
+  交付证据见上文链接的计划/进度/记录三文档。唯一偏差：未引入 `vue-query-devtools`
+  （用户确认以「测试断言请求次数 + MSW 日志」替代，见计划 Context）。
+- ⏳ 4 推广至其余模块 —— 未实施，试点记录列为后续推广项。
+- 📌 评估未覆盖的新议题：真实后端多人场景下「外部变更探测」（mock 单客户端不存在、接真后端必现），
+  设计路线图已整理于 `docs/todo/vue-query-real-backend-roadmap.md`。
