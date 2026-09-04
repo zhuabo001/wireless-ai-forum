@@ -1,14 +1,9 @@
 <script setup lang="ts">
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
-import type { PagedResult } from '@/types/api'
-import type { ChallengeMetaResponse } from '@/api/challenges'
-import { fetchChallengeMeta, fetchChallenges } from '@/api/challenges'
-import type {
-  ChallengeItem,
-  ChallengePageMeta,
-  ChallengeSidebarData,
-} from '@/types/pageDesign/challengeHeroes'
+import { useChallengeList, useChallengeMeta } from '@/composables/useChallenges'
+import type { ChallengeListQuery } from '@/api/challenges'
+import type { ChallengePageMeta, ChallengeSidebarData } from '@/types/pageDesign/challengeHeroes'
 import IconRenderer from '@/components/ui/IconRenderer.vue'
 import Pagination from '@/components/Pagination.vue'
 import ChallengeToolbar from './ChallengeToolbar.vue'
@@ -16,75 +11,47 @@ import ChallengeList from './ChallengeList.vue'
 import ChallengeSidebar from './ChallengeSidebar.vue'
 
 const PAGE_SIZE = 10
-
-const pageMeta = ref<ChallengePageMeta>({ title: '', description: '', createButtonText: '' })
-const meta = ref<ChallengeMetaResponse | null>(null)
-const sidebarData = ref<ChallengeSidebarData>({ viewRank: [], usefulRank: [], scoreRank: [], totalScoreRank: [] })
+const EMPTY_PAGE_META: ChallengePageMeta = { title: '', description: '', createButtonText: '' }
+const EMPTY_SIDEBAR: ChallengeSidebarData = { viewRank: [], usefulRank: [], scoreRank: [], totalScoreRank: [] }
 
 const activeTab = ref<string>('all')
 const selectedDepartment = ref<string>('')
 const selectedSort = ref<string>('latest')
 const selectedDate = ref<string>('')
 const keyword = ref<string>('')
+const debouncedKeyword = ref<string>('')
 const currentPage = ref<number>(1)
 
-const challenges = ref<ChallengeItem[]>([])
-const total = ref<number>(0)
-const loading = ref<boolean>(false)
+const { data: meta } = useChallengeMeta()
+const pageMeta = computed<ChallengePageMeta>(() => meta.value?.meta ?? EMPTY_PAGE_META)
+const sidebarData = computed<ChallengeSidebarData>(() => meta.value?.sidebar ?? EMPTY_SIDEBAR)
 
+const filters = computed<ChallengeListQuery>(() => ({
+  tab: activeTab.value,
+  department: selectedDepartment.value || undefined,
+  sort: selectedSort.value,
+  date: selectedDate.value || undefined,
+  keyword: debouncedKeyword.value.trim() || undefined,
+  page: currentPage.value,
+  pageSize: PAGE_SIZE,
+}))
+
+const { data: listResult, isLoading, isError, refetch } = useChallengeList(filters)
+const challenges = computed(() => listResult.value?.list ?? [])
+const total = computed(() => listResult.value?.total ?? 0)
 const totalPages = computed<number>(() => Math.ceil(total.value / PAGE_SIZE))
 
-async function loadChallenges(): Promise<void> {
-  loading.value = true
-  try {
-    const result: PagedResult<ChallengeItem> = await fetchChallenges({
-      tab: activeTab.value,
-      department: selectedDepartment.value || undefined,
-      sort: selectedSort.value,
-      date: selectedDate.value || undefined,
-      keyword: keyword.value.trim() || undefined,
-      page: currentPage.value,
-      pageSize: PAGE_SIZE,
-    })
-    challenges.value = result.list
-    total.value = result.total
-  } catch {
-    ElMessage.error('难题列表加载失败，请稍后重试')
-  } finally {
-    loading.value = false
-  }
-}
-
-// 关键词输入做 300ms 防抖，其余过滤条件变化立即生效；过滤变化都会回到第一页
-// 不在第一页时只重置页码，由 currentPage watcher 统一触发加载，避免重复请求
-function resetPageAndLoad(): void {
-  if (currentPage.value !== 1) {
-    currentPage.value = 1
-    return
-  }
-  void loadChallenges()
-}
-
+// 关键词输入做 300ms 防抖后写入 debouncedKeyword，其余过滤条件变化立即生效；
+// 过滤变化都回到第一页——page 是 queryKey 的一部分，改它就会自动触发重取
 let keywordTimer: ReturnType<typeof setTimeout> | undefined
 watch(keyword, () => {
   clearTimeout(keywordTimer)
-  keywordTimer = setTimeout(resetPageAndLoad, 300)
+  keywordTimer = setTimeout(() => {
+    debouncedKeyword.value = keyword.value
+  }, 300)
 })
-watch([activeTab, selectedDepartment, selectedSort, selectedDate], resetPageAndLoad)
-watch(currentPage, () => {
-  void loadChallenges()
-})
-
-onMounted(async () => {
-  try {
-    const metaResponse = await fetchChallengeMeta()
-    meta.value = metaResponse
-    pageMeta.value = metaResponse.meta
-    sidebarData.value = metaResponse.sidebar
-  } catch {
-    ElMessage.error('页面配置加载失败，请稍后重试')
-  }
-  await loadChallenges()
+watch([activeTab, selectedDepartment, selectedSort, selectedDate, debouncedKeyword], () => {
+  currentPage.value = 1
 })
 
 const router = useRouter()
@@ -132,7 +99,16 @@ function onCreateChallenge(): void {
             @update:keyword="keyword = $event"
           />
 
-          <ChallengeList :challenges="challenges" :loading="loading" />
+          <div v-if="isError" class="bg-white rounded-xl border border-border px-5 py-12 text-center">
+            <p class="text-sm text-muted-foreground mb-4">难题列表加载失败，请稍后重试</p>
+            <button
+              class="px-5 py-2.5 text-sm font-medium text-white bg-primary rounded-lg hover:bg-primary/90 transition-colors shadow-sm"
+              @click="refetch()"
+            >
+              重试
+            </button>
+          </div>
+          <ChallengeList v-else :challenges="challenges" :loading="isLoading" />
 
           <Pagination
             v-if="totalPages > 1"

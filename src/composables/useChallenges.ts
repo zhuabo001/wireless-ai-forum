@@ -1,5 +1,5 @@
 import type { MaybeRefOrGetter } from 'vue'
-import { toValue } from 'vue'
+import { computed, toValue } from 'vue'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query'
 import { challengeKeys } from '@/api/challengeKeys'
 import {
@@ -31,7 +31,9 @@ export function useChallengeMeta() {
 
 export function useChallengeList(filters: MaybeRefOrGetter<ChallengeListQuery>) {
   return useQuery({
-    queryKey: challengeKeys.list(filters),
+    // queryKey 必须是 Ref/computed 才会被 vue-query 追踪；challengeKeys.list() 内部
+    // toValue(filters) 是一次性求值，若直接传入结果数组会冻结成发起时的快照
+    queryKey: computed(() => challengeKeys.list(filters)),
     queryFn: () => fetchChallenges(toValue(filters)),
   })
 }
@@ -41,14 +43,14 @@ export function useChallengeDetail(
   role: MaybeRefOrGetter<ChallengeViewerRole | undefined>,
 ) {
   return useQuery({
-    queryKey: challengeKeys.detail(id, role),
+    queryKey: computed(() => challengeKeys.detail(id, role)),
     queryFn: () => fetchChallengeDetail(toValue(id), toValue(role)),
   })
 }
 
 export function useChallengeComments(id: MaybeRefOrGetter<string>, sort: MaybeRefOrGetter<string>) {
   return useQuery({
-    queryKey: challengeKeys.comments(id, sort),
+    queryKey: computed(() => challengeKeys.comments(id, sort)),
     queryFn: () => fetchChallengeComments(toValue(id), { sort: toValue(sort) }),
   })
 }
