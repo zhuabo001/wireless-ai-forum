@@ -1,14 +1,10 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
+import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { createChallenge, fetchChallengeMeta, type CreateChallengePayload } from '@/api/challenges'
+import { useChallengeMeta, useCreateChallenge } from '@/composables/useChallenges'
+import type { CreateChallengePayload } from '@/api/challenges'
 import { ApiError } from '@/api/http'
-import type {
-  ChallengeCategoryOption,
-  ChallengeDepartmentOption,
-  ChallengeDifficulty,
-  ChallengeDifficultyOption,
-} from '@/types/pageDesign/challengeHeroes'
+import type { ChallengeDifficulty } from '@/types/pageDesign/challengeHeroes'
 import IconRenderer from '@/components/ui/IconRenderer.vue'
 import RichTextEditor from '@/components/RichTextEditor.vue'
 
@@ -19,24 +15,14 @@ const category = ref<string>('')
 const department = ref<string>('')
 const difficulty = ref<ChallengeDifficulty | ''>('')
 const contentHtml = ref<string>('')
-const isSubmitting = ref<boolean>(false)
 
-const categoryOptions = ref<ChallengeCategoryOption[]>([])
-const departmentOptions = ref<ChallengeDepartmentOption[]>([])
-const difficultyOptions = ref<ChallengeDifficultyOption[]>([])
-
-onMounted(async () => {
-  try {
-    const meta = await fetchChallengeMeta()
-    categoryOptions.value = meta.categoryOptions
-    departmentOptions.value = meta.departmentOptions
-    difficultyOptions.value = meta.difficultyOptions
-  } catch {
-    ElMessage.error('表单配置加载失败，请刷新重试')
-  }
-})
+const { data: meta } = useChallengeMeta()
+const categoryOptions = computed(() => meta.value?.categoryOptions ?? [])
+const departmentOptions = computed(() => meta.value?.departmentOptions ?? [])
+const difficultyOptions = computed(() => meta.value?.difficultyOptions ?? [])
 
 const router = useRouter()
+const { mutateAsync: submitCreate, isPending: isSubmitting } = useCreateChallenge()
 
 const titleCount = computed<string>(() => `${title.value.length}/${TITLE_MAX}`)
 
@@ -70,15 +56,12 @@ async function handleSubmit(): Promise<void> {
     contentHtml: contentHtml.value,
   }
 
-  isSubmitting.value = true
   try {
-    const { id } = await createChallenge(payload)
+    const { id } = await submitCreate(payload)
     ElMessage.success('难题发布成功，等待平台管理员评定分值')
     router.push(`/challenges/${id}`)
   } catch (error) {
     ElMessage.error(error instanceof ApiError ? error.message : '发布失败，请稍后重试')
-  } finally {
-    isSubmitting.value = false
   }
 }
 

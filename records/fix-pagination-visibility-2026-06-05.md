@@ -1,7 +1,7 @@
 # 修复分页组件不可见问题
 
 **日期**: 2026-06-05  
-**修复方案**: `docs/plans/fix-pagination-visibility.md`
+**修复方案**: `docs/plans/bug-fix/fix-pagination-visibility.md`
 
 ## 问题描述
 

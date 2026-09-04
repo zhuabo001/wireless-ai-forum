@@ -1,20 +1,17 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
+import { computed, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import {
-  cancelChallengeClaim,
-  claimChallenge,
-  fetchChallengeComments,
-  fetchChallengeDetail,
-  scoreChallenge,
-  updateChallengeProgress,
-} from '@/api/challenges'
+  useCancelChallengeClaim,
+  useChallengeComments,
+  useChallengeDetail,
+  useClaimChallenge,
+  useScoreChallenge,
+  useUpdateChallengeProgress,
+} from '@/composables/useChallenges'
 import { ApiError } from '@/api/http'
-import type {
-  ChallengeDetail,
-  ChallengeViewerRole,
-} from '@/types/pageDesign/challengeHeroes'
-import type { Comment, CommentSortOption, PostAuthor, Reply } from '@/types/pageDesign/forumPostDetail'
+import type { ChallengeViewerRole } from '@/types/pageDesign/challengeHeroes'
+import type { Comment, Reply } from '@/types/pageDesign/forumPostDetail'
 import { challengeDifficultyOptions } from '@/data/pageDesign/challengeHeroes'
 import PostContent from '@/components/PostContent.vue'
 import CommentSection from '@/components/comments/CommentSection.vue'
@@ -29,25 +26,28 @@ import RoleSwitcher from './RoleSwitcher.vue'
 const route = useRoute()
 const challengeId = String(route.params.id)
 
-const challenge = ref<ChallengeDetail | null>(null)
-const contentHtml = ref<string>('')
-const viewerRole = ref<ChallengeViewerRole>('visitor')
-const currentUser = ref<PostAuthor | null>(null)
-const loadError = ref<string>('')
+// mock 阶段角色由本地 ref 手动切换（RoleSwitcher 演示用）；role 入 queryKey，
+// 切换后自动重取对应角色视角的详情
+const roleOverride = ref<ChallengeViewerRole | undefined>(undefined)
 
-const comments = ref<Comment[]>([])
-const commentSortOptions = ref<CommentSortOption[]>([])
+const { data: detailData, isPending, isError, error: detailError, refetch } = useChallengeDetail(challengeId, roleOverride)
+const challenge = computed(() => detailData.value?.challenge ?? null)
+const contentHtml = computed(() => detailData.value?.contentHtml ?? '')
+const viewerRole = computed<ChallengeViewerRole>(() => detailData.value?.viewerRole ?? 'visitor')
+const currentUser = computed(() => detailData.value?.currentUser ?? null)
+
 const currentSort = ref<string>('latest')
+// 详情加载失败（如 404）时评论查询注定失败，禁用避免多余请求
+const { data: commentsData } = useChallengeComments(challengeId, currentSort, { enabled: () => !isError.value })
+const comments = computed(() => commentsData.value?.list ?? [])
+const commentSortOptions = computed(() => commentsData.value?.sortOptions ?? [])
 
 const isLiked = ref<boolean>(false)
-const likeCount = ref<number>(0)
+const likeCount = computed<number>(() => (challenge.value?.likeCount ?? 0) + (isLiked.value ? 1 : 0))
 
 const scoreDialogVisible = ref<boolean>(false)
-const scoreSubmitting = ref<boolean>(false)
 const progressDialogVisible = ref<boolean>(false)
-const progressSubmitting = ref<boolean>(false)
 const cancelDialogVisible = ref<boolean>(false)
-const cancelSubmitting = ref<boolean>(false)
 
 const difficultyText = computed<string>(() => {
   if (!challenge.value) return ''
@@ -55,125 +55,66 @@ const difficultyText = computed<string>(() => {
   return option ? `${option.name} · ${option.description}` : challenge.value.difficulty
 })
 
-async function loadDetail(role?: ChallengeViewerRole): Promise<void> {
-  loadError.value = ''
-  try {
-    const response = await fetchChallengeDetail(challengeId, role)
-    challenge.value = response.challenge
-    contentHtml.value = response.contentHtml
-    viewerRole.value = response.viewerRole
-    currentUser.value = response.currentUser
-    isLiked.value = false
-    likeCount.value = response.challenge.likeCount
-  } catch (error) {
-    loadError.value = error instanceof ApiError ? error.message : '难题加载失败'
-    ElMessage.error(loadError.value)
-  }
-}
-
-async function loadComments(): Promise<void> {
-  try {
-    const response = await fetchChallengeComments(challengeId, { sort: currentSort.value })
-    comments.value = response.list
-    commentSortOptions.value = response.sortOptions
-  } catch {
-    ElMessage.error('评论加载失败')
-  }
-}
-
-onMounted(async () => {
-  await loadDetail()
-  await loadComments()
-})
-
 function onRoleChange(role: ChallengeViewerRole): void {
-  void loadDetail(role)
+  roleOverride.value = role
 }
 
 function onSortChange(sort: string): void {
   currentSort.value = sort
-  void loadComments()
 }
 
 /* ---------------- 互动操作 ---------------- */
 
 function toggleLike(): void {
   isLiked.value = !isLiked.value
-  likeCount.value += isLiked.value ? 1 : -1
 }
 
+const { mutateAsync: submitClaim } = useClaimChallenge()
 async function handleClaim(): Promise<void> {
   try {
-    const { claimant, timeline } = await claimChallenge(challengeId)
-    if (challenge.value) {
-      challenge.value.claimant = claimant
-      challenge.value.timeline = timeline
-      challenge.value.status = 'solving'
-    }
-    viewerRole.value = 'claimant'
+    await submitClaim(challengeId)
+    // 揭榜成功后以揭榜人视角重取，服务端已把状态置为 solving
+    roleOverride.value = 'claimant'
     ElMessage.success('揭榜成功！难题材料包已开放，可在方案工作区获取')
   } catch (error) {
     ElMessage.error(error instanceof ApiError ? error.message : '揭榜失败，请稍后重试')
   }
 }
 
+const { mutateAsync: submitCancelClaim, isPending: cancelSubmitting } = useCancelChallengeClaim()
 async function handleCancelClaimConfirm(reason: string): Promise<void> {
-  cancelSubmitting.value = true
   try {
-    const response = await cancelChallengeClaim(challengeId, { reason })
-    if (challenge.value) {
-      challenge.value.claimant = undefined
-      challenge.value.status = response.status
-      challenge.value.progressPercent = response.progressPercent
-      challenge.value.timeline = response.timeline
-    }
+    await submitCancelClaim({ id: challengeId, payload: { reason } })
     // 揭榜关系解除后，当前访问者不再是揭榜人：退回普通用户视角，重新开放「我要揭榜」
     if (viewerRole.value === 'claimant') {
-      viewerRole.value = 'visitor'
+      roleOverride.value = 'visitor'
     }
     cancelDialogVisible.value = false
     ElMessage.success('已取消揭榜，难题重新开放揭榜，已通知发布者与超管')
   } catch (error) {
     ElMessage.error(error instanceof ApiError ? error.message : '取消揭榜失败，请稍后重试')
-  } finally {
-    cancelSubmitting.value = false
   }
 }
 
+const { mutateAsync: submitScore, isPending: scoreSubmitting } = useScoreChallenge()
 async function handleScoreConfirm(score: number, reason: string): Promise<void> {
-  scoreSubmitting.value = true
   try {
-    const response = await scoreChallenge(challengeId, { score, reason })
-    if (challenge.value) {
-      challenge.value.score = response.score
-      challenge.value.timeline = response.timeline
-      if (challenge.value.status === 'scoring') {
-        challenge.value.status = 'open'
-      }
-    }
+    await submitScore({ id: challengeId, payload: { score, reason } })
     scoreDialogVisible.value = false
     ElMessage.success('分值已评定，已通知发布者与揭榜人')
   } catch (error) {
     ElMessage.error(error instanceof ApiError ? error.message : '评分失败，请稍后重试')
-  } finally {
-    scoreSubmitting.value = false
   }
 }
 
+const { mutateAsync: submitProgress, isPending: progressSubmitting } = useUpdateChallengeProgress()
 async function handleProgressConfirm(stage: string, percent: number, note: string): Promise<void> {
-  progressSubmitting.value = true
   try {
-    const response = await updateChallengeProgress(challengeId, { stage, percent, note })
-    if (challenge.value) {
-      challenge.value.progressPercent = response.progressPercent
-      challenge.value.timeline = response.timeline
-    }
+    await submitProgress({ id: challengeId, payload: { stage, percent, note } })
     progressDialogVisible.value = false
     ElMessage.success('进度已更新，发布者已收到通知')
   } catch (error) {
     ElMessage.error(error instanceof ApiError ? error.message : '进度更新失败，请稍后重试')
-  } finally {
-    progressSubmitting.value = false
   }
 }
 
@@ -193,7 +134,7 @@ function scrollToTop(): void {
   window.scrollTo({ top: 0, behavior: 'smooth' })
 }
 
-/* ---------------- 评论区 ---------------- */
+/* ---------------- 评论区（演示态，无对应接口） ---------------- */
 
 function findCommentOrReply(id: string): Comment | Reply | null {
   for (const comment of comments.value) {
@@ -308,17 +249,17 @@ function handleLoadMore(): void {
         />
       </template>
 
-      <div v-else-if="loadError" class="py-24 text-center">
-        <p class="text-sm text-muted-foreground mb-4">{{ loadError }}</p>
+      <div v-else-if="isError" class="py-24 text-center">
+        <p class="text-sm text-muted-foreground mb-4">{{ detailError instanceof ApiError ? detailError.message : '难题加载失败' }}</p>
         <button
           class="px-5 py-2.5 text-sm font-medium text-white bg-primary rounded-lg hover:bg-primary/90 transition-colors shadow-sm"
-          @click="loadDetail()"
+          @click="refetch()"
         >
           重试
         </button>
       </div>
 
-      <div v-else class="py-24 text-center text-sm text-muted-foreground">加载中...</div>
+      <div v-else-if="isPending" class="py-24 text-center text-sm text-muted-foreground">加载中...</div>
     </div>
   </div>
 </template>
