@@ -37,7 +37,7 @@
 
 | # | 建议 | 依据与预期 | 成本 | 涉及视觉 |
 | --- | --- | --- | --- | --- |
-| S1 | **体积预算守卫**：verify-build 扩展数值断言——entry 静态 JS/gzip 上限、vendor-element-plus 仅可被懒 chunk 引用、产物较基线增涨超阈值（如 +5%）即 fail | 补 R1：M1/M2 战果变成持续防线，新页面偷吃体积当场暴露 | 小 | 否 |
+| S1 | ✅ **已完成**（2026-09-06）：体积预算守卫——`scripts/bundle-budget.json` 绝对上限 + `bundle-guard.mjs` 纯逻辑 + verify-build 接入；entry 静态闭包/7 个 vendor chunk/全产物三层 + EP 仅可被懒 chunk 引用的 eager 断言 + 21 例单测 | 补 R1：M1/M2 战果变成持续防线，新页面偷吃体积当场暴露 | 小 | 否（详见 `docs/plans/refactor/bundle-budget-guard-plan.md` 与 `records/bundle-budget-guard-2026-09-06.md`） |
 | S2 | **响应式 CLS 快检**：375×812 与 768×1024 跑既有 trace 管线，核对 minHeight 占位 vs 实际高度 | 补 R2：失配则 minHeight 改媒体查询或移动端改 IO 直接挂载 | 小（1 次测量会话） | 否（检测先行） |
 | S3 | **idle 兜底挂载**：首帧后 requestIdleCallback（或延迟 2s+分片）后台补齐未挂载区块 | 补 R3：消灭跳跃到达的空白态；验证口径「跳跃到达时空白帧数」前后对比 | 小-中 | 否 |
 | S4 | **content-visibility 实验**：已挂载折叠线区块加 `content-visibility:auto` + `contain-intrinsic-size`，测长滚动中 Layout 事件 | M3 证明全文档布局 ~18-20ms 为结构成本；containment 可能让浏览器跳过屏外区块布局 | 小（可回滚） | 否 |

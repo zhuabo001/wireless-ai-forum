@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "calibration": {
+    "date": "2026-09-06",
+    "commit": "09189e4",
+    "node": "v22.17.0",
+    "gzipLevel": 9,
+    "unit": "KiB (1024 bytes)",
+    "policy": "vendor chunk = 实测 x1.10；入口静态闭包 / 全产物 = 实测 x1.15；vendor-common（catch-all，构成易漂移）= 实测 x1.20；一律向上取整到 5KiB",
+    "scopeNote": "仅统计 dist/.vite/manifest.json 模块图内 JS/CSS（totals 的 CSS 取顶层 CSS 条目与各条目 css 数组的并集）；chunks 预算只统计该 chunk 自身的 JS 文件（不含其 css 数组与静态依赖闭包）；不含 dist/vditor/**、public/ 资源与 dist/index.html 自身",
+    "measuredAt": {
+      "entryStaticJs": { "index.html": "378.8 / 141.5" },
+      "chunks": {
+        "vendor-element-plus": "246.5 / 82.3",
+        "vendor-common": "204.1 / 76.2",
+        "vendor-vue": "111.1 / 42.4",
+        "vendor-mermaid": "2994.1 / 787.4",
+        "vendor-wangeditor": "781.2 / 264.1",
+        "vendor-vditor": "279.2 / 66.6",
+        "vendor-katex": "253.2 / 74.6"
+      },
+      "totals": { "js": "5121.2 / 1491.1", "css": "190.2 / 34.1" }
+    }
+  },
+  "entryStaticJs": {
+    "index.html": { "maxRawKb": 440, "maxGzipKb": 165 }
+  },
+  "chunks": {
+    "vendor-element-plus": { "maxRawKb": 275, "maxGzipKb": 95 },
+    "vendor-common": { "maxRawKb": 245, "maxGzipKb": 95 },
+    "vendor-vue": { "maxRawKb": 125, "maxGzipKb": 50 },
+    "vendor-mermaid": { "maxRawKb": 3295, "maxGzipKb": 870 },
+    "vendor-wangeditor": { "maxRawKb": 860, "maxGzipKb": 295 },
+    "vendor-vditor": { "maxRawKb": 310, "maxGzipKb": 75 },
+    "vendor-katex": { "maxRawKb": 280, "maxGzipKb": 85 }
+  },
+  "totals": {
+    "maxJsRawKb": 5890,
+    "maxJsGzipKb": 1715,
+    "maxCssRawKb": 220,
+    "maxCssGzipKb": 40
+  }
+}
