@@ -9,6 +9,6 @@ export default defineConfig({
     environment: 'node',
     globals: false,
     setupFiles: ['src/test/setup.ts'],
-    include: ['src/**/*.spec.ts'],
+    include: ['src/**/*.spec.ts', 'scripts/**/*.spec.mjs'],
   },
 })
