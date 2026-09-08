@@ -184,3 +184,47 @@ LCP 中位数 677 → 670 ms（−1%，噪声内）。hljs 77KB 瘦身在 localh
 （M1 懒加载 + M2 瘦身 + M3b 挂载修复）在 4x 节流下兑现 **−43%**，且 CLS 保持
 0.00。渲染侧交互路径健康（≤83ms），性能风险剩余项在网络侧（真实网络 chunk
 传输与传输体积），非本地实验室可测。
+
+## 优化记录 4：响应式 CLS 快检与 minHeight 分档（M6，2026-09-08）
+
+**性质**：检测 + 修复。兑现 S2（补 R2：minHeight 占位仅桌面实测）。协议：无节流快检，
+视口 375×812×3(mobile) / 768×1024×2 / 1280×800×2，预热后各 3 轮；占位核对与
+跳转直达双场景；详见 `docs/perf-imprv-records/lighthouse-perf-milestone6-responsive-cls-2026-09-08.md`。
+
+### 响应式基线（修复前：占位 = 桌面历史标量）
+
+| 视口 | FAIL | WARN | 代表值（真实 − 占位） |
+| --- | --- | --- | --- |
+| 375×812 | 9/9 | 0 | courses +1096、market +800、practices +768、engineering −232 |
+| 768×1024 | 7/9 | 0 | roadmap +682、atmosphere +314、courses +274、engineering −267 |
+| 1280×800 | 0/9 | 0 | 全部 delta = 0（历史值逐像素复现） |
+
+跳转直达实测：375 跳 `#practices` **CLS 1.0**、768 跳 `#roadmap` **CLS 0.2362**
+——窄视口占位失配在跳转路径上直接转化为可见位移（正常滚动由 400px 预加载屏外掩盖）。
+
+### 修复后（minHeight 按断点分档，46 档）
+
+| 视口 | FAIL | WARN | CLS（滚动全挂载） |
+| --- | --- | --- | --- |
+| 375×812 | 0 | 0 | 0.00（3 轮） |
+| 768×1024 | 0 | 1（engineering −57 over） | 0.11（**`#hero` 异步日历，既有独立项**，3 轮） |
+| 1280×800 | 0 | 0 | 0.00（MCP 2 轮 + 同二进制 CDP 补测 1 轮） |
+
+真实渲染高度与修复前逐像素一致（375/768 max diff = 0px），桌面 ≥1280 占位值不变
+（分档设计以历史标量为 1280 档值 + `max-w-7xl` 平台期保证）。跳转直达的**占位归因** shift 归零
+（375 由 1.0 归零；768 复跑/逐帧诊断 0，主跑另有 1 次未复现的挂载瞬态 1.1426，非占位）。
+入口体积 378.8 → 380.4 KiB raw（档位数据 +1.6 KiB，预算内；378.8 为本次修复前同会话
+`npm run check` 实测，与 S1 校准值同量级）。
+
+### 附带发现（不在 M6 范围）
+
+- `#hero` 内 `ActivityCalendar`（异步组件）挂载在 768 产生 CLS 0.1082，修复前后同值；
+- 懒 chunk 组件挂载偶发未样式化瞬态（768 跳转主跑观察到一次 footer ±438px，复跑与逐帧诊断未复现，机制未坐实）。
+
+## 测量方法（响应式补充，2026-09-08）
+
+- 视口经 CDP `emulate` 设置（`375x812x3,mobile,touch` 等）；无节流；
+- 占位核对 = `DOMContentLoaded` 快照 `style.minHeight` vs 全挂载后 `offsetHeight`；
+- CLS 归因 = `PerformanceObserver('layout-shift')` 的 `sources` 节点 + 挂载时刻表，
+  与 trace `CumulativeShiftScore::AllFrames::UMA` 交叉核对；
+- 宽度 sweep 14 档（320…1280）用于导出分档值，规则见 milestone6 §3.2。

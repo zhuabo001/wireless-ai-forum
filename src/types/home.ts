@@ -188,12 +188,20 @@ export interface ActivityItem {
   typeColor: string
 }
 
+/** 懒加载占位高度分档；数组按 minWidth 降序排列，末档 minWidth 必须为 0 */
+export interface MinHeightTier {
+  /** 档位下界（含），px */
+  minWidth: number
+  /** 该档实测渲染高度（border-box），px */
+  value: number
+}
+
 export interface HomeSectionMeta {
   id: string
   component: string
   className?: string
-  /** 懒加载区块占位高度（px），取各区间的实测渲染高度，用于避免加载前后的布局抖动 */
-  minHeight?: number
+  /** 懒加载区块占位高度分档（按 minWidth 降序）；缺省表示首屏区块，立即渲染 */
+  minHeight?: MinHeightTier[]
 }
 
 export type RoadmapStatus = 'completed' | 'in-progress'

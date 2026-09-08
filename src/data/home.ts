@@ -18,16 +18,120 @@ import type {
 
 export const homeSections: HomeSectionMeta[] = [
   { id: 'hero', component: 'HeroSection', className: 'py-16' },
-  // minHeight 取 2026-08-12 桌面端实测渲染高度，仅作懒加载占位，允许与实际有小幅偏差
-  { id: 'engineering', component: 'EngineeringSection', className: 'py-16', minHeight: 1246 },
-  { id: 'practices', component: 'PracticesSection', className: 'py-16', minHeight: 732 },
-  { id: 'toolbox', component: 'ToolboxSection', className: 'py-16', minHeight: 652 },
-  { id: 'intelligence', component: 'IntelligenceSection', className: 'py-16', minHeight: 637 },
-  { id: 'courses', component: 'CoursesSection', className: 'py-16', minHeight: 896 },
-  { id: 'atmosphere', component: 'AtmosphereSection', className: 'py-16', minHeight: 642 },
-  { id: 'forum', component: 'ForumSection', className: 'py-16', minHeight: 945 },
-  { id: 'market', component: 'AgentMarketSection', className: 'py-16', minHeight: 820 },
-  { id: 'roadmap', component: 'RoadMapSection', className: 'py-16', minHeight: 740 },
+  // minHeight 为懒加载占位高度分档（按 minWidth 降序，末档 0）：值取自 2026-09-08 多视口实测
+  // （375×812 / 768×1024 / 1280×800 trace + 320~1280 宽度 sweep），每档取区间内最大渲染高度，
+  // 因此占位恒不矮于真实内容（残差仅在 over 方向，≤64px）。区块布局或数据变更后需重跑
+  // docs/plans/refactor/responsive-cls-check-plan.md 的测量协议并更新档位。
+  {
+    id: 'engineering',
+    component: 'EngineeringSection',
+    className: 'py-16',
+    minHeight: [
+      { minWidth: 1216, value: 1246 },
+      { minWidth: 1152, value: 1210 },
+      { minWidth: 1088, value: 1173 },
+      { minWidth: 1024, value: 1137 },
+      { minWidth: 896, value: 1100 },
+      { minWidth: 768, value: 1036 },
+      { minWidth: 640, value: 979 },
+      { minWidth: 375, value: 1036 },
+      { minWidth: 0, value: 1039 },
+    ],
+  },
+  {
+    id: 'practices',
+    component: 'PracticesSection',
+    className: 'py-16',
+    minHeight: [
+      { minWidth: 1280, value: 732 },
+      { minWidth: 1024, value: 752 },
+      { minWidth: 768, value: 934 },
+      { minWidth: 640, value: 954 },
+      { minWidth: 375, value: 1500 },
+      { minWidth: 0, value: 1560 },
+    ],
+  },
+  {
+    id: 'toolbox',
+    component: 'ToolboxSection',
+    className: 'py-16',
+    minHeight: [
+      { minWidth: 1280, value: 652 },
+      { minWidth: 768, value: 668 },
+      { minWidth: 640, value: 684 },
+      { minWidth: 375, value: 968 },
+      { minWidth: 0, value: 1016 },
+    ],
+  },
+  {
+    id: 'intelligence',
+    component: 'IntelligenceSection',
+    className: 'py-16',
+    minHeight: [
+      { minWidth: 1024, value: 637 },
+      { minWidth: 640, value: 780 },
+      { minWidth: 414, value: 1169 },
+      { minWidth: 0, value: 1207 },
+    ],
+  },
+  {
+    id: 'courses',
+    component: 'CoursesSection',
+    className: 'py-16',
+    minHeight: [
+      { minWidth: 1024, value: 896 },
+      { minWidth: 640, value: 1170 },
+      { minWidth: 0, value: 1992 },
+    ],
+  },
+  {
+    id: 'atmosphere',
+    component: 'AtmosphereSection',
+    className: 'py-16',
+    minHeight: [
+      { minWidth: 1280, value: 642 },
+      { minWidth: 1024, value: 662 },
+      { minWidth: 768, value: 956 },
+      { minWidth: 640, value: 1012 },
+      { minWidth: 375, value: 1250 },
+      { minWidth: 0, value: 1354 },
+    ],
+  },
+  {
+    id: 'forum',
+    component: 'ForumSection',
+    className: 'py-16',
+    minHeight: [
+      { minWidth: 768, value: 945 },
+      { minWidth: 640, value: 977 },
+      { minWidth: 414, value: 1017 },
+      { minWidth: 0, value: 1053 },
+    ],
+  },
+  {
+    id: 'market',
+    component: 'AgentMarketSection',
+    className: 'py-16',
+    minHeight: [
+      { minWidth: 1024, value: 820 },
+      { minWidth: 640, value: 1010 },
+      { minWidth: 375, value: 1620 },
+      { minWidth: 0, value: 1684 },
+    ],
+  },
+  {
+    id: 'roadmap',
+    component: 'RoadMapSection',
+    className: 'py-16',
+    // roadmap 的 SCSS 断点是 max-width:768px → 1 列，故 4 列档下界取 769（768 整点必须落 1 列档）
+    minHeight: [
+      { minWidth: 1280, value: 740 },
+      { minWidth: 1088, value: 792 },
+      { minWidth: 769, value: 847 },
+      { minWidth: 375, value: 1446 },
+      { minWidth: 0, value: 1479 },
+    ],
+  },
 ]
 
 export const heroContent = {
